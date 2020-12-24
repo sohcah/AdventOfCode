@@ -17,6 +17,12 @@ function playGame(players, game, returnN) {
   for(let round = 1;true;round++) {
     globalRoundCounter++;
     // Test for Recursion
+    
+    // let x = 1;
+    // for(const player of players) {
+    //   x *= Math.pow(36288000, player.number - 1) * player.cards.reduce((a,b,i,r) => a + (b * (r.length - i)), 0);
+    // }
+    // let x = players.map(i=>`${i.cards.join(',')}`).join('/')
     let x = ``;
     for(const player of players) {
       x+=`${player.number}/${player.cards.join(',')}---`
