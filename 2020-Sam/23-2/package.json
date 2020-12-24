@@ -1,0 +1,9 @@
+{
+  "name": "23-2",
+  "version": "1.0.0",
+  "main": "index-5.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index-5.js"
+  }
+}
