@@ -1,0 +1,9 @@
+[package]
+name = "aoc2015"
+version = "1.0.0"
+authors = ["Sam Hindess <mail@sohcah.dev>"]
+edition = "2018"
+default-run = "aoc2015"
+
+[profile.release]
+opt-level = 3
