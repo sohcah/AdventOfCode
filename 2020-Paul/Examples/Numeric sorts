@@ -1,0 +1,5 @@
+let input = [3,1,2];
+let sorted = input.sort((a,b) => a-b); // results in sorted = [1,2,3]
+
+let input = [3,1,2];
+let sorted = input.sort((a,b) => b-a); // results in sorted = [3,2,1]
