@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { stringify } = require('querystring');
 const input = fs.readFileSync('input.txt', 'utf8').split('\n');
 
 function calculateValue(i, m) {

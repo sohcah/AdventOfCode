@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 24 Part 2</title>
+  <script src="https://unpkg.com/honeycomb-grid/dist/honeycomb.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@latest/dist/svg.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      margin: 0;
+      padding: 80px;
+      background-color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+
+    const app = new PIXI.Application({ antialias: true, height: 900, width: 900, transparent: true })
+
+    const Hex = Honeycomb.extendHex({ size: 4 })
+    const Grid = Honeycomb.defineGrid(Hex)
+
+    document.body.appendChild(app.view)
+    // const canvas = document.getElementById('x');
+    // const ctx = canvas.getContext('2d');
+    const input = `swnwnwnwesewsenwseseswneseseeseseswsese
+wnwnwwwwwwseeswnwswwenwnwwsenwwse
+nwswnwnenenwenwnwneeswnwnwnwnwswnwnwnwsw
+senwnweseswwwneseesewseenewsesee
+eswnewneneeeneseeeneeeeewsewnw
+sewnwnwenwnwnenwnw
+eeeeeseseenwenweneeweseseeeswnw
+swseswswswswseswswswseswswnwsw
+swneswseseseswseseswswswnwnwsw
+swseseswnenwnwewesewsenenesenee
+sesenwseswseseseseswseseswnwseswnewswse
+wswswewswwswseneswnewswswswswswesesw
+wseswswswnewwseenwnwneneswwseenew
+eswnwneneewwsww
+nesenewseswwswseseseseswseseswewswswse
+eswnwwseeswwenwswsewwnesewwswnw
+nenwnwnenwnenenenesweswnwenwnewnwnenw
+wsenwwneseseneesewseewsewsenwsee
+nenwnenwneeswenwnenenwswsenesenewnenw
+wwwwnewsewwewesewwnesewnwww
+neswweswswnewsewsewswswnwsw
+wwswswsewnwnweeeswnww
+senenewsenesweeewneenwneeenweswe
+nweeeeewneseweseeeseseneeseese
+enenenenenenenenenenewneneswswseneneswne
+nwnwnwswsenwnwnwnwnwsenwnwenwenwnwsw
+seseesewenweseeseseseswsenwseseese
+wswseswneswnwswswswwswswswewsweswsw
+wwseneeenwnwsenwswnesewwsenwewnww
+eneenweweeseeeewswwnenwneeeene
+wwwnwesewwnwewnwnwwnwnwnwewwnw
+nwnenwewswnwnwsewe
+sesewnwesesesenwenenwwnweswne
+wwswweswswneseneswnewesewwneseswsene
+wseseseswwwsweneseseswseswswswswswe
+enenenenenwwnenwnenene
+nwnwsewnwswswnwwnwnwneeenenenwnwnesesw
+neeeneneswseneneneneneenenwneneeesww
+weseeeswnwswnweneenenewneseswnwneswne
+enwneesweeeseswewneseesweseenee
+newnwweseswnwnwsenwnwnwnwnwwwnwww
+eeseesweeswnwweeeenweneeeenw
+wwwewwnwweswnwwwsenewwewsw
+enwenewneswneswsenwnwnwneneswnesesw
+sweswenwwseweswsenwnwnwswneeneenesw
+wneenwnesweneenenenenee
+nenesewneneesenewnenwseswwnenenene
+neswswnwswsweswswsesweseswwwneswswswsw
+eseseswseseseswsenwsesesesese
+neeweeneeenewswweeeneseneeewe
+eseeneeeeeeeeenwseewee
+swnwsweswwswnenwseseswwswwsewswswnwe
+nesewnwneswswswswneesenenenenwnwnenwne
+nwwnwnenwwsenwnwenwsenewsenwnwneswnw
+wswenewswseseswneswswsweswnwseswesenw
+eeeseeneenewe
+wnwswnwwwwenwnwsenwnwnwweswwwnwwne
+ewnenewwnwswwwswnwwswww
+swswweneswwwswswsweseswwewwnwnese
+nwwsewnwwenwnwswenwnweneeswseww
+senwwsenwnwnwnwnwnwnwnweneswsenwnwnwnw
+neswsweswwswswswneweweswswswwswsww
+swneswewwwswwwwswewwwsenwww
+nenenenenwsenewswnenwsenenenenenenesene
+eseseeseeseeswneseenwnwnewneenwswsww
+swwsenwwnewswsenewwnwne
+eswnwswswneswswswswswswswswswesewswsw
+wwneswwnewwweswse
+ewwwwnenwwwneewseswwwwwww
+sewnwsenwneweswnwnwnwnwnwwnwnwnenwwnw
+nenwwswwnwnwwwwnwwwwsenenw
+seseseseneseseseewsesesesesese
+swwesesenwnewnwseeesenwneeswswsee
+sewnwnesewnewnwewnwwseswswwswneww
+eneswnwwnenenewenwsesenenw
+senwnesenwwswsewswswneswnwsesweseswsw
+nenenwneswnenenewe
+wnweneswwwwwewwwwwnwwnwnwswe
+swswseswnenwseswneeswnwswswwswseswnwswsw
+wwnewwwwnwwsewnwwwseenewwsww
+seeseseseeeewseeseese
+swesewnewwnewswesewnewswnewnww
+swneneswnwwseswswswsweneswswwseseswsw
+wnwweenwswwenwewwnwwwswnwnwnw
+wwwwswswwswewswsw
+wneswnenewwewwswsewswewseswnwsenw
+seeseeeewsesweseseeeewesenene
+enesweseewnwesesewewseswnweseese
+sewnewnenweneneneweneseseeswnwew
+ewswwwswswwswswneneswneswnwswwesesw
+wseseseseseneseneswseseseseseseseesenwsew
+eswnwneeeseseseseewnwseseseneseseswwe
+eeeewweneeweeeeeeesesee
+neswnwsewesesewneenwsewneswnweswsesw
+wsewwwwnewwwsewnwsewwwswwswne
+ewswwwnwnwwnwnweww
+senweneeswnenweeseeenewee
+wsweenewwnwenwwswnwnewswnwnwsenww
+swenenwswnweeeenewweseseeeeesee
+sesewwwnwwwwnewsewnwewnewewsw
+wseseneswswwseswswseswwswswseseneese
+esweswneswwnwswswwnwseswwnesenenese
+enwsewenesewnenenewsenwnenenenenwnwnw
+ewsewneweseweeeneseeesesesesese
+swnwseeseneneseeneswwwswseewswswswswnw
+swnwnenenwnewseseeseswsesesenesesewswsew
+nwseewnwnwnewsewwnwwwesewnwneswnwnw
+seeeseeewsenwwnesweeeeesewsese
+swnwnwwsenwseseewnw
+nwneeneeeswwwneweeneneeeneee
+nwnwwwnwnwneewewswneswswnwwwsewnw
+nwenwwewnwseewwwswswnwswnwnenwnww
+wwseneswnwewsesweneswwswwwwnwsw
+nwwnwwnwsewenwwswwwnwwnw
+weswsesesesenenwesewnewewnesesese
+seseeseseseesweseenwnwesenweswenw
+newwwwwswsewswwneneswww
+swwswswwnwswwwwnwswewesweswswsww
+weeesewseewesene
+wwnwweseswswswweswnewnwsenweseww
+nwwwnwnwswnwewsesenenwwnwnwnwnwnwwew
+enwnewwwenwswnwseewwenwese
+nwnenwswnwnwswneswweenwewnwsenesenenw
+sesweeneeeeenwneeseeseeswsewsenwe
+nenenenesewnenenenenenenenenwnw
+newwseswwwwsenwnenwseenewswenwnw
+nenweeeseesweeeenweeeeww
+nwnewnenenenwesenenwwweenwswnwwswe
+nwwswswwwwewswwneswnewwwenwsww
+seseseswsesesesesenwswsese
+swswwnwwnwswswswwwwneswswsweeswsw
+nwnwnesenwnwnwnenenwneswnwsenew
+swseseenwenweewse
+seswnwswsenwwseenwsesenwseseseseesese
+wseseeeenewsweeswneseeneeseseese
+sweenwswseseeseneeeseeseseeewe
+nenenewsenwnenenenwsenwnenwwnwnwnwswenw
+sesenenewwseenesewwswwwwwnwwwnenw
+nenenwnesenweneeswnwneseswnewneneneenese
+seewseeeeeeenwwnwseeeseeee
+ewesweeeswswswnenwsewswnweenwnew
+neswwswswswwnwwswwswswswwwewwene
+swweseeswswneeesweseswnwwwnwsese
+nwseneswneneenenenenwnenenenenw
+neneneneneneneeeseseeeenwewswwew
+newwnewseeseseseeeseeewsesesee
+nwnwnwnenewnwenenenenenwwsenwneswene
+swnwnwswewnweww
+wenwwneneneeneenenwenesweneeswsw
+neenenwneneswnewesewnenwnwnwnwnwswne
+swswswswswswnwwswswsweswswswswenwswswenw
+eenwnwweeseneeeesweeewenesesee
+swnenesenwsenweswseseswseseswnwnwswswnwse
+seseseswseswnwneneswsenwseswnw
+eeeewwneneeeeeeeeeeswsenwe
+eenwnwnwsenwswwwenwsenwnwwnwnwnwnwsenw
+nwnwnwnwnwewnwwwnwnwnwnw
+seeeseswsewsesesenwsewsenwsene
+enwnwnenwnwnwnenwnwnwsw
+nwewenwsenwswneseeeesesesenweswesee
+neswnwesenwswseswnwwewnwnwseeswsenwne
+eseeseeweseeseeeesewsesenwsenwsw
+ewnesenweneneenene
+eseeeswsewneneeseswsenwneseseswsese
+eseswsesesesesesesesenesee
+eneswnwnwswenwnwnesenwswswnwnwnwnwnwnwnenw
+sewnwweneseeeeeeseseesesweee
+wwwnenwewwewwwwswnwsewwswwww
+seneesenwseneseenewwesesesewswsesese
+eneswswneswwwwsww
+nwnewnwenwnwnenwnwnenwnwne
+enwenwnwnwnwnwnwnwnwnwwswnwnwnenwnwsw
+wnwnwneswnwnwwnwwnwnw
+wnwnwwswenwnwnwnwswnwnwnwnwseenwnwnenw
+nenenwnwneneneeswnwnwseneeswnesenwneswne
+wswwnwnenwswswwwwswweswweswwww
+neswnwnwneseenwnwnwnenenenenewwsenwnwnenw
+weeenwsenwesenwseenwsweeeeseenesw
+eeneneeneneneweneneneeeeneswswnw
+nwsewneseneswnwsenwnwswnenwseswwwwwne
+newsesesweswswnwseswsesewswseswesenwsesw
+eweeesweeeeseeeneswnwnwnenweee
+eeweeweeweweesweeeneee
+swwswnewewnwnweneenweewswnwwnw
+seneenwnewseeeneeneneswenwneneswnenene
+nenweesenwneewswseeswenwswnweew
+seeeswweneeeenwseeseese
+nwsewnewnweseseswneswsene
+wnewnweswwwseeneesewweeswnwesee
+swseneswnwnwnwswseeseswseswnwnwenwswswswse
+nwnwnwnwnwenenwnwnwnwnwseswwnwenwnwnw
+eseneeewseseeewesese
+eeneweeneeeneseew
+neseseewneeeeeeenwnwswseesesese
+nenesweneseneewe
+neneseseswnenwwwwswnewswwwwneww
+nwsewseseseseweswseseswnesesesenwseese
+nwenwweseneswsenenenwswswnenenenenenese
+eseneewneeeenenwseneeeene
+neeswwneneeeneweeeseneneneeswnwe
+swswswswnwnwswswsweswseswswswsweswnwswsw
+senwesenwsesesesenwseeseswsesenweee
+nwneewsenwnwswwwwnenwenwwswsenwwne
+nwwsesenesenwseswswseseseswseswnwswswseswse
+esewnwsesesesesenenwseewseeswwneseew
+nwesenwenwwneenwnwnwwsenwnwsweswnw
+eeeeeeeenewneeeswnenweswseseee
+seneeswswsewseseswesesenwseswwseswne
+neswneneswnenenwewseneneseneneswew
+eswsesewwsenenenwneeeeneeneewne
+swnenwswwnwenewswwwswnewwswswsesesew
+swnwweneseweseswswwswswnenenweww
+eneneseewnweeswseneeee
+nesenesweneswswsenwneneswwwswnenwswnene
+sewnwseseseseseseseseswneseseenwenwsee
+wswwnwswweswwwwswswswwnenwswwe
+seeseewswnwwsenenenenwnweswneswenwe
+sewwenwneseeneneseneneneneewswswnwnenw
+esweweeneseneeneeneenene
+nwnwswseneswnenwnwnenenwnwenwwnwnenwneswe
+wswswswneswswswswswesw
+swsewnenwsewseseseesesewsenenesesenew
+swwswswswswwswwnew
+eswnwswnwnwenwwewwenwnwnwnwwwsww
+eswwswnenwswweswseeswenenw
+esweewnwnenwwnewneneswnwneneenwnwsw
+swnwwwnwwwsewnwnwswenwwseenwwne
+newnewneswswnenwenwswnesweenwnenwne
+neseesewsweeeeenwswenwwnwwnesenwse
+swwswwswswwsewwwwnewneswsww
+swswswsewwnwswswnwswewsweswswwswne
+ewseswseseseseseseneswneseewnwesese
+eeneeenwesweeenweesee
+nenwwnenwnwnwnwnwwseneseneswsewswwee
+eneeewneweseweeneeseswneswesese
+nwswseswswwsweswswseswswseseseswswne
+seenewswswseseseseseseseseeswsenesewse
+weesesweseseneeseewe
+swswnwseswseswenwswesewswsweneseneswsenw
+nwswnenwnwnwnesenwwenwwneswsenwnwnwne
+seseseeseseseesesenesew
+nenwnwnwnenenwnwesenwnewnwswswneewne
+nwwnwswnwnwwwnenwnewenwnwnwnwnwseswnw
+neswswswnwneewneeeneeeeneenwneneee
+nenwnwnwwsewnwnwnwwwenwnwsenwnwsenw
+seweneeweneenwneeeeeeewswne
+swewswewswswswnenwswswswwnwwswswe
+enewnwwneneeneeseneneseenwswsenene
+nenwnenwsenwnwwswnwnwnwneesenenwnwnw
+wnewnwsewnwswesewseswwnenenwwseseene
+neswwsenenwnenenesesenwnewnwnenwswene
+esesesesesesesesesewsesesenese
+wneenwnewneswsesewwneneseneswneswnwne
+neswsesewswnewneswewnwnesenweswwsw
+enenewswnwnenesweesenenenwneeene
+neswnwswneewneneseenenwseewneneneese
+seeneneewseswwsewnewneeeneswenene
+nwneneswswnenesweseneenwneswnenwew
+neneewnwseenwnesewwsewesweneesww
+swseswnwnwswseseswnweswswesw
+neenwsenwnwnenwnenwnwnwsewnewnwnwnenwnwsw
+nwnwnwnwnwnenwneswswenesenwsenwneenwne
+seswseswsewseneewnwswneweseneseswse
+sewesweneseeseseneseeewseneweee
+nwwnwnwnwnwnwnwwnwnwnwnwsenew
+seenwsesenwswswswneswswswnwseeswsesesw
+wswwwweswswsweswswnwswswsweneswswnww
+nwnwseswwnwnenwnwsenwnwneenwnwnenwnwnwnw
+swnweswnesenwseeswseewsww
+senwnwseneneswnenwswneneneneneenwnenwnenenw
+nweenwwwnwnwswnwnwwnwenwneww
+nenenenenwnwnenenwnwnenwnwswswneneneswe
+ewswenweseeeeeeeenweeseene
+eeeeneeeeeeeesww
+senwenenwnwenwnenesenenenwnwwnwwnwne
+nwnwnenwswnenwnwnwnwnwnwneenwnwswneseew
+nenenesesenewswnwnewnewenenwneneneene
+esewswnweenwneswenesewe
+enwwnwneneneneneswnwnesenwenenenenew
+eeeeeeeeseenewesee
+seswswswenwseswnewswse
+nwnwwnwnenwnwsenwnwswe
+swseswswwsesweseeswswswsesenenwseswwne
+senesesesesesenwseseswseneseswsese
+eenweswnwnweeeeeseesweeeswseee
+nwseswsenwseseneseseseseseseneswseesese
+neenweweeeseneseeneneeeenewe
+nesenwnwnenwnwwsenenwnweneneneneswnene
+nwseseseseseesenwseeese
+nenwswnweswswwwneswwwweswswesesene
+nwewnwneenwnwnenwnwswwnwswnwnewseesw
+neswenwnwseswnwwsenwenwnwenwnwnwwww
+weenwsweeesenesesweeneweseneeenw
+senenwnesenwswseeesesesweswseenwsee
+nenesweneseneneneneneeenewwnwenenese
+swswneswwseseseseseseseswsese
+nwswsesenwsweswnenwwwnenenenwnwswene
+swsesenwsesweswwsenwseneswse
+wswnwswnwswseeneswsw
+nwswnwenwwewwewwwwwnwnwwswwnw
+swswwwwwwwnwsesw
+sweswwswwwswneesww
+enesweenenewnwenesenwneenweswene
+wwnwwweneswswwnwwswwseswewsene
+sewwwewswenwswwwneneseswwww
+nenenenwnwnwwnesese
+nenesenenenwnenenene
+wwsewwnewswwswsweneswswwwswsww
+nwnwwwseswswenweswwneswseswseswsesw
+ewneneneneneneneenenenwwneneneswene
+swnwseseseswswsesweswswneesesewseswwne
+eeeeweeeee
+wnwnwswnwnwnwwewnwnw
+eswwswsesesesesesesenwseseseeesenenwsw
+nesewnwnenenenenwseneneswnenenenwnesenwne
+nenenenenwswnenesesesewesenwnenenewenw
+nwnweenwnwwnwnwnwnwnwnwnwswnwne
+swnwwswswwseswswwsenesewswneneswwsww
+wwswnwwseeneenewnewwwwseswsew
+nesewswneswswneewswswwwswwsewww
+nesewnwswneswnwsewewnwnewswewnwsww
+nwseesenwnenwwnewnww
+nenenwswnweneneswneneneseneneneneneenw
+eseeeswswneneenenenwe
+nweeeneeswnewswnwnwnenesweneswene
+nweseeswweeweeseeswnwneesenwe
+seneeeeeeeeewseeewsee
+seseeseeesesenwseseeswenesewnwesee
+neneenenenesenenenenenwseswnwneneswnenene
+swswswswswwsweswswnwswswnwswsweswsw
+swnenewewwwnewwswnwswwsewwwsesw
+nwnwswsweenwsenenwnwnwnwnwnwwnwnenenwnw
+nwnwnenwenwsenwwnwwsenwwnwnwnwnwsenwnw
+eeeneweneseeeeenwe
+nenwseseswnwneneseswwnewseneneweewne
+seswseseeswsesewswswse
+wswesenesewseenwneseseswneseeswnwsesese
+sewnwsweneeeeseswwwneneeeeeeene
+wnewwwwswwsenewwwswwww
+seswneseswseeeeeeeseseeswseenwwne
+neneeneeswneseeneweneewne
+nwnwwenwnwnewwenwnwnwwswnwnwnwwsw
+nwnewnwnwneswsenwnwwnwnwnwnenenwnwsee
+senwwnwnwwnwewnwnwwwneswnwenwwesw
+swswswnwswsweswnwseswswseswsw
+swewnwwsenwwnwnwneewnwnwnwnwewwnwsw
+swseseseswsenesesesenwewnwseseeswswseswse
+wweenwwnwnwnwnwnwwwwneswnwwnwsenw`.split("\n")
+      .map((i) => i.trim());
+
+    const black = new Set();
+
+    const size = 124 * 4;
+
+    for (const line of input) {
+      let q = 0;
+      let r = 0;
+      for (let i = 0; i < line.length; i++) {
+        if (line.slice(i, i + 1) === "e") {
+          q++;
+        } else if (line.slice(i, i + 1) === "w") {
+          q--;
+        } else if (line.slice(i, i + 2) === "se") {
+          if (Math.abs(r) % 2 === 1) q++;
+          r++;
+          i++;
+        } else if (line.slice(i, i + 2) === "ne") {
+          if (Math.abs(r) % 2 === 1) q++;
+          r--;
+          i++;
+        } else if (line.slice(i, i + 2) === "sw") {
+          if (Math.abs(r) % 2 === 0) q--;
+          r++;
+          i++;
+        } else if (line.slice(i, i + 2) === "nw") {
+          if (Math.abs(r) % 2 === 0) q--;
+          r--;
+          i++;
+        } else {
+          console.log("ERROR", line.slice(i, i + 2));
+        }
+      }
+      const c = (q + size) * size + r + size;
+      if (black.has(c)) {
+        black.delete(c);
+      } else {
+        black.add(c);
+      }
+    }
+
+    const offsets = [
+      [
+        [+1, 0],
+        [0, -1],
+        [-1, -1],
+        [-1, 0],
+        [-1, +1],
+        [0, +1],
+      ],
+      [
+        [+1, 0],
+        [+1, -1],
+        [0, -1],
+        [-1, 0],
+        [0, +1],
+        [+1, +1],
+      ],
+    ];
+    const hexes = new Map();
+    (async function () {
+      for (let round = 0; round < 100; round++) {
+        const flip = new Set();
+        for (let q = -size / 8; q < size / 8; q++) {
+          for (let r = -size / 8; r < size / 8; r++) {
+            const c = (q + size) * size + r + size;
+            let blacks = 0;
+            for (let offset of offsets[Math.abs(r) % 2]) {
+              const d = (offset[0] + q + size) * size + offset[1] + r + size;
+              if (black.has(d)) blacks++;
+            }
+            if (black.has(c) && blacks !== 1 && blacks !== 2) flip.add(c);
+            if (!black.has(c) && blacks === 2) flip.add(c);
+          }
+        }
+
+        for (const tile of flip) {
+          if (black.has(tile)) {
+            black.delete(tile);
+          } else {
+            black.add(tile);
+          }
+        }
+
+        render();
+        await new Promise(r => requestAnimationFrame(r));
+      }
+    })()
+    console.log(black.size);
+
+    console.time()
+    // set a line style of 1px wide and color #999
+    // graphics.lineStyle(1, 0x999999)
+
+    // render 10,000 hexes
+    function render() {
+      app.stage.children = [];
+      Grid.rectangle({ width: 130, height: 130 }).forEach(hex => {
+        const point = hex.toPoint()
+        const corners = hex.corners()//.map(corner => corner.add(point))
+        const c = (hex.q - (size / 16) - 5 + size) * size + hex.r - (size / 8) + size;
+        const graphics =  new PIXI.Graphics() //hexes.get(c) ||
+        // graphics.clear();
+        graphics.beginFill(black.has(c) ? 0x00ff00 : 0xff0000);
+        // graphics.drawPolygon(corners.map(i=> new PIXI.Point(i.x + point.x,i.y + point.y)));
+        graphics.drawCircle(point.x, point.y, 4);
+        graphics.endFill();
+          app.stage.addChild(graphics)
+
+        // if(!hexes.has(c)) {
+        //   hexes.set(c, graphics);
+        // }
+      })
+    }
+
+    // open the console to see how much time it took to render the above code
+    console.timeEnd()
+  </script>
+</body>
+
+</html>

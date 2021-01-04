@@ -31,6 +31,9 @@ for(const ingred of ingredients) {
   for(const aller of allergens) {
     if(aller[1].has(ingred)) possible_has_allergen = true;
   }
+  if(possible_has_allergen) console.log(ingred, ingredients_counter.get(ingred));
   if(!possible_has_allergen) npa_counter += ingredients_counter.get(ingred);
 }
 console.log(npa_counter)
+
+// console.log(ingredients_counter);
