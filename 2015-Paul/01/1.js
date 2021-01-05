@@ -2,11 +2,13 @@ const testMode = process.argv.includes('test');
 const fs = require('fs');
 const input = fs.readFileSync(testMode ? 'test.txt' : 'input.txt', 'utf8');
 
-// YOUR CODE HERE
-const output = 3024;
+
+let finalfloor = input.split(")").join("").length - input.split("(").join("").length
+
+const output = finalfloor;
 
 if(testMode) {
-  if(output !== 23) {
+  if(output !== 4) {
     console.error('\x1b[31mTest Failed - Incorrect Output')
   };
 }
