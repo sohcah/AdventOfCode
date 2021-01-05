@@ -3,8 +3,8 @@ use std::fs;
 fn main() {
     let input = fs::read_to_string("input/01.txt").expect("failure opening input file");
     let line = input;
-    println!("Part1: {:?}", p1(&line));
-    println!("Part2: {:?}", p2(&line));
+    println!("Part 1: {:?}", p1(&line));
+    println!("Part 2: {:?}", p2(&line));
 }
 
 fn p1(line: &String) -> i32 {
