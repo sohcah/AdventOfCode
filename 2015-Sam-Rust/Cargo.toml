@@ -7,3 +7,7 @@ default-run = "aoc2015"
 
 [profile.release]
 opt-level = 3
+
+[dependencies]
+rust-crypto = "^0.2"
+fancy-regex = "^0.4.1"
