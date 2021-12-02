@@ -18,34 +18,68 @@ let newactive = new Set();
 for (let i = 0; i < height; i++) {
   for (let j = 0; j < width; j++) {
     if (input[i][j] == "#") {
-      active.add(cycles*size*size+(i + cycles) * size + j + cycles);
+      active.add(
+        cycles * size * size * size +
+          cycles * size * size +
+          (i + cycles) * size +
+          j +
+          cycles
+      );
     }
   }
 }
+
+
 for (i = -1; i < 2; i++) {
   for (j = -1; j < 2; j++) {
     for (let k = -1; k < 2; k++) {
-      if (i != 0 || j != 0 || k != 0) {
-        surround.push(size * size * i + size * j + k);
+      for (let l = -1; l < 2; l++) {
+        if (i != 0 || j != 0 || k != 0 || l != 0) {
+          surround.push(
+            size * size * size * i + size * size * j + size * k + l
+          );
+        }
       }
     }
   }
 }
 
-for (let c=0;c<cycles;c++) {
-  for (i=cycles - c-1;i<size - cycles+c+1;i++) {
-    for (j=cycles - c-1;j<size - cycles+c+1;j++) {
-      for (k=cycles - c-1;k<size - cycles+c+1;k++) {
-        act = 0;
-        for (s=0;s<surround.length;s++) {
-          if (active.has(i*size*size+j*size+k+surround[s])) {act++}
-        }
-        //console.log(i*size*size+j*size+k,act);
-        if (active.has(i*size*size+j*size+k)) {
-          if (act == 2 || act ==3) {newactive.add(i*size*size+j*size+k)};
-        }
-        else {
-          if (act ==3) {newactive.add(i*size*size+j*size+k)};
+for (let c = 0; c < cycles; c++) {
+  for (i = cycles - c - 1; i < size - cycles + c + 1; i++) {
+    for (j = cycles - c - 1; j < size - cycles + c + 1; j++) {
+      for (k = cycles - c - 1; k < size - cycles + c + 1; k++) {
+        for (l = cycles - c - 1; l < size - cycles + c + 1; l++) {
+          act = 0;
+          for (s = 0; s < surround.length; s++) {
+            if (
+              active.has(
+                i * size * size * size +
+                  j * size * size +
+                  k * size +
+                  l +
+                  surround[s]
+              )
+            ) {
+              act++;
+            }
+          }
+
+          
+          if (
+            active.has(i * size * size * size + j * size * size + k * size + l)
+          ) {
+            if (act == 2 || act == 3) {
+              newactive.add(
+                i * size * size * size + j * size * size + k * size + l
+              );
+            }
+          } else {
+            if (act == 3) {
+              newactive.add(
+                i * size * size * size + j * size * size + k * size + l
+              );
+            }
+          }
         }
       }
     }

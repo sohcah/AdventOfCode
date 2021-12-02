@@ -1,0 +1,12 @@
+{
+  "name": "02",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test1": "node 1.js test",
+    "start1": "node 1.js",
+    "test2": "node 2.js test",
+    "start2": "node 2.js"
+  }
+}
