@@ -7,17 +7,22 @@ export function Part1() {
     .trim()
     .split("\n")
     .map(i => Number(i.trim()));
+  const outputData: [number, 0 | 1 | 2][] = [];
   let up = 0;
   let down = 0;
+  outputData.push([lines[0], 0]);
   for (let lineN = 1; lineN < lines.length; lineN++) {
     const prev = lines[lineN - 1];
     const curr = lines[lineN];
     if (curr > prev) {
+      outputData.push([curr, 1]);
       up++;
     } else {
+      outputData.push([curr, 2]);
       down++;
     }
   }
+  fs.writeFileSync("./outputs/1-1.json", JSON.stringify(outputData));
   console.log(chalk.blue`Up: ${up}`);
   console.log(chalk.blue`Down: ${down}`);
 }
