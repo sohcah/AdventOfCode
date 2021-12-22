@@ -26,3 +26,13 @@ if ((f?.["Part2"] && part === "2") || !part) {
     chalk.bold.green`\nCompleted Day ${day} - Part 2 in ${Math.round((end - start) * 10) / 10}ms\n`
   );
 }
+
+if ((f?.["Test"] && part === "test")) {
+  console.log(chalk.bold.green`\nStarting Day ${day} - Test\n`);
+  const start = performance.now();
+  f["Test"]?.();
+  const end = performance.now();
+  console.log(
+    chalk.bold.green`\nCompleted Day ${day} - Test in ${Math.round((end - start) * 10) / 10}ms\n`
+  );
+}

@@ -14,7 +14,12 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "chance": "^1.1.8",
+    "fast-json-stable-stringify": "^2.1.0",
+    "fast-json-stringify": "^2.7.12",
+    "fast-safe-stringify": "^2.1.1",
+    "kati": "^0.6.2",
     "prompt-sync": "^4.2.0",
+    "safe-stable-stringify": "^2.3.1",
     "tslib": "^2.3.1"
   },
   "scripts": {
