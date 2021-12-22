@@ -5,6 +5,7 @@ export class Superset<T> implements Set<T> {
     if (this.has(value)) return this;
     if (this.sets[this.sets.length - 1].size === 16777216) {
       this.sets.push(new Set());
+      console.log("Sets length: ", this.sets.length);
     }
     this.sets[this.sets.length - 1].add(value);
     return this;

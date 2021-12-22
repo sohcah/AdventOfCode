@@ -1,0 +1,14 @@
+{
+  "0 debug pnpm:scope": {
+    "selected": 1
+  },
+  "1 error pnpm": {
+    "code": "ERR_PNPM_NO_IMPORTER_MANIFEST_FOUND",
+    "err": {
+      "name": "pnpm",
+      "message": "No package.json (or package.yaml, or package.json5) was found in \"C:\\Users\\Paul\\Documents\\AdventOfCode\".",
+      "code": "ERR_PNPM_NO_IMPORTER_MANIFEST_FOUND",
+      "stack": "pnpm: No package.json (or package.yaml, or package.json5) was found in \"C:\\Users\\Paul\\Documents\\AdventOfCode\".\n    at readProjectManifest (C:\\Users\\Paul\\AppData\\Roaming\\nvm\\v15.5.1\\node_modules\\pnpm\\dist\\pnpm.cjs:19790:13)\n    at async Object.readProjectManifestOnly (C:\\Users\\Paul\\AppData\\Roaming\\nvm\\v15.5.1\\node_modules\\pnpm\\dist\\pnpm.cjs:19794:28)\n    at async readProjectManifestOnly (C:\\Users\\Paul\\AppData\\Roaming\\nvm\\v15.5.1\\node_modules\\pnpm\\dist\\pnpm.cjs:43556:24)\n    at async Object.handler (C:\\Users\\Paul\\AppData\\Roaming\\nvm\\v15.5.1\\node_modules\\pnpm\\dist\\pnpm.cjs:179433:24)\n    at async C:\\Users\\Paul\\AppData\\Roaming\\nvm\\v15.5.1\\node_modules\\pnpm\\dist\\pnpm.cjs:183648:21\n    at async run (C:\\Users\\Paul\\AppData\\Roaming\\nvm\\v15.5.1\\node_modules\\pnpm\\dist\\pnpm.cjs:183622:34)\n    at async runPnpm (C:\\Users\\Paul\\AppData\\Roaming\\nvm\\v15.5.1\\node_modules\\pnpm\\dist\\pnpm.cjs:183834:5)\n    at async C:\\Users\\Paul\\AppData\\Roaming\\nvm\\v15.5.1\\node_modules\\pnpm\\dist\\pnpm.cjs:183826:7"
+    }
+  }
+}
