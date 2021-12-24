@@ -133,10 +133,16 @@ export class Superset<T> implements Set<T> {
 
   add(value: T): this {
     if (this.has(value)) return this;
-    if (this.sets[this.sets.length - 1].size === 16777216) {
+    if (this.sets[this.sets.length - 1].size >= 16777200) {
       this.sets.push(new Set());
+      console.log("Sets length: ", this.sets.length);
     }
-    this.sets[this.sets.length - 1].add(value);
+    try {
+      this.sets[this.sets.length - 1].add(value);
+    } catch {
+      this.sets.push(new Set());
+      this.sets[this.sets.length - 1].add(value);
+    }
     return this;
   }
   clear(): void {
