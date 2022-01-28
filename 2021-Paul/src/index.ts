@@ -15,7 +15,7 @@ if ((f?.["Part1"] && part === "1") || !part) {
   f["Part1"]();
   const end = performance.now();
   console.log(
-    chalk.bold.green`\nCompleted Day ${day} - Part 2 in ${Math.round((end - start) * 10) / 10}ms\n`);
+    chalk.bold.green`\nCompleted Day ${day} - Part 1 in ${Math.round((end - start) * 10) / 10}ms\n`);
 }
 
 if ((f?.["Part2"] && part === "2") || !part) {
