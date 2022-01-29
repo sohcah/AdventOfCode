@@ -139,3 +139,7 @@ export function Part1() {
   console.log(chalk.green`Part 1 - Maximum: ${sectionSolutionsMax[expressions.length - 1]}`);
   console.log(chalk.green`Part 2 - Minimum: ${sectionSolutionsMin[expressions.length - 1]}`);
 }
+
+export function Part2() {
+  Part1();
+}
