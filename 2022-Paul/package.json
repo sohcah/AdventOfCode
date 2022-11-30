@@ -1,0 +1,13 @@
+{
+  "name": "2022-Paul",
+  "packageManager": "yarn@3.3.0",
+  "workspaces": [
+    "days/*",
+    "utils"
+  ],
+  "scripts": {
+    "test": "node test.js",
+    "start": "node start.js",
+    "build": "yarn workspace aocutils build"
+  }
+}
