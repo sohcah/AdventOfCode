@@ -1,0 +1,10 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "dependencies": {
+    "aocutils": "workspace:*"
+  },
+  "devDependencies": {
+    "tsx": "^3.12.1"
+  }
+}
