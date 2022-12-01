@@ -5,6 +5,15 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"1@workspace:days/1":
+  version: 0.0.0-use.local
+  resolution: "1@workspace:days/1"
+  dependencies:
+    aocutils: "workspace:*"
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
 "2022-Sam@workspace:.":
   version: 0.0.0-use.local
   resolution: "2022-Sam@workspace:."
