@@ -10,6 +10,7 @@ __metadata:
   resolution: "1@workspace:days/1"
   dependencies:
     aocutils: "workspace:*"
+    mnemonist: ^0.39.5
     tsx: ^3.12.1
   languageName: unknown
   linkType: soft
@@ -25,6 +26,7 @@ __metadata:
   resolution: "2@workspace:days/2"
   dependencies:
     aocutils: "workspace:*"
+    mnemonist: ^0.39.5
     tsx: ^3.12.1
   languageName: unknown
   linkType: soft
@@ -34,6 +36,7 @@ __metadata:
   resolution: "3@workspace:days/3"
   dependencies:
     aocutils: "workspace:*"
+    mnemonist: ^0.39.5
     tsx: ^3.12.1
   languageName: unknown
   linkType: soft
@@ -143,6 +146,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/core-js@npm:^2.5.5":
+  version: 2.5.5
+  resolution: "@types/core-js@npm:2.5.5"
+  checksum: 54eb91dc52206d8e524771cd079be4bed6a41947d08183a7954df7a3dc25ae21c8b7176143dc7203df82a6e5ff1df8998edc8d407c4a082bdbf0ede35369c5c3
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^18.11.10":
   version: 18.11.10
   resolution: "@types/node@npm:18.11.10"
@@ -215,6 +225,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "aocutils@workspace:utils"
   dependencies:
+    "@types/core-js": ^2.5.5
     "@types/node": ^18.11.10
     fast-safe-stringify: ^2.1.1
     tsup: ^6.5.0
@@ -1270,6 +1281,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mnemonist@npm:^0.39.5":
+  version: 0.39.5
+  resolution: "mnemonist@npm:0.39.5"
+  dependencies:
+    obliterator: ^2.0.1
+  checksum: 6669d687a434226924b2c84ee6eb7ce7d0f83dfc5caad8bcc164c73c0c11fb6d43cbe32636e710f068046f4b40a56c3032532554e93e02640aafc6ca3dd222e6
+  languageName: node
+  linkType: hard
+
 "ms@npm:2.1.2":
   version: 2.1.2
   resolution: "ms@npm:2.1.2"
@@ -1365,6 +1385,13 @@ __metadata:
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
   checksum: fcc6e4ea8c7fe48abfbb552578b1c53e0d194086e2e6bbbf59e0a536381a292f39943c6e9628af05b5528aa5e3318bb30d6b2e53cadaf5b8fe9e12c4b69af23f
+  languageName: node
+  linkType: hard
+
+"obliterator@npm:^2.0.1":
+  version: 2.0.4
+  resolution: "obliterator@npm:2.0.4"
+  checksum: f28ad35b6d812089315f375dc3e6e5f9bebf958ebe4b10ccd471c7115cbcf595e74bdac4783ae758e5b1f47e3096427fdb37cfa7bed566b132df92ff317b9a7c
   languageName: node
   linkType: hard
 

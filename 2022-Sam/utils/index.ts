@@ -57,7 +57,7 @@ export class JsonMap<K, V> implements Map<K, V> {
     return JSON.parse(key);
   };
   private stringify: (key: K) => string = key => {
-    return fjss(key);
+    return fjss.stableStringify(key);
   };
 
   constructor(parse?: (key: string) => K, stringify?: (key: K) => string) {
@@ -74,7 +74,7 @@ export class JsonMap<K, V> implements Map<K, V> {
   }
   forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void {
     return this.internalMap.forEach(
-      (value, key, map) => callbackfn(value, this.parse(key), this),
+      (value, key) => callbackfn(value, this.parse(key), this),
       thisArg
     );
   }
@@ -230,4 +230,14 @@ export function output(output: number) {
 
 export function sum(input: number[]) {
   return input.reduce((a, b) => a + b, 0);
+}
+
+export function cached<T extends (...a: P) => R, P extends any[], R extends any>(func: T) {
+  const cache = new JsonMap<P, R>();
+  return (...args: P) => {
+    if (cache.has(args)) return cache.get(args)!;
+    const output = func(...args);
+    cache.set(args, output);
+    return output;
+  }
 }
