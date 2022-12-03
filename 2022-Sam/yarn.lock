@@ -29,6 +29,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"3@workspace:days/3":
+  version: 0.0.0-use.local
+  resolution: "3@workspace:days/3"
+  dependencies:
+    aocutils: "workspace:*"
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
 "@esbuild-kit/cjs-loader@npm:^2.4.0":
   version: 2.4.1
   resolution: "@esbuild-kit/cjs-loader@npm:2.4.1"
