@@ -112,6 +112,9 @@ export function* adjacentPositionsWithoutDiagonals(
 
 
 export function loadInput(): string {
+  if(process.env.AOCNAME && fs.existsSync(process.env.AOCNAME)) {
+    return fs.readFileSync(process.env.AOCNAME, "utf8");
+  }
   return fs.readFileSync(process.env.AOCTEST ? "test" : "input", "utf8");
 }
 
