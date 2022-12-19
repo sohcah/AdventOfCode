@@ -1,4 +1,4 @@
-import {adjacentPositionsWithoutDiagonals, cached, loadLines, loadTrimmed, output, range, SMap} from "aocutils";
+import {cached, loadLines, output, SMap} from "aocutils";
 
 const lines = loadLines().map(i => i.split(",").map(Number));
 
@@ -22,17 +22,22 @@ const yRange = Math.max(...lines.map(i => i[1])) - Math.min(...lines.map(i => i[
 const zRange = Math.max(...lines.map(i => i[2])) - Math.min(...lines.map(i => i[2]));
 const rangeTotal = xRange + yRange + zRange;
 
-const trav = (x: number, y: number, z: number, acc: Map<string, boolean>, orig:[number,number,number]) => {
+const accessibleSet = new SMap<[number, number, number], boolean>();
+
+const trav = (x: number, y: number, z: number, acc: SMap<[number,number,number], boolean>, orig:[number,number,number]) => {
+  if(accessibleSet.has([x, y, z])) {
+    return accessibleSet.get([x, y, z]);
+  }
   if(grid.get([x, y, z])) {
     return true;
   }
+  acc.set([x,y,z], true);
   if (Math.abs(orig[0] - x) + Math.abs(orig[1] - y) + Math.abs(orig[2] - z) > rangeTotal) {
-    // console.log("too far", orig, [x, y, z]);
     return false;
   }
   for(const [dx, dy, dz] of adj) {
-    if(!acc.has(`${x+dx}|${y+dy}|${z+dz}`)) {
-      acc.set(`${x+dx}|${y+dy}|${z+dz}`, true)
+    const c = [x+dx,y+dy,z+dz] as [number, number, number];
+    if(!acc.has(c)) {
       if(!trav(x + dx, y + dy, z + dz, acc, orig)) return false;
     }
   }
@@ -40,7 +45,12 @@ const trav = (x: number, y: number, z: number, acc: Map<string, boolean>, orig:[
 };
 
 const baseTrav = cached((x: number, y: number, z: number) => {
-  return trav(x,y,z, new Map(), [x,y,z])
+  const map = new SMap<[number,number,number], boolean>();
+  const result = trav(x,y,z, map, [x,y,z]);
+  for(const a of map.keysArray()) {
+    accessibleSet.set(a, result);
+  }
+  return result;
 });
 
 let count = 0;
@@ -49,7 +59,6 @@ for(const [x, y, z] of grid.keysArray()) {
     if(!grid.get([x + dx, y + dy, z + dz])) {
       let touchesWater = !baseTrav(x + dx, y + dy, z + dz);
       if(touchesWater) count++;
-      else console.log("no water", [x + dx, y + dy, z + dz]);
     }
   }
 }
