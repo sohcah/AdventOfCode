@@ -3,6 +3,7 @@ import * as child_process from "child_process";
 import {mkdtempSync, readFileSync, existsSync} from "node:fs";
 import {tmpdir} from "os";
 import chalk from "chalk";
+import clipboardy from "clipboardy";
 
 const isTest = !!process.env.AOCTEST;
 
@@ -78,6 +79,9 @@ async function callDay(day: string, part: string, input: DayInput): Promise<DayR
           } else {
             console.log(chalk.red(`Result is incorrect, expected ${validResults[0].expected}!`));
           }
+        } else {
+          clipboardy.writeSync(resultValue);
+          console.log(chalk.yellow(`Copied result to clipboard!`));
         }
         console.log(chalk.blue(`Result is ${resultValue}`));
         console.log(chalk.gray(`Took ${(performance.now() - start).toFixed(4)}ms`));
@@ -92,6 +96,9 @@ async function callDay(day: string, part: string, input: DayInput): Promise<DayR
       } else {
         console.log(chalk.red(`Result is incorrect, expected ${result.expected}!`));
       }
+    } else {
+      clipboardy.writeSync(resultValue);
+      console.log(chalk.yellow(`Copied result to clipboard!`));
     }
     console.log(chalk.blue(`Result is ${resultValue.toString()}`));
     console.log(chalk.gray(`Took ${(performance.now() - start).toFixed(4)}ms`));

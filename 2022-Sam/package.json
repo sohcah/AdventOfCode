@@ -12,5 +12,8 @@
   },
   "devDependencies": {
     "tsx": "^3.12.1"
+  },
+  "dependencies": {
+    "clipboardy": "^3.0.0"
   }
 }
