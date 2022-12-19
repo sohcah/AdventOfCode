@@ -5,6 +5,112 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"10@workspace:days/10":
+  version: 0.0.0-use.local
+  resolution: "10@workspace:days/10"
+  dependencies:
+    aocutils: "workspace:*"
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"11@workspace:days/11":
+  version: 0.0.0-use.local
+  resolution: "11@workspace:days/11"
+  dependencies:
+    aocutils: "workspace:*"
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"12@workspace:days/12":
+  version: 0.0.0-use.local
+  resolution: "12@workspace:days/12"
+  dependencies:
+    aocutils: "workspace:*"
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"13@workspace:days/13":
+  version: 0.0.0-use.local
+  resolution: "13@workspace:days/13"
+  dependencies:
+    aocutils: "workspace:*"
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"14@workspace:days/14":
+  version: 0.0.0-use.local
+  resolution: "14@workspace:days/14"
+  dependencies:
+    aocutils: "workspace:*"
+    chalk: ^5.2.0
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"15@workspace:days/15":
+  version: 0.0.0-use.local
+  resolution: "15@workspace:days/15"
+  dependencies:
+    aocutils: "workspace:*"
+    chalk: ^5.2.0
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"16@workspace:days/16":
+  version: 0.0.0-use.local
+  resolution: "16@workspace:days/16"
+  dependencies:
+    aocutils: "workspace:*"
+    chalk: ^5.2.0
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"17@workspace:days/17":
+  version: 0.0.0-use.local
+  resolution: "17@workspace:days/17"
+  dependencies:
+    aocutils: "workspace:*"
+    chalk: ^5.2.0
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"18@workspace:days/18":
+  version: 0.0.0-use.local
+  resolution: "18@workspace:days/18"
+  dependencies:
+    aocutils: "workspace:*"
+    chalk: ^5.2.0
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"19@workspace:days/19":
+  version: 0.0.0-use.local
+  resolution: "19@workspace:days/19"
+  dependencies:
+    aocutils: "workspace:*"
+    chalk: ^5.2.0
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
 "1@workspace:days/1":
   version: 0.0.0-use.local
   resolution: "1@workspace:days/1"
@@ -34,6 +140,66 @@ __metadata:
 "3@workspace:days/3":
   version: 0.0.0-use.local
   resolution: "3@workspace:days/3"
+  dependencies:
+    aocutils: "workspace:*"
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"4@workspace:days/4":
+  version: 0.0.0-use.local
+  resolution: "4@workspace:days/4"
+  dependencies:
+    aocutils: "workspace:*"
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"5@workspace:days/5":
+  version: 0.0.0-use.local
+  resolution: "5@workspace:days/5"
+  dependencies:
+    aocutils: "workspace:*"
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"6@workspace:days/6":
+  version: 0.0.0-use.local
+  resolution: "6@workspace:days/6"
+  dependencies:
+    aocutils: "workspace:*"
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"7@workspace:days/7":
+  version: 0.0.0-use.local
+  resolution: "7@workspace:days/7"
+  dependencies:
+    aocutils: "workspace:*"
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"8@workspace:days/8":
+  version: 0.0.0-use.local
+  resolution: "8@workspace:days/8"
+  dependencies:
+    aocutils: "workspace:*"
+    mnemonist: ^0.39.5
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
+"9@workspace:days/9":
+  version: 0.0.0-use.local
+  resolution: "9@workspace:days/9"
   dependencies:
     aocutils: "workspace:*"
     mnemonist: ^0.39.5
@@ -347,6 +513,13 @@ __metadata:
     tar: ^6.1.11
     unique-filename: ^2.0.0
   checksum: d91409e6e57d7d9a3a25e5dcc589c84e75b178ae8ea7de05cbf6b783f77a5fae938f6e8fda6f5257ed70000be27a681e1e44829251bfffe4c10216002f8f14e6
+  languageName: node
+  linkType: hard
+
+"chalk@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "chalk@npm:5.2.0"
+  checksum: 03d8060277de6cf2fd567dc25fcf770593eb5bb85f460ce443e49255a30ff1242edd0c90a06a03803b0466ff0687a939b41db1757bec987113e83de89a003caa
   languageName: node
   linkType: hard
 
