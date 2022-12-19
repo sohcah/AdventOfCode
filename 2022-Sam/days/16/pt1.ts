@@ -51,6 +51,8 @@ for(let move = 1; move <= 30; move++) {
     }
     paths.push(best);
   }
+  paths.sort((a,b)=>b[2]-a[2]);
+  paths = paths.slice(0, 10000);
 }
 
 console.log(paths.length);

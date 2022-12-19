@@ -6,8 +6,11 @@
     "utils"
   ],
   "scripts": {
-    "test": "node test.js",
-    "start": "node start.js",
+    "test": "AOCTEST=true tsx go.ts",
+    "start": "tsx go.ts",
     "build": "yarn workspace aocutils build"
+  },
+  "devDependencies": {
+    "tsx": "^3.12.1"
   }
 }

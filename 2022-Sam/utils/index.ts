@@ -8,6 +8,8 @@ export * from "./super/set";
 
 import * as fs from "fs";
 import {SMap} from "./safe/map";
+import {writeFileSync} from "fs";
+import {DayInput, DayResult} from "../go";
 
 declare global {
   interface Array<T> {
@@ -110,12 +112,24 @@ export function* adjacentPositionsWithoutDiagonals(
   if (i + 1 < grid.length) yield [i + 1, j];
 }
 
+let start: number | null = null;
+
+function getInput(): DayInput {
+  return JSON.parse(process.env.AOC_INPUT!);
+}
+
+function writeOutput(output: DayResult) {
+  writeFileSync(process.env.AOC_OUTPUT!, JSON.stringify(output));
+  process.exit(0);
+}
 
 export function loadInput(): string {
-  if(process.env.AOCNAME && fs.existsSync(process.env.AOCNAME)) {
-    return fs.readFileSync(process.env.AOCNAME, "utf8");
-  }
-  return fs.readFileSync(process.env.AOCTEST ? "test" : "input", "utf8");
+  start = performance.now();
+  return fs.readFileSync(getInput().inputFile, "utf8");
+  // if (process.env.AOCNAME && fs.existsSync(process.env.AOCNAME)) {
+  //   return fs.readFileSync(`${process.env.INPUT_PREFIX ?? ""}days/${process.env.AOCDAY}/${process.env.AOCNAME}`, "utf8");
+  // }
+  // return fs.readFileSync(`${process.env.INPUT_PREFIX ?? ""}days/${process.env.AOCDAY}/${process.env.AOCTEST ? "test" : "input"}`, "utf8");
 }
 
 export function loadTrimmed(): string {
@@ -131,16 +145,26 @@ export function loadNumbers(): number[] {
 }
 
 export function output(output: number | string) {
-  console.log(`Output for ${process.env.AOCTEST ? "test" : "actual input"}: ${output}`);
+  // console.log(`Time: ${(performance.now() - (start ?? 0)).toFixed(4)}ms`);
+  // console.log(`Output for ${process.env.AOCTEST ? "test" : "actual input"}: ${output}`);
+  // process.env.OUTPUT = String(output);
+  // if(process.env.OUTPUT_FILE) {
+  //   writeFileSync(process.env.OUTPUT_FILE, process.env.OUTPUT);
+  // }
   return {
     forTest(expected: number | string) {
-      if (!process.env.AOCTEST) return;
-      if (output === expected) {
-        console.log("Test passed!");
-      } else {
-        console.log("Expected", expected, "for test but got", output);
-        process.exit();
-      }
+      writeOutput({
+        type: "result",
+        result: String(output),
+        expected: String(expected),
+      });
+      // if (!process.env.AOCTEST) return;
+      // if (output === expected) {
+      //   console.log("Test passed!");
+      // } else {
+      //   console.log("Expected", expected, "for test but got", output);
+      //   process.exit();
+      // }
     }
   }
 }
@@ -449,3 +473,17 @@ export function* moveUntilOutside(grid: unknown[][], start: [number, number], ve
 }
 
 export const IS_TEST: boolean = !!process.env.AOCTEST;
+
+export function stabilise<T>(start: number, increment: number, stableCount: number): number {
+  const input = getInput();
+  if(input.stabiliseValue !== undefined) {
+    return input.stabiliseValue;
+  }
+  writeOutput({
+    type: "stabilise",
+    start,
+    increment,
+    stableCount
+  });
+  throw "unreachable";
+}
