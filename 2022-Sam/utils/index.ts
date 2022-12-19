@@ -3,7 +3,7 @@ import "./extensions/map";
 import "./extensions/set";
 
 export * from "./safe/map";
-// TODO: SSet
+export * from "./safe/set";
 export * from "./super/set";
 
 import * as fs from "fs";

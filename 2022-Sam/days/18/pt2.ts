@@ -1,4 +1,4 @@
-import {cached, loadLines, output, SMap} from "aocutils";
+import {cached, loadLines, output, SMap, SSet} from "aocutils";
 
 const lines = loadLines().map(i => i.split(",").map(Number));
 
@@ -24,14 +24,14 @@ const rangeTotal = xRange + yRange + zRange;
 
 const accessibleSet = new SMap<[number, number, number], boolean>();
 
-const trav = (x: number, y: number, z: number, acc: SMap<[number,number,number], boolean>, orig:[number,number,number]) => {
+const trav = (x: number, y: number, z: number, acc: SSet<[number,number,number]>, orig:[number,number,number]) => {
   if(accessibleSet.has([x, y, z])) {
     return accessibleSet.get([x, y, z]);
   }
   if(grid.get([x, y, z])) {
     return true;
   }
-  acc.set([x,y,z], true);
+  acc.add([x,y,z]);
   if (Math.abs(orig[0] - x) + Math.abs(orig[1] - y) + Math.abs(orig[2] - z) > rangeTotal) {
     return false;
   }
@@ -45,9 +45,9 @@ const trav = (x: number, y: number, z: number, acc: SMap<[number,number,number],
 };
 
 const baseTrav = cached((x: number, y: number, z: number) => {
-  const map = new SMap<[number,number,number], boolean>();
+  const map = new SSet<[number,number,number]>();
   const result = trav(x,y,z, map, [x,y,z]);
-  for(const a of map.keysArray()) {
+  for(const a of map.array()) {
     accessibleSet.set(a, result);
   }
   return result;
