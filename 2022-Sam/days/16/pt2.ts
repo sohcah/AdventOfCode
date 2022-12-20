@@ -1,4 +1,6 @@
-import {loadLines, output} from "aocutils";
+import {loadLines, output, stabilise} from "aocutils";
+
+const N = stabilise(1000, 1000, 6);
 
 const valves = loadLines().map(i => i.split('; ')).map(i => ({
   id: i[0].slice(6,8),
@@ -45,7 +47,7 @@ for(let move = 1; move <= 52; move++) {
       paths.push(best);
     }
     paths.sort((a,b)=>b[3]-a[3]);
-    paths = paths.slice(0, 10000);
+    paths = paths.slice(0, N);
   } else {
     paths = newPaths;
   }
@@ -53,9 +55,10 @@ for(let move = 1; move <= 52; move++) {
 
 console.log(paths.sort((a,b) => b[3] - a[3]));
 
-let best = 0;
+let best = null;
 for(const path of paths) {
-  if(path[3] > best) best = path[3];
+  if(!best || path[3] > best[3]) best = path;
 }
+console.log(best);
 
-output(best).forTest(1707);
+output(best[3]).forTest(1707);

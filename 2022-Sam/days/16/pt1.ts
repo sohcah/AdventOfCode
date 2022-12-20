@@ -1,4 +1,6 @@
-import {loadLines, output} from "aocutils";
+import {loadLines, output, stabilise} from "aocutils";
+
+const N = stabilise(1000, 1000, 6);
 
 const valves = loadLines().map(i => i.split('; ')).map(i => ({
   id: i[0].slice(6,8),
@@ -35,7 +37,7 @@ for(let move = 1; move <= 30; move++) {
     paths.push(best);
   }
   paths.sort((a,b)=>b[2]-a[2]);
-  paths = paths.slice(0, 10000);
+  paths = paths.slice(0, N);
 }
 
 console.log(paths.length);
