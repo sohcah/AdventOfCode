@@ -1,6 +1,6 @@
 import {resolve, join} from "node:path";
 import * as child_process from "child_process";
-import {mkdtempSync, readFileSync, existsSync} from "node:fs";
+import {mkdtempSync, readFileSync, existsSync, rmSync} from "node:fs";
 import {tmpdir} from "os";
 import chalk from "chalk";
 import clipboardy from "clipboardy";
@@ -19,8 +19,8 @@ export type DayResult = {
   stableCount: number;
 } | {
   type: "result";
-  result: string;
-  expected?: string;
+  result: number | string;
+  expected?: number | string | undefined;
 }
 
 const tmpDir = mkdtempSync(join(tmpdir(), "aoc-"));
@@ -56,10 +56,10 @@ async function callDay(day: string, part: string, input: DayInput): Promise<DayR
     inputFile,
   });
 
-  if(result.type === "stabilise") {
-    for(let i = 0; i < 10;i++) {
+  if (result.type === "stabilise") {
+    for (let i = 0; i < 10; i++) {
       const resultPromises = [];
-      for(let j = 0; j < result.stableCount;j++) {
+      for (let j = 0; j < result.stableCount; j++) {
         resultPromises.push(callDay(process.argv[2], process.argv[3], {
           inputFile,
           stabiliseValue: result.start + ((i * 3 + j) * result.increment),
@@ -69,39 +69,41 @@ async function callDay(day: string, part: string, input: DayInput): Promise<DayR
       if (results.some(r => r.type === "stabilise")) {
         throw new Error("Can't stabilise");
       }
-      const validResults = results as (DayResult & {type: "result"})[];
+      const validResults = results as (DayResult & { type: "result" })[];
       if (!validResults.some(r => r.result !== validResults[0].result)) {
         console.log(chalk.blue(`Stabilised at ${result.start + (i * 3 * result.increment)}`));
         const resultValue = validResults[0].result;
-        if(isTest) {
+        if (validResults[0].expected !== undefined) {
           if (validResults[0].expected === resultValue) {
             console.log(chalk.green(`Result is correct!`));
           } else {
             console.log(chalk.red(`Result is incorrect, expected ${validResults[0].expected}!`));
           }
         } else {
-          clipboardy.writeSync(resultValue);
+          clipboardy.writeSync(String(resultValue));
           console.log(chalk.yellow(`Copied result to clipboard!`));
         }
         console.log(chalk.blue(`Result is ${resultValue}`));
         console.log(chalk.gray(`Took ${(performance.now() - start).toFixed(4)}ms`));
+        rmSync(tmpDir, {recursive: true});
         return;
       }
     }
   } else {
     const resultValue = result.result;
-    if(isTest) {
+    if (result.expected !== undefined) {
       if (result.expected === resultValue) {
         console.log(chalk.green(`Result is correct!`));
       } else {
         console.log(chalk.red(`Result is incorrect, expected ${result.expected}!`));
       }
     } else {
-      clipboardy.writeSync(resultValue);
+      clipboardy.writeSync(String(resultValue));
       console.log(chalk.yellow(`Copied result to clipboard!`));
     }
     console.log(chalk.blue(`Result is ${resultValue.toString()}`));
     console.log(chalk.gray(`Took ${(performance.now() - start).toFixed(4)}ms`));
+    rmSync(tmpDir, {recursive: true});
   }
 
 })();

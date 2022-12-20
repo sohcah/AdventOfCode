@@ -6,10 +6,15 @@ export * from "./safe/map";
 export * from "./safe/set";
 export * from "./super/set";
 
+export * from "./helpers/adjacent";
+export * from "./helpers/gridPositions";
+export * from "./helpers/range";
+
 import * as fs from "fs";
 import {SMap} from "./safe/map";
 import {writeFileSync} from "fs";
 import {DayInput, DayResult} from "../go";
+import chalk from "chalk";
 
 declare global {
   interface Array<T> {
@@ -61,75 +66,15 @@ declare global {
   }
 }
 
-
-export function* gridPositions(grid: unknown[][]): Generator<[number, number]> {
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[i].length; j++) {
-      yield [i, j];
-    }
-  }
-}
-
-export function* range(start: number, end: number, increment: number): Generator<number> {
-  if (increment === 0) throw new Error("Increment cannot be 0");
-  if (increment > 0) {
-    for (let i = start; i < end; i += increment) {
-      yield i;
-    }
-  } else {
-    for (let i = start; i > end; i += increment) {
-      yield i;
-    }
-  }
-}
-
-export function* adjacentPositions(
-  grid: unknown[][],
-  i: number,
-  j: number,
-  inclusive: boolean = false
-): Generator<[number, number]> {
-  for (let i1 = i - 1; i1 <= i + 1; i1++) {
-    for (let j1 = j - 1; j1 <= j + 1; j1++) {
-      if (i1 === i && j1 === j && !inclusive) continue;
-      if (i1 < 0 || i1 >= grid.length) continue;
-      if (j1 < 0 || j1 >= grid[i1].length) continue;
-      yield [i1, j1];
-    }
-  }
-}
-
-export function* adjacentPositionsWithoutDiagonals(
-  grid: unknown[][],
-  i: number,
-  j: number,
-  inclusive: boolean = false
-): Generator<[number, number]> {
-  if (i - 1 >= 0) yield [i - 1, j];
-  if (j - 1 >= 0) yield [i, j - 1];
-  if (inclusive) yield [i, j];
-  if (j + 1 < grid[i].length) yield [i, j + 1];
-  if (i + 1 < grid.length) yield [i + 1, j];
-}
-
 let start: number | null = null;
 
 function getInput(): DayInput {
   return JSON.parse(process.env.AOC_INPUT!);
 }
 
-function writeOutput(output: DayResult) {
-  writeFileSync(process.env.AOC_OUTPUT!, JSON.stringify(output));
-  process.exit(0);
-}
-
 export function loadInput(): string {
   start = performance.now();
   return fs.readFileSync(getInput().inputFile, "utf8");
-  // if (process.env.AOCNAME && fs.existsSync(process.env.AOCNAME)) {
-  //   return fs.readFileSync(`${process.env.INPUT_PREFIX ?? ""}days/${process.env.AOCDAY}/${process.env.AOCNAME}`, "utf8");
-  // }
-  // return fs.readFileSync(`${process.env.INPUT_PREFIX ?? ""}days/${process.env.AOCDAY}/${process.env.AOCTEST ? "test" : "input"}`, "utf8");
 }
 
 export function loadTrimmed(): string {
@@ -141,32 +86,36 @@ export function loadLines(): string[] {
 }
 
 export function loadNumbers(): number[] {
-  return loadLines().map(i => Number(i.trim()));
+  const numbers = loadLines().map(i => Number(i.trim()));
+  console.debug(chalk.gray(`Range: ${numbers.min()} to ${numbers.max()} | ${numbers.unique().length} Uniq / ${numbers.length} Total`));
+  return numbers;
+}
+
+function writeOutput(output: DayResult) {
+  writeFileSync(process.env.AOC_OUTPUT!, JSON.stringify(output));
+  process.exit(0);
 }
 
 export function output(output: number | string) {
-  // console.log(`Time: ${(performance.now() - (start ?? 0)).toFixed(4)}ms`);
-  // console.log(`Output for ${process.env.AOCTEST ? "test" : "actual input"}: ${output}`);
-  // process.env.OUTPUT = String(output);
-  // if(process.env.OUTPUT_FILE) {
-  //   writeFileSync(process.env.OUTPUT_FILE, process.env.OUTPUT);
-  // }
-  return {
+  let expectedValue: number | string | undefined = undefined;
+  setImmediate(() => {
+    writeOutput({
+      type: "result",
+      result: output,
+      expected: expectedValue,
+    });
+  })
+  const expectations = {
     forTest(expected: number | string) {
-      writeOutput({
-        type: "result",
-        result: String(output),
-        expected: String(expected),
-      });
-      // if (!process.env.AOCTEST) return;
-      // if (output === expected) {
-      //   console.log("Test passed!");
-      // } else {
-      //   console.log("Expected", expected, "for test but got", output);
-      //   process.exit();
-      // }
+      if (IS_TEST) expectedValue = expected;
+      return expectations;
+    },
+    forActual(expected: number | string) {
+      if (!IS_TEST) expectedValue = expected;
+      return expectations;
     }
   }
+  return expectations;
 }
 
 export function sum(input: number[]) {
@@ -476,7 +425,7 @@ export const IS_TEST: boolean = !!process.env.AOCTEST;
 
 export function stabilise<T>(start: number, increment: number, stableCount: number): number {
   const input = getInput();
-  if(input.stabiliseValue !== undefined) {
+  if (input.stabiliseValue !== undefined) {
     return input.stabiliseValue;
   }
   writeOutput({
