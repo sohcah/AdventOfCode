@@ -7,13 +7,6 @@ class LinkedItem {
 
   }
 
-  remove() {
-    this.prev.next = this.next;
-    this.next.prev = this.prev;
-    this.next = null;
-    this.prev = null;
-  }
-
   insertAfter(item: LinkedItem) {
     this.next.prev = this.prev;
     this.prev.next = this.next;
@@ -39,12 +32,14 @@ class LinkedItem {
 }
 
 
-const reference = new Map<number, LinkedItem>();
+let zeroValue;
 const refList = [];
 
 
 const firstItem = new LinkedItem(numbers[0] * 811589153, null!, null!);
-reference.set(numbers[0], firstItem);
+if(numbers[0] === 0) {
+  zeroValue = firstItem;
+}
 refList.push(firstItem);
 firstItem.next = firstItem;
 firstItem.prev = firstItem;
@@ -52,7 +47,9 @@ let lastItem = firstItem;
 for (const number of numbers.slice(1)) {
   lastItem = new LinkedItem(number * 811589153, firstItem, lastItem).insertAfter(lastItem);
   refList.push(lastItem);
-  reference.set(number, lastItem);
+  if(number === 0) {
+    zeroValue = lastItem;
+  }
 }
 
 
@@ -89,7 +86,7 @@ for(let i = 0;i < 10;i++) {
 
 
 let sum = 0;
-let node = reference.get(0)!;
+let node = zeroValue;
 for (let i = 1; i <= 3000; i++) {
   node = node.next;
   if (i % 1000 === 0) {
