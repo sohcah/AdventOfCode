@@ -1,4 +1,11 @@
-import {IS_TEST, loadNumbers, output} from "aocutils";
+import { IS_TEST, loadNumbers, output } from "aocutils";
+
+// Explaining the initial bug which caused me to take so long to solve this:
+// I was using a linked list to store the numbers, and I was using a map to store the references to the nodes.
+// To loop through the list, I was looping through the original numbers array, and using the map to get the node.
+// This worked fine for the test input, but the real input had duplicate numbers, so the lookup gave me the wrong node.
+// I fixed this by instead storing an array of items in the original order, and using that to loop through the list.
+// I initially kept the map just to get the 0 node, but I realised I could just store the 0 node in a variable instead.
 
 const numbers = loadNumbers();
 
