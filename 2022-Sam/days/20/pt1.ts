@@ -1,4 +1,4 @@
-import { IS_TEST, loadNumbers, output } from "aocutils";
+import {IS_TEST, loadNumbers, LoopedLinkedList, output} from "aocutils";
 
 // Explaining the initial bug which caused me to take so long to solve this:
 // I was using a linked list to store the numbers, and I was using a map to store the references to the nodes.
@@ -7,86 +7,22 @@ import { IS_TEST, loadNumbers, output } from "aocutils";
 // I fixed this by instead storing an array of items in the original order, and using that to loop through the list.
 // I initially kept the map just to get the 0 node, but I realised I could just store the 0 node in a variable instead.
 
-const numbers = loadNumbers();
+// I've since rewritten my solution to use my new LoopedLinkedList class.
 
-class LinkedItem {
-  constructor(public value: number, public next: LinkedItem | null, public prev: LinkedItem | null) {
+const linkedList = new LoopedLinkedList(loadNumbers());
+const zeroValue = linkedList.nodes.find(i => i.value === 0)!;
 
-  }
+if (IS_TEST) console.log(linkedList.getList());
 
-  insertAfter(item: LinkedItem) {
-    this.next.prev = this.prev;
-    this.prev.next = this.next;
+for (const item of linkedList.nodes) {
+  item.moveForward(item.value);
 
-    this.next = item.next;
-    this.prev = item;
-    this.prev.next = this;
-    this.next.prev = this;
-    return this;
-  }
-
-  insertBefore(item: LinkedItem) {
-    return this.insertAfter(item.prev);
-  }
-
-  moveForward() {
-    return this.insertAfter(this.next);
-  }
-
-  moveBackward() {
-    return this.insertBefore(this.prev);
-  }
+  if (IS_TEST) console.log(linkedList.getList());
 }
 
-
-let zeroValue;
-const refList = [];
-
-
-const firstItem = new LinkedItem(numbers[0], null!, null!);
-if (numbers[0] === 0) {
-  zeroValue = firstItem;
-}
-refList.push(firstItem);
-firstItem.next = firstItem;
-firstItem.prev = firstItem;
-let lastItem = firstItem;
-for (const number of numbers.slice(1)) {
-  lastItem = new LinkedItem(number, firstItem, lastItem).insertAfter(lastItem);
-  refList.push(lastItem);
-  if (number === 0) {
-    zeroValue = lastItem;
-  }
-}
-
-for (const item of refList) {
-  const number = item.value;
-  for (let i = 0; i < Math.abs(number); i++) {
-    Math.sign(number) === 1 ? item.moveForward() : item.moveBackward();
-  }
-
-  if (IS_TEST) {
-    let node = firstItem;
-    let list = [];
-    while (node !== firstItem.prev) {
-      list.push(node.value);
-      node = node.next;
-    }
-    list.push(node.value);
-    console.log(list);
-  }
-}
-
-
-let sum = 0;
-let node = zeroValue;
-for (let i = 1; i <= 3000; i++) {
-  node = node.next;
-  if (i % 1000 === 0) {
-    sum += node.value;
-    console.log(node.value);
-  }
-}
-
+const sum =
+  zeroValue.offset(1000).value
+  + zeroValue.offset(2000).value
+  + zeroValue.offset(3000).value;
 
 output(sum).forTest(3).forActual(13522);

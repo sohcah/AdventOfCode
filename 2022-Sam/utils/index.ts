@@ -10,6 +10,8 @@ export * from "./helpers/adjacent";
 export * from "./helpers/gridPositions";
 export * from "./helpers/range";
 
+export * from "./linked/list";
+
 import * as fs from "fs";
 import {SMap} from "./safe/map";
 import {writeFileSync} from "fs";
