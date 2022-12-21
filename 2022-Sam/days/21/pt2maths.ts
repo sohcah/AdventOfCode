@@ -1,4 +1,5 @@
 import {loadLines, output} from "aocutils";
+import * as MathJS from "mathjs";
 
 const lines = loadLines().map(i => i.split(": ")).map(i => {
   if (i[1].match(/\d+/)) {
@@ -82,53 +83,20 @@ for (let i = 0; i < 1000; i++) {
 }
 
 const expr = linesMap.get("root") as IntrExpr;
-// console.log(JSON.stringify(expr, null, 2));
 
 function stri(expr: IntrExpr | number | "humn"): string {
   if(typeof expr === "number") return expr.toString();
-  if(expr === "humn") return "humn";
+  if(expr === "humn") return "x";
   return `(${stri(expr[0])} ${expr[1]} ${stri(expr[2])})`;
 }
-console.log(stri(expr));
 
-if (typeof expr[2] !== "number") {
-  throw new Error("wat");
-}
+// This is the Math bit - Credit to @beanz for this
+const math = MathJS.create(MathJS.all, {
+  number: "Fraction",
+});
+const parser = math.parser();
+parser.evaluate(`f(x) = ${stri(expr).replace("=", "-")}`);
+const result = math.number(parser.evaluate("f(0)/(f(0)-f(1))"));
 
-let left = expr[0];
-let right = expr[2] as number;
 
-for (let i = 0; i < 100; i++) {
-  if (typeof left[2] !== "number") {
-    if (left[1] === "-") {
-      right = left[0] as number - right;
-      left = left[2] as IntrExpr;
-    } else {
-      throw new Error("wat");
-    }
-  } else {
-    const rhs = left[2] as number;
-
-    switch (left[1]) {
-      case "+":
-        right -= rhs;
-        break;
-      case "-":
-        right += rhs;
-        break;
-      case "/":
-        right *= rhs;
-        break;
-      case "*":
-        right /= rhs;
-        break;
-    }
-    left = left[0] as IntrExpr;
-  }
-  if (typeof left === "string") break;
-  console.log(left, right);
-}
-
-// console.log(linesMap);
-
-output(right).forTest(301).forActual(3379022190351);
+output(result).forTest(301).forActual(3379022190351);
