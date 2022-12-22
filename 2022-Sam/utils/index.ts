@@ -79,6 +79,14 @@ export function loadInput(): string {
   return fs.readFileSync(getInput().inputFile, "utf8");
 }
 
+export function loadSections(split = "\n\n"): string[] {
+  let input = loadInput();
+  if(input.endsWith("\n")) {
+    input = input.slice(0, -1);
+  }
+  return input.split(split);
+}
+
 export function loadTrimmed(): string {
   return loadInput().trim();
 }

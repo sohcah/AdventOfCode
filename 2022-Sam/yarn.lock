@@ -151,6 +151,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"23@workspace:days/23":
+  version: 0.0.0-use.local
+  resolution: "23@workspace:days/23"
+  dependencies:
+    aocutils: "workspace:*"
+    chalk: ^5.2.0
+    mathjs: ^11.5.0
+    tsx: ^3.12.1
+  languageName: unknown
+  linkType: soft
+
 "2@workspace:days/2":
   version: 0.0.0-use.local
   resolution: "2@workspace:days/2"
