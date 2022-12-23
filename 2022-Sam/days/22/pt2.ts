@@ -9,7 +9,7 @@ type Pos = [face: Face, x: number, y: number, facing: number];
 
 const height = grid.length;
 const width = Math.max(...grid.map(i => i.length));
-const faceSize = Math.min(height, width) / 3;
+const faceSize = Math.sqrt(grid.map(i => i.filter(i => i !== " ").length).sum()/6);
 
 class Face {
   coords: [number, number];
