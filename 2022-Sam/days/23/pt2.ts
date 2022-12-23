@@ -1,4 +1,4 @@
-import {adjacentPositions, IS_TEST, loadLines, loadSections, output} from "aocutils";
+import {CountedSet, loadLines, output} from "aocutils";
 
 const grid = loadLines().map(i => i.split(""));
 
@@ -24,7 +24,7 @@ const moves: Coord[][] = [
 ];
 
 let answer;
-for (let round = 0; round < 1000; round++) {
+for (let round = 0; round < 2000; round++) {
   const elfPosSet = new Set<string>();
   for(const elf of elves) {
     elfPosSet.add(elf[0].join("|"));
@@ -35,19 +35,24 @@ for (let round = 0; round < 1000; round++) {
   }
 
   console.log(round);
+
   let didMove = false;
   // Choose positions
   for (const elf of elves) {
     elf[1] = null;
 
-    let elfCount = 0;
+    let otherElf = false;
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
-        if (!checkFree([elf[0][0] + i, elf[0][1] + j])) elfCount++;
+        if(i === 0 && j === 0) continue;
+        if (!checkFree([elf[0][0] + i, elf[0][1] + j])) {
+          otherElf = true;
+          break;
+        }
       }
     }
 
-    if (elfCount <= 1) continue;
+    if (!otherElf) continue;
 
     for (const move of moves) {
       let free = true;
@@ -58,38 +63,23 @@ for (let round = 0; round < 1000; round++) {
         }
       }
       if (free) {
-        // console.log("Elf", elf[0], "wants to move to", [elf[0][0] + move[0][0], elf[0][1] + move[0][1]]);
         elf[1] = [elf[0][0] + move[0][0], elf[0][1] + move[0][1]];
         break;
-      } else {
-        // console.log("Elf", elf[0], "can't move to", [elf[0][0] + move[0][0], elf[0][1] + move[0][1]]);
       }
     }
+  }
+  const elfMovePosSet = new CountedSet();
+  for(const elf of elves) {
+    if(elf[1]) elfMovePosSet.add(elf[1].join("|"));
   }
 
   // Move
   for (const elf of elves) {
     if (!elf[1]) continue;
-    if (elves.some(i => i !== elf && i[1] && i[1].join("|") === elf[1].join("|"))) continue;
+    if (elfMovePosSet.get(elf[1].join("|")) > 1) continue;
     didMove = true;
     elf[0] = elf[1];
     elf[1] = null;
-  }
-  if(IS_TEST) {
-    for (let i = -5; i < 15; i++) {
-      let row = "";
-      for (let j = -5; j < 15; j++) {
-        if (checkFree([j, i])) {
-          row += ".";
-        } else {
-          row += "#";
-        }
-      }
-      console.log(row);
-    }
-    console.log()
-
-    // console.log(elves);
   }
 
   moves.push(moves.shift());
@@ -102,4 +92,4 @@ for (let round = 0; round < 1000; round++) {
 
 // const answer = (elves.map(i => i[0][0]).range() + 1) * (elves.map(i => i[0][1]).range() + 1) - elves.length;
 
-output(answer).forTest(20);
+output(answer).forTest(20).forActual(973);

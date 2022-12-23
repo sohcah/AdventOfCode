@@ -1,4 +1,4 @@
-import {adjacentPositions, IS_TEST, loadLines, loadSections, output, SSet} from "aocutils";
+import {CountedSet, IS_TEST, loadLines, output} from "aocutils";
 
 const grid = loadLines().map(i => i.split(""));
 
@@ -65,12 +65,19 @@ for (let round = 0; round < 10; round++) {
   }
 
   // Move
+  const elfMovePosSet = new CountedSet();
+  for(const elf of elves) {
+    if(elf[1]) elfMovePosSet.add(elf[1].join("|"));
+  }
+
+  // Move
   for (const elf of elves) {
     if (!elf[1]) continue;
-    if (elves.some(i => i !== elf && i[1] && i[1].join("|") === elf[1].join("|"))) continue;
+    if (elfMovePosSet.get(elf[1].join("|")) > 1) continue;
     elf[0] = elf[1];
     elf[1] = null;
   }
+
   if(IS_TEST) {
     for (let i = -5; i < 15; i++) {
       let row = "";
