@@ -38,7 +38,7 @@ declare global {
 
     set(): Set<T>;
 
-    unique(): T[];
+    unique(predicate?: (item: T) => unknown): T[];
 
     count(predicate: (item: T) => boolean): number;
 

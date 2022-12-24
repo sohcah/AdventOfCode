@@ -41,7 +41,14 @@ Array.prototype.set = function () {
   return new Set(this);
 }
 
-Array.prototype.unique = function () {
+Array.prototype.unique = function (predicate?: (item: unknown) => unknown) {
+  if (predicate) {
+    return this.reduce((acc, item) => {
+      const key = predicate(item);
+      if (!acc.has(key)) acc.set(key, item);
+      return acc;
+    }, new Map()).valuesArray();
+  }
   return [...this.set()];
 }
 
