@@ -1,0 +1,12 @@
+## New Utils
+- `Point2D` and `Point3D` classes
+  - Should be able to `add`, `subtract`, `muliply` and `divide` them.
+- `Vector2D` and `Vector3D` classes
+  - Should be able to `add`, `subtract`, `muliply` and `divide` them.
+- Various Grid handling things
+  - Looping Grids
+  - Bounded Grids
+  - Infinite Grids
+- `CountedSSet` class
+- More input reading methods
+- More input inspection

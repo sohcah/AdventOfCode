@@ -21,6 +21,7 @@ export type DayResult = {
   type: "result";
   result: number | string;
   expected?: number | string | undefined;
+  time: number;
 }
 
 const tmpDir = mkdtempSync(join(tmpdir(), "aoc-"));
@@ -84,6 +85,7 @@ async function callDay(day: string, part: string, input: DayInput): Promise<DayR
           console.log(chalk.yellow(`Copied result to clipboard!`));
         }
         console.log(chalk.blue(`Result is ${resultValue}`));
+        console.log(chalk.gray(`Result run took ${validResults[0].time.toFixed(4)}ms`));
         console.log(chalk.gray(`Took ${(performance.now() - start).toFixed(4)}ms`));
         rmSync(tmpDir, {recursive: true});
         return;
@@ -102,6 +104,7 @@ async function callDay(day: string, part: string, input: DayInput): Promise<DayR
       console.log(chalk.yellow(`Copied result to clipboard!`));
     }
     console.log(chalk.blue(`Result is ${resultValue.toString()}`));
+    console.log(chalk.gray(`Result run took ${result.time.toFixed(4)}ms`));
     console.log(chalk.gray(`Took ${(performance.now() - start).toFixed(4)}ms`));
     rmSync(tmpDir, {recursive: true});
   }

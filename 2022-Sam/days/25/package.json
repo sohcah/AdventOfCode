@@ -1,0 +1,12 @@
+{
+  "name": "25",
+  "version": "1.0.0",
+  "dependencies": {
+    "aocutils": "workspace:*",
+    "chalk": "^5.2.0",
+    "mathjs": "^11.5.0"
+  },
+  "devDependencies": {
+    "tsx": "^3.12.1"
+  }
+}

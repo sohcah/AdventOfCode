@@ -107,12 +107,14 @@ function writeOutput(output: DayResult) {
 }
 
 export function output(output: number | string) {
+  const time = performance.now() - (start ?? 0);
   let expectedValue: number | string | undefined = undefined;
   setImmediate(() => {
     writeOutput({
       type: "result",
       result: output,
       expected: expectedValue,
+      time
     });
   })
   const expectations = {
