@@ -1,6 +1,6 @@
-import {loadLines, output, stabilise} from "aocutils";
+import {IS_TEST, loadLines, output, stabilise} from "aocutils";
 
-const n = stabilise(5000, 1000, 4);
+const n = stabilise(1000, 1000, 4);
 
 const blueprints = loadLines().map(i => i.match(/\d+/g).map(Number)).map(i => ({
   blueprint: i[0],
@@ -20,7 +20,7 @@ const blueprints = loadLines().map(i => i.match(/\d+/g).map(Number)).map(i => ({
   }
 }));
 
-console.log(blueprints);
+if(IS_TEST) console.log(blueprints);
 
 function inc(...v: [
   ("ore" | "clay" | "obsidian" | "geode")[],
@@ -40,8 +40,8 @@ function inc(...v: [
       { [key in "ore" | "clay" | "obsidian" | "geode"]: number }
     ][][] = [[[["ore"], {ore: 0, clay: 0, obsidian: 0, geode: 0}]]];
     for (let i = 0; i < 32; i++) {
-      console.log(bp.blueprint, i, paths.length)
-      const newPaths: [
+      if(IS_TEST) console.log(bp.blueprint, i, paths.length)
+      let newPaths: [
         ("ore" | "clay" | "obsidian" | "geode")[],
         { [key in "ore" | "clay" | "obsidian" | "geode"]: number }
       ][][] = [];
@@ -81,6 +81,7 @@ function inc(...v: [
           })], ...path]);
         }
       }
+      newPaths = newPaths.uniqBy((i) => `${[...i[0]].sort().join("|")}||${i[1].join("|")}`);
       newPaths.sort((a, b) => b[0][1].ore - a[0][1].ore);
       newPaths.sort((a, b) => b[0][1].clay - a[0][1].clay);
       newPaths.sort((a, b) => b[0][0].count(i => i === "obsidian") - a[0][0].count(i => i === "obsidian"));
@@ -94,4 +95,4 @@ function inc(...v: [
     sum *= bestPath[0][1].geode;
   }
 
-output(sum).forTest(3472);
+output(sum).forTest(3472).forActual(5824);

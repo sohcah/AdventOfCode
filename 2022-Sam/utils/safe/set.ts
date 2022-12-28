@@ -66,8 +66,8 @@ export class SSet<T> implements Set<T> {
 
   readonly [Symbol.toStringTag]!: string;
 
-  array(): T[] {
-    return [];
+  get array(): T[] {
+    return [...this.values()];
   }
 
   entries(): IterableIterator<[T, T]> {

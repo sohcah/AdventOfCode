@@ -71,7 +71,7 @@ for (let round = 0; round < 2000; round++) {
     return newPaths;
   });
 
-  paths = paths.unique(i => i.at(-1).join("|"));
+  paths = paths.uniqBy(i => i.at(-1).join("|"));
 
   if (paths.some(i => i.at(-1).join("|") === goals[goal].join("|"))) {
     console.log("Found path to goal", goal);

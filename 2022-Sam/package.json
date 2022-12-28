@@ -8,9 +8,13 @@
   "scripts": {
     "test": "AOCTEST=true tsx go.ts",
     "start": "tsx go.ts",
+    "runAll": "tsx runAll.ts",
+    "runAllTest": "AOCTEST=true tsx runAll.ts",
     "build": "yarn workspace aocutils build"
   },
   "devDependencies": {
+    "prettier": "^2.8.1",
+    "tsup": "^6.5.0",
     "tsx": "^3.12.1"
   },
   "dependencies": {

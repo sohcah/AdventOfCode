@@ -14,7 +14,7 @@ function toVal(coords: [number, number, ...unknown[]]) {
 
 const startPos: [number, number] = [grid[0].indexOf(".") - 1, -1];
 const startVal = toVal(startPos);
-const endPos: [number, number] = [grid.at(-1).indexOf(".") - 1, height];
+const endPos: [number, number] = [grid.at(-1)!.indexOf(".") - 1, height];
 const endVal = toVal(endPos);
 
 let blizzards: [x: number, y: number, direction: number][] = [];
@@ -63,7 +63,7 @@ for (let round = 0; round < 2000; round++) {
   const newPaths = new Map<number, [number, number][]>();
 
   for (const path of paths.values()) {
-    const loc = path.at(-1);
+    const loc = path.at(-1)!;
     for (const dir of dirs) {
       const newLoc: [number, number] = [loc[0] + dir[0], loc[1] + dir[1]];
       const newLocVal = toVal(newLoc);
@@ -86,7 +86,7 @@ for (let round = 0; round < 2000; round++) {
       break;
     }
     paths = new Map();
-    paths.set(goalVal, newPaths.get(goalVal));
+    paths.set(goalVal, newPaths.get(goalVal)!);
     goalVal = toVal(goals[++goal]);
   } else {
     paths = newPaths;

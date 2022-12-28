@@ -1,6 +1,8 @@
-Set.prototype.array = function () {
-  return [...this];
-}
+Object.defineProperty(Set.prototype, "array", {
+  get: function array() {
+    return [...this];
+  },
+});
 
 Set.prototype.union = function (other) {
   return new Set([...this, ...other]);

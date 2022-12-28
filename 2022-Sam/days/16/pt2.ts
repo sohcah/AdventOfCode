@@ -4,7 +4,7 @@ const N = stabilise(1000, 1000, 6);
 
 const valves = loadLines().map(i => i.split('; ')).map(i => ({
   id: i[0].slice(6,8),
-  flow: Number(i[0].match(/\d+/g)[0]),
+  flow: Number(i[0].match(/\d+/g)![0]),
   tunnels: i[1].slice("tunnels lead to valves".length).trim().split(', ')
 }));
 const valvesMap = new Map<string, {id:string;flow: number, tunnels: string[]}>();
@@ -17,7 +17,7 @@ console.log(valves);
 let paths: [string, string, Set<string>, number, number][] = [["AA", "AA", new Set(), 0, 0]];
 for(let move = 1; move <= 52; move++) {
   console.log(move, paths.length);
-  const newPaths = [];
+  const newPaths: [string, string, Set<string>, number, number][] = [];
   for (let path of paths) {
     if(move % 2 === 1) {
       const valve = valvesMap.get(path[0])!;

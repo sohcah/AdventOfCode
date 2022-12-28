@@ -1,6 +1,6 @@
 import {adjacentPositionsWithoutDiagonals, loadLines, loadTrimmed, output, range} from "aocutils";
 
-const lines = loadLines().map(i => i.match(/-?\d+/g).map(Number)).map(i => {
+const lines = loadLines().map(i => i.match(/-?\d+/g)!.map(Number)).map(i => {
   const mhd = Math.abs(i[0] - i[2]) + Math.abs(i[1] - i[3]);
   return ({
     sx: i[0],
@@ -52,4 +52,4 @@ for(const line of lines) {
   }
 }
 
-output(set.size).forTest(26);
+output(set.size).forTest(26).forActual(5083287);

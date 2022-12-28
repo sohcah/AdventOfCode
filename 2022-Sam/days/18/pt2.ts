@@ -47,7 +47,7 @@ const trav = (x: number, y: number, z: number, acc: SSet<[number,number,number]>
 const baseTrav = cached((x: number, y: number, z: number) => {
   const map = new SSet<[number,number,number]>();
   const result = trav(x,y,z, map, [x,y,z]);
-  for(const a of map.array()) {
+  for(const a of map.array) {
     accessibleSet.set(a, result);
   }
   return result;

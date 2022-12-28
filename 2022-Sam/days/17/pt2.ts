@@ -48,7 +48,7 @@ const heights = [];
 let answer;
 for (let i = 0; i < 2000; i++) {
   const rockPatt = rockPatterns[i % rockPatterns.length];
-  const rockPos = [2, [...positions.array().map(i => i.split(",")[1]), -1].max()! + 4];
+  const rockPos = [2, [...positions.array.map(i => i.split(",")[1]), -1].max()! + 4];
 
   // console.log((t + 1) % movements.length);
   // if((t + 1) % movements.length === 0) {
@@ -112,10 +112,10 @@ for (let i = 0; i < 2000; i++) {
   }
   rockFill(rockPatt, rockPos[0], rockPos[1]);
 
-  heights.push(positions.array().map(i => i.split(",")[1]).max())
+  heights.push(positions.array.map(i => i.split(",")[1]).max())
 }
 
-const max = positions.array().map(i => i.split(",")[1]).max();
+const max = positions.array.map(i => i.split(",")[1]).max();
 
 
 for (let y = max; y >= max - 3; y--) {

@@ -36,4 +36,4 @@ for(const result of pairResults) {
   console.log(result[0], result[1], JSON.stringify(result[2]), JSON.stringify(result[3]));
 }
 
-output(pairResults.filter(i => i[1] === "in_order").map(i => i[0]).sum()).forTest(13);
+output(pairResults.filter(i => i[1] === "in_order").map(i => i[0]).sum).forTest(13);

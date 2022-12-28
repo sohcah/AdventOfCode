@@ -37,7 +37,7 @@ for(const position of Array.from(gridPositions(grid))) {
   }
 
 
-  const score = [visibleTop, visibleLeft, visibleRight, visibleBottom].product();
+  const score = [visibleTop, visibleLeft, visibleRight, visibleBottom].product;
   console.log(position);
   console.log(val);
   console.log(visibleTop, visibleLeft, visibleRight, visibleBottom);

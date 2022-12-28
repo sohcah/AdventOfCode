@@ -74,7 +74,7 @@ export class Superset<T> implements Set<T> {
 
   [Symbol.toStringTag]: string = "";
 
-  array(): T[] {
+  get array(): T[] {
     return [...this];
   }
 

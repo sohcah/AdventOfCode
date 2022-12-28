@@ -79,6 +79,7 @@ for (let round = 0; round < 10; round++) {
   }
 
   if(IS_TEST) {
+    console.log(`== End of Round ${round+1} ==`)
     for (let i = -5; i < 15; i++) {
       let row = "";
       for (let j = -5; j < 15; j++) {
@@ -95,9 +96,17 @@ for (let round = 0; round < 10; round++) {
     // console.log(elves);
   }
 
-  moves.push(moves.shift());
+  moves.push(moves.shift()!);
 }
 
 const answer = (elves.map(i => i[0][0]).range() + 1) * (elves.map(i => i[0][1]).range() + 1) - elves.length;
+
+console.table({
+  minRow: elves.map(i => i[0][1]).min(),
+  maxRow: elves.map(i => i[0][1]).max(),
+  minCol: elves.map(i => i[0][0]).min(),
+  maxCol: elves.map(i => i[0][0]).max(),
+  elves: elves.length,
+})
 
 output(answer).forTest(110).forActual(4181);

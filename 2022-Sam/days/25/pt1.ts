@@ -26,7 +26,7 @@ function snafuToDecimal(snafu: string) {
   return decimal;
 }
 
-const sum = numbers.map(i => snafuToDecimal(i)).sum();
+const sum = numbers.map(i => snafuToDecimal(i)).sum;
 function decToSnaf(dec: number) {
   let snafu = "";
   for(let power = 0; power <= 20; power++) {

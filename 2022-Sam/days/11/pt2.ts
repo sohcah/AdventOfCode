@@ -82,4 +82,4 @@ for (let round = 0; round < end; round++) {
   // if(round === end - 1) console.log(Array.from(monkeyMap.values()).map(i => `${i.thrown} thrown: ${i.items.join(", ")}`).join("\n"));
 }
 
-output(Array.from(monkeyMap.values()).map(i => i.thrown).sort((a,b)=>b-a).slice(0,2).product()).forTest(2713310158);
+output(Array.from(monkeyMap.values()).map(i => i.thrown).sort((a,b)=>b-a).slice(0,2).product).forTest(2713310158);

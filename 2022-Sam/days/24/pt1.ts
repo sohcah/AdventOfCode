@@ -75,7 +75,7 @@ for (let round = 0; round < 2000; round++) {
     break;
   }
 
-  paths = paths.unique(i => i.at(-1).join("|"));
+  paths = paths.uniqBy(i => i.at(-1).join("|"));
 }
 
 output(answer).forTest(18).forActual(292);

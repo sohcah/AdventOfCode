@@ -72,7 +72,7 @@ function rockFill(pattern: boolean[][], x: number, y: number) {
 let t = -1;
 for (let i = 0; i < 2022; i++) {
   const rockPatt = rockPatterns[i % rockPatterns.length];
-  const rockPos = [2, [...positions.array().map(i => i.split(",")[1]), -1].max()! + 4];
+  const rockPos = [2, [...positions.array.map(i => i.split(",")[1]), -1].max()! + 4];
 
   for (let j = 0; j < 100000; j++) {
 
@@ -109,19 +109,19 @@ for (let i = 0; i < 2022; i++) {
   rockFill(rockPatt, rockPos[0], rockPos[1]);
 }
 
-const max = positions.array().map(i => i.split(",")[1]).max();
+const max = positions.array.map(i => i.split(",")[1]).max();
 
 
-for (let y = max; y >= 0; y--) {
-  let line = "";
-  for (let x = 0; x < 7; x++) {
-    line += positions.has(`${x},${y}`) ? "#" : (
-      "."
-    );
-  }
-  console.log("|" + line + "|");
-}
-console.log("".padStart(9, "-"));
+// for (let y = max; y >= 0; y--) {
+//   let line = "";
+//   for (let x = 0; x < 7; x++) {
+//     line += positions.has(`${x},${y}`) ? "#" : (
+//       "."
+//     );
+//   }
+//   console.log("|" + line + "|");
+// }
+// console.log("".padStart(9, "-"));
 
 
 output(max+1).forTest(3068);

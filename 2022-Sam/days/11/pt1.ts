@@ -79,4 +79,4 @@ for (let round = 0; round < 20; round++) {
   }
 }
 
-output(Array.from(monkeyMap.values()).map(i => i.thrown).sort((a,b)=>b-a).slice(0,2).product()).forTest(10605);
+output(Array.from(monkeyMap.values()).map(i => i.thrown).sort((a,b)=>b-a).slice(0,2).product).forTest(10605);
