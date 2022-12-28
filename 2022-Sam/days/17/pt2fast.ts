@@ -1,4 +1,4 @@
-import { adjacentPositionsWithoutDiagonals, loadLines, loadTrimmed, output, range } from "aocutils";
+import { IS_TEST, loadTrimmed, output } from "aocutils";
 
 const movements = loadTrimmed()
 	.split("")
@@ -52,6 +52,8 @@ function rockFill(pattern: boolean[][], x: number, y: number) {
 	}
 }
 
+const numberOfRocksToFall = 1_000_000_000_000;
+
 let t = -1;
 let ts = "";
 let loop = 0;
@@ -59,13 +61,9 @@ let loopStart = 0;
 const heights = [];
 let answer;
 for (let i = 0; i < 2000; i++) {
+	// Note: 2_000 is an arbitrary number that should be high enough for anything. Just means that we don't get stuck in an infinite loop if something goes wrong.
 	const rockPatt = rockPatterns[i % rockPatterns.length];
 	const rockPos = [2, [...positions.array.map((i) => Math.floor(i / 10)), -1].max()! + 4];
-
-	// console.log((t + 1) % movements.length);
-	// if((t + 1) % movements.length === 0) {
-	//   console.log("tloop", i)
-	// }
 
 	ts += `${(t + 1) % movements.length},`;
 
@@ -81,8 +79,8 @@ for (let i = 0; i < 2000; i++) {
 		console.log("loop", loop, loopStart);
 		console.log("heights", startHeight, loopHeight);
 
-		const loopCount = Math.floor((1000000000000 - loopStart) / loop);
-		const loopRemainder = (1000000000000 - loopStart) % loop;
+		const loopCount = Math.floor((numberOfRocksToFall - loopStart) / loop);
+		const loopRemainder = (numberOfRocksToFall - loopStart) % loop;
 		const loopHeightRemainder = heights[loopStart + loopRemainder] - heights[loopStart];
 		console.log("loopCount", loopCount, loopRemainder);
 		console.log("loopHeightRemainder", loopHeightRemainder);
@@ -90,19 +88,8 @@ for (let i = 0; i < 2000; i++) {
 		break;
 	}
 
-	for (let j = 0; j < 100000; j++) {
-		// for (let y = 6; y >= 0; y--) {
-		//   let line = "";
-		//   for (let x = 0; x < 7; x++) {
-		//     line += positions.has(`${x},${y}`) ? "#" : (
-		//       rockPos[0] <= x && x < rockPos[0] + rockPatt[0].length && rockPos[1] <= y && y < rockPos[1] + rockPatt.length && rockPatt[y - rockPos[1]][x - rockPos[0]] ? "@" : "."
-		//     );
-		//   }
-		//   console.log("|"+line+"|");
-		// }
-		// console.log("".padStart(9, "-"));
-		// console.log(j % 2 === 1 ? "\\/" : movements[(t + 1) % movements.length])
-
+	for (let j = 0; j < 100_000; j++) {
+		// Note: 100_000 is an arbitrary number that should be high enough for anything. Just means that we don't get stuck in an infinite loop if something goes wrong.
 		if (j % 2 === 1) {
 			if (rockPos[1] === 0) break;
 			if (rockOverlaps(rockPatt, rockPos[0], rockPos[1] - 1)) {
@@ -127,13 +114,16 @@ for (let i = 0; i < 2000; i++) {
 
 const max = positions.array.map((i) => Math.floor(i / 10)).max();
 
-for (let y = max; y >= max - 3; y--) {
-	let line = "";
-	for (let x = 0; x < 7; x++) {
-		line += positions.has(posToNum(x, y)) ? "#" : ".";
+if (IS_TEST) {
+	// Log some rows
+	for (let y = max; y >= max - 3; y--) {
+		let line = "";
+		for (let x = 0; x < 7; x++) {
+			line += positions.has(posToNum(x, y)) ? "#" : ".";
+		}
+		console.log("|" + line + "|");
 	}
-	console.log("|" + line + "|");
+	console.log("".padStart(9, "-"));
 }
-console.log("".padStart(9, "-"));
 
 output(answer).forTest(1514285714288).actual(1575811209487);
