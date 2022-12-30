@@ -1,4 +1,4 @@
-import {IS_TEST, loadNumbers, LoopedLinkedList, output} from "aocutils";
+import { IS_TEST, loadNumbers, LoopedLinkedList, output } from "aocutils";
 
 // Explaining the initial bug which caused me to take so long to solve this:
 // I was using a linked list to store the numbers, and I was using a map to store the references to the nodes.
@@ -10,19 +10,17 @@ import {IS_TEST, loadNumbers, LoopedLinkedList, output} from "aocutils";
 // I've since rewritten my solution to use my new LoopedLinkedList class.
 
 const linkedList = new LoopedLinkedList(loadNumbers());
-const zeroValue = linkedList.nodes.find(i => i.value === 0)!;
+const zeroValue = linkedList.nodes.find((i) => i.value === 0)!;
 
 if (IS_TEST) console.log(linkedList.getList());
 
 for (const item of linkedList.nodes) {
-  item.moveForward(item.value);
+	item.moveForward(item.value);
 
-  if (IS_TEST) console.log(linkedList.getList());
+	if (IS_TEST) console.log(linkedList.getList());
 }
 
 const sum =
-  zeroValue.offset(1000).value
-  + zeroValue.offset(2000).value
-  + zeroValue.offset(3000).value;
+	zeroValue.offset(1000).value + zeroValue.offset(2000).value + zeroValue.offset(3000).value;
 
 output(sum).forTest(3).forActual(13522);

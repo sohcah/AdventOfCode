@@ -11,7 +11,10 @@ const getCoordNum = (x: number, y: number) => x * xRange + y;
 for (let y = 0; y < grid.length; y++) {
 	for (let x = 0; x < grid[y].length; x++) {
 		if (grid[y][x] === "#") {
-			elves.push({ pos: getCoordNum(x+Math.floor(grid.length*1.5), y+Math.floor(grid.length*1.5)), nextPos: null });
+			elves.push({
+				pos: getCoordNum(x + Math.floor(grid.length * 1.5), y + Math.floor(grid.length * 1.5)),
+				nextPos: null,
+			});
 		}
 	}
 }
@@ -44,10 +47,12 @@ const checkAdjacent = (elf: typeof elves[number], pos: number) => {
 	return !!arr[pos];
 };
 
-const arr = new Uint8Array(xRange*xRange);
+const arr = new Uint8Array(xRange * xRange);
 
 for (let round = 0; round < 973; round++) {
-	elves.forEach((elf) => {arr[elf.pos]=1});
+	elves.forEach((elf) => {
+		arr[elf.pos] = 1;
+	});
 	let didMove = false;
 	const start = performance.now();
 	const elfMovePosMap = new Map<number, typeof elves[number]>();
@@ -57,10 +62,9 @@ for (let round = 0; round < 973; round++) {
 		for (const move of moves) {
 			i++;
 			if (move.some((pos) => checkAdjacent(elf, elf.pos + pos))) continue; // Can't move in this direction
-			if (i === 1 && adjacents[0].every((pos) => !checkAdjacent(elf, elf.pos + pos)))
-				continue o; // Can't move at all
+			if (i === 1 && adjacents[0].every((pos) => !checkAdjacent(elf, elf.pos + pos))) continue o; // Can't move at all
 			elf.nextPos = elf.pos + move[0];
-			if(elfMovePosMap.has(elf.nextPos)) {
+			if (elfMovePosMap.has(elf.nextPos)) {
 				elfMovePosMap.get(elf.nextPos)!.nextPos = null;
 				elf.nextPos = null;
 				continue o;
@@ -70,11 +74,13 @@ for (let round = 0; round < 973; round++) {
 		}
 	}
 	timeSum += performance.now() - start;
-	elves.forEach((elf) => {arr[elf.pos]=0});
+	elves.forEach((elf) => {
+		arr[elf.pos] = 0;
+	});
 
 	// Move
 	for (const elf of elves) {
-		if(elf.nextPos === null) continue;
+		if (elf.nextPos === null) continue;
 		didMove = true;
 		elf.pos = elf.nextPos!;
 		elf.nextPos = null;

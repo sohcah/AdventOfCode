@@ -22,15 +22,15 @@ if (process.env.AOCTEST) {
 let answer = -1;
 
 const sortedLines = lines.slice().sort((a, b) => a.top - b.top);
-let currentLinesDown = sortedLines.filter(i => i.top <= max / 2 && i.bottom >= max / 2);
-let currentLinesUp = sortedLines.filter(i => i.top <= max / 2 && i.bottom >= max / 2);
-const lineChanges = sortedLines.map(i => i.top).set.union(sortedLines.map(i => i.bottom).set);
+let currentLinesDown = sortedLines.filter((i) => i.top <= max / 2 && i.bottom >= max / 2);
+let currentLinesUp = sortedLines.filter((i) => i.top <= max / 2 && i.bottom >= max / 2);
+const lineChanges = sortedLines.map((i) => i.top).set.union(sortedLines.map((i) => i.bottom).set);
 
 o: for (let rowOffset = 0; rowOffset <= max / 2; rowOffset++) {
 	{
 		const y = max / 2 + rowOffset;
 		if (lineChanges.has(y)) {
-			currentLinesDown = lines.filter(i => i.top <= y && i.bottom >= y);
+			currentLinesDown = lines.filter((i) => i.top <= y && i.bottom >= y);
 		}
 		for (let x = 0; x <= max; x++) {
 			let found = false;
@@ -52,7 +52,7 @@ o: for (let rowOffset = 0; rowOffset <= max / 2; rowOffset++) {
 	{
 		const y = max / 2 - rowOffset;
 		if (lineChanges.has(y)) {
-			currentLinesUp = lines.filter(i => i.top <= y && i.bottom >= y);
+			currentLinesUp = lines.filter((i) => i.top <= y && i.bottom >= y);
 		}
 		for (let x = 0; x <= max; x++) {
 			let found = false;

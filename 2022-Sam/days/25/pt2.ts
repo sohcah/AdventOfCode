@@ -1,4 +1,4 @@
-import {loadInput, output} from "aocutils";
+import { loadInput, output } from "aocutils";
 
 loadInput();
 

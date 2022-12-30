@@ -25,13 +25,16 @@ if (process.env.AOCTEST) {
 const kernel: IKernelRunShortcutBase = gpu
 	.createKernel(function () {
 		let y = this.thread.x * 50;
-		while(y < (this.thread.x + 1) * 50) {
+		while (y < (this.thread.x + 1) * 50) {
 			let x = 0;
 			while (x <= this.constants.max) {
 				let found = false;
 				for (let l = 0; l < this.constants.lineCount; l += 1) {
-					if (Math.abs(this.constants.lines[l][0] - x) + Math.abs(this.constants.lines[l][1] - y) <= this.constants.lines[l][2]) {
-						let diff = Math.abs(y - this.constants.lines[l][1]);
+					if (
+						Math.abs(this.constants.lines[l][0] - x) + Math.abs(this.constants.lines[l][1] - y) <=
+						this.constants.lines[l][2]
+					) {
+						const diff = Math.abs(y - this.constants.lines[l][1]);
 						x = this.constants.lines[l][0] + (this.constants.lines[l][2] - diff);
 						found = true;
 						break;
@@ -53,7 +56,7 @@ const kernel: IKernelRunShortcutBase = gpu
 	})
 	.setImmutable(true)
 	.setDynamicOutput(false)
-	.setOutput([Math.ceil(max/50)])
+	.setOutput([Math.ceil(max / 50)])
 	.setLoopMaxIterations(10000);
 
 // let start = performance.now();

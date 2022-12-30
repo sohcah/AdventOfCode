@@ -78,12 +78,12 @@ for (const bp of blueprints.slice(0, 3)) {
 		},
 	];
 	for (let i = 0; i < 32; i++) {
-		let newPaths = new Map<number, Path>();
+		const newPaths = new Map<number, Path>();
 		const add = (path: Path) => newPaths.set(getScore(path), path);
 		for (const path of paths) {
 			const incPath = {
-				robots: {...path.robots},
-				types: {...path.types},
+				robots: { ...path.robots },
+				types: { ...path.types },
 			};
 			incPath.types[Type.Ore] += incPath.robots[Type.Ore];
 			incPath.types[Type.Clay] += incPath.robots[Type.Clay];
@@ -95,8 +95,8 @@ for (const bp of blueprints.slice(0, 3)) {
 				bp[Type.Ore][Type.Ore]! <= path.types[Type.Ore]
 			) {
 				const newPath = {
-					robots: {...incPath.robots},
-					types: {...incPath.types},
+					robots: { ...incPath.robots },
+					types: { ...incPath.types },
 				};
 				newPath.robots[Type.Ore]++;
 				newPath.types[Type.Ore] -= bp[Type.Ore][Type.Ore]!;
@@ -107,8 +107,8 @@ for (const bp of blueprints.slice(0, 3)) {
 				bp[Type.Clay][Type.Ore]! <= path.types[Type.Ore]
 			) {
 				const newPath = {
-					robots: {...incPath.robots},
-					types: {...incPath.types},
+					robots: { ...incPath.robots },
+					types: { ...incPath.types },
 				};
 				newPath.robots[Type.Clay]++;
 				newPath.types[Type.Ore] -= bp[Type.Clay][Type.Ore]!;
@@ -120,8 +120,8 @@ for (const bp of blueprints.slice(0, 3)) {
 				bp[Type.Obsidian][Type.Clay]! <= path.types[Type.Clay]
 			) {
 				const newPath = {
-					robots: {...incPath.robots},
-					types: {...incPath.types},
+					robots: { ...incPath.robots },
+					types: { ...incPath.types },
 				};
 				newPath.robots[Type.Obsidian]++;
 				newPath.types[Type.Ore] -= bp[Type.Obsidian][Type.Ore]!;
@@ -134,8 +134,8 @@ for (const bp of blueprints.slice(0, 3)) {
 				bp[Type.Geode][Type.Obsidian]! <= path.types[Type.Obsidian]
 			) {
 				const newPath = {
-					robots: {...incPath.robots},
-					types: {...incPath.types},
+					robots: { ...incPath.robots },
+					types: { ...incPath.types },
 				};
 				newPath.robots[Type.Geode]++;
 				newPath.types[Type.Ore] -= bp[Type.Geode][Type.Ore]!;

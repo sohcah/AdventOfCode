@@ -1,4 +1,4 @@
-import { adjacentPositionsWithoutDiagonals, loadLines, loadTrimmed, output, range } from "aocutils";
+import { loadLines, output } from "aocutils";
 
 const lines = loadLines()
 	.map((i) => i.match(/-?\d+/g)!.map(Number))
@@ -21,7 +21,7 @@ if (process.env.AOCTEST) {
 
 let answer = -1;
 
-lines.sort((a,b) => (a.sx - a.mhd) - (b.sx - b.mhd));
+lines.sort((a, b) => a.sx - a.mhd - (b.sx - b.mhd));
 const lineChanges = lines.map((i) => i.maxY).set.union(lines.map((i) => i.minY).set);
 let currentLines = lines.filter((i) => i.maxY >= 0 && i.minY <= 0);
 

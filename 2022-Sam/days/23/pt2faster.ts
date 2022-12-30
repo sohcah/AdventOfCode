@@ -42,7 +42,7 @@ const adjacents = moves.map((move) => {
 // let uselessIncrement = 0;
 let answer = -1;
 let timeSum = 0;
-let elfPosSet = new Map<number, typeof elves[number]>();
+const elfPosSet = new Map<number, typeof elves[number]>();
 const checkAdjacent = (elf: typeof elves[number], pos: number) => {
 	if (elfPosSet.has(pos)) {
 		const otherElf = elfPosSet.get(pos)!;
@@ -66,7 +66,7 @@ for (let round = 0; round < 973; round++) {
 			if (!elf.hasAdjacent && adjacents[0].every((pos) => !checkAdjacent(elf, elf.pos + pos)))
 				continue o; // Can't move at all
 			elf.nextPos = elf.pos + move[0];
-			if(elfMovePosMap.has(elf.nextPos)) {
+			if (elfMovePosMap.has(elf.nextPos)) {
 				elfMovePosMap.get(elf.nextPos)!.nextPos = null;
 				elf.nextPos = null;
 				continue o;
@@ -79,7 +79,7 @@ for (let round = 0; round < 973; round++) {
 
 	// Move
 	for (const elf of elves) {
-		if(elf.nextPos === null) continue;
+		if (elf.nextPos === null) continue;
 		didMove = true;
 		elf.pos = elf.nextPos!;
 	}

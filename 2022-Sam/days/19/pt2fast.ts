@@ -44,6 +44,7 @@ function canBuy(blueprint: typeof blueprints[number], type: Type, path: Path) {
 	if (blueprint.max[type] <= path.robots[type]) {
 		return false;
 	}
+	// eslint-disable-next-line rulesdir/probably_not_in
 	for (const item in blueprint[type]) {
 		if (blueprint[type][item] > path.types[item]) {
 			return false;
@@ -54,6 +55,7 @@ function canBuy(blueprint: typeof blueprints[number], type: Type, path: Path) {
 
 function buy(blueprint: typeof blueprints[number], type: Type, path: Path) {
 	const newTypes = { ...path.types };
+	// eslint-disable-next-line rulesdir/probably_not_in
 	for (const item in blueprint[type]) {
 		newTypes[item] -= blueprint[type][item];
 	}
@@ -85,6 +87,7 @@ function getScore(path: Path): number {
 
 function inc(path: Path): Path {
 	const newTypes = { ...path.types };
+	// eslint-disable-next-line rulesdir/probably_not_in
 	for (const robot in path.robots) {
 		newTypes[robot] += path.robots[robot];
 	}
@@ -110,7 +113,7 @@ for (const bp of blueprints.slice(0, 3)) {
 		},
 	];
 	for (let i = 0; i < 32; i++) {
-		let newPaths = new Map<number, Path>();
+		const newPaths = new Map<number, Path>();
 		const add = (path: Path) => newPaths.set(getScore(path), path);
 		for (const path of paths) {
 			add(inc(path));

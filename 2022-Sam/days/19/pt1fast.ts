@@ -1,4 +1,4 @@
-import { IS_TEST, loadLines, output, SSet, stabilise } from "aocutils";
+import { IS_TEST, loadLines, output, stabilise } from "aocutils";
 
 const n = stabilise(100, 100, 3);
 
@@ -43,6 +43,7 @@ function canBuy(blueprint: typeof blueprints[number], type: Type, path: Path) {
 	if (blueprint.max[type] <= path.robots[type]) {
 		return false;
 	}
+	// eslint-disable-next-line rulesdir/probably_not_in
 	for (const item in blueprint[type]) {
 		if (blueprint[type][item] > path.types[item]) {
 			return false;
@@ -53,6 +54,7 @@ function canBuy(blueprint: typeof blueprints[number], type: Type, path: Path) {
 
 function buy(blueprint: typeof blueprints[number], type: Type, path: Path) {
 	const newTypes = { ...path.types };
+	// eslint-disable-next-line rulesdir/probably_not_in
 	for (const item in blueprint[type]) {
 		newTypes[item] -= blueprint[type][item];
 	}
@@ -84,6 +86,7 @@ function getScore(path: Path): number {
 
 function inc(path: Path): Path {
 	const newTypes = { ...path.types };
+	// eslint-disable-next-line rulesdir/probably_not_in
 	for (const robot in path.robots) {
 		newTypes[robot] += path.robots[robot];
 	}
@@ -110,7 +113,7 @@ for (const bp of blueprints) {
 	];
 	for (let i = 0; i < 24; i++) {
 		// if (IS_TEST) console.log(bp.blueprint, i, paths.length);
-		let newPaths = new Map<number, Path>();
+		const newPaths = new Map<number, Path>();
 		const add = (path: Path) => newPaths.set(getScore(path), path);
 		for (const path of paths) {
 			add(inc(path));
@@ -120,7 +123,7 @@ for (const bp of blueprints) {
 			if (canBuy(bp, Type.Geode, path)) add(buy(bp, Type.Geode, inc(path)));
 		}
 		console.log(bp.blueprint, i, newPaths.size);
-		if(newPaths.size > n) {
+		if (newPaths.size > n) {
 			paths = newPaths
 				.array()
 				.sort((a, b) => b[0] - a[0])

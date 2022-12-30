@@ -1,11 +1,4 @@
-import {
-	adjacentPositionsWithoutDiagonals,
-	IS_TEST,
-	loadLines,
-	loadTrimmed,
-	output,
-	range,
-} from "aocutils";
+import { IS_TEST, loadLines, output, range } from "aocutils";
 import chalk from "chalk";
 
 const sandSource = [500, 0] as [number, number];
@@ -50,7 +43,7 @@ function isBlocked(coord: [number, number]) {
 let sandCount = 0;
 o: for (let i = 0; i < 100000; i++) {
 	if (isBlocked(sandSource)) break o;
-	let sandPosition: [number, number] = [...sandSource];
+	const sandPosition: [number, number] = [...sandSource];
 	for (let j = 0; j < 100000; j++) {
 		// console.log(sandPosition, maxY);
 		if (!isBlocked([sandPosition[0], sandPosition[1] + 1])) {
