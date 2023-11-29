@@ -1,0 +1,11 @@
+{
+  "name": "6",
+  "version": "1.0.0",
+  "dependencies": {
+    "aocutils": "workspace:*",
+    "mnemonist": "^0.39.5"
+  },
+  "devDependencies": {
+    "tsx": "^3.12.1"
+  }
+}
