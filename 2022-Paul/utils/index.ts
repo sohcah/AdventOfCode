@@ -213,10 +213,10 @@ export function loadNumbers(): number[] {
   return loadLines().map(i => Number(i.trim()));
 }
 
-export function output(output: number) {
+export function output<T extends number | string>(output: T) {
   console.log(`Output for ${process.env.AOCTEST ? "test" : "actual input"}: ${output}`);
   return {
-    forTest(expected: number) {
+    forTest(expected: T) {
       if (!process.env.AOCTEST) return;
       if (output === expected) {
         console.log("Test passed!");
@@ -231,3 +231,5 @@ export function output(output: number) {
 export function sum(input: number[]) {
   return input.reduce((a, b) => a + b, 0);
 }
+
+export const IS_TEST = !!process.env.AOCTEST;

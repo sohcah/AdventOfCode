@@ -1,4 +1,5 @@
 node_modules/
 2021-Paul/inputs/*.txt
 2021-Sam/inputs/*.txt
+.idea
 cmake-build-debug/
