@@ -1,3 +1,4 @@
+import "./array";
 import { matchLast, matchAllOverlapping } from "../helpers/regex";
 
 Object.defineProperty(String.prototype, "lns", {
