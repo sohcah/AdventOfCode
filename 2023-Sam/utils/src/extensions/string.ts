@@ -1,3 +1,5 @@
+import { matchLast, matchAllOverlapping } from "../helpers/regex";
+
 Object.defineProperty(String.prototype, "lns", {
   get: function lns() {
     return this.split("\n");
@@ -33,3 +35,17 @@ Object.defineProperty(String.prototype, "charSet", {
     return [...this].set;
   }
 });
+
+Object.defineProperty(String.prototype, "reversed", {
+  get: function reversed() {
+    return [...this].reverse().join("");
+  }
+});
+
+String.prototype.matchAllOverlapping = function(regex) {
+  return matchAllOverlapping(regex, String(this));
+}
+
+String.prototype.matchLast = function(regex) {
+  return matchLast(regex, String(this));
+}

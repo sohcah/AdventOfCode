@@ -18,6 +18,8 @@ export * from "./helpers/range";
 
 export * from "./linked/list";
 
+export * from "./helpers/regex";
+
 if(process.env.NO_LOG) {
 	console.log = () => {};
 	console.debug = () => {};
@@ -36,7 +38,10 @@ declare global {
 		get num(): number;
 		get groups(): string[];
 		get chars(): string[];
-		get charSet(): Set<string>;
+    get charSet(): Set<string>;
+    get reversed(): string;
+    matchLast(regex: RegExp): string[] | null;
+    matchAllOverlapping(regex: RegExp): string[][];
 	}
 
 	interface Array<T> {

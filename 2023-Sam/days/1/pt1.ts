@@ -1,14 +1,10 @@
-import { loadTrimmed, output, sum } from "aocutils";
+import { loadLines, output } from "aocutils";
 
-const input = loadTrimmed();
-const elves = input.split("\n\n");
+const lines = loadLines();
 
-let max = 0;
-for (const elf of elves) {
-	const elfCount = sum(elf.split("\n").map(Number));
-	if (elfCount > max) {
-		max = elfCount;
-	}
-}
+const result = lines.map((i) =>
+	Number(`${[...i].find((i) => i.match(/\d/))}${[...i].reverse().find((i) => i.match(/\d/))}`)
+);
+console.log(result);
 
-output(max).forTest(24000);
+output(result.sum).forTest(142).forActual(54990);
