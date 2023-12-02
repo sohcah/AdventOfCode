@@ -33,6 +33,6 @@ const result = games.map((i, n) => {
 	return maxRed * maxGreen * maxBlue;
 });
 
-output(result.sum).forTest(2286);
+output(result.sum).forTest(2286).forActual(66016);
 
 // 3010

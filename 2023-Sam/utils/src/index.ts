@@ -66,9 +66,9 @@ declare global {
 			? (number | null)[]
 			: never;
 
-		sum: T extends number ? number : never;
+		sum: NumericOperation<T>;
 
-		product: T extends number ? number : never;
+		product: NumericOperation<T>;
 
 		max(): NumericOperation<T>;
 

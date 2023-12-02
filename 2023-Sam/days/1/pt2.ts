@@ -47,4 +47,4 @@ const result = lines.map((i) => {
 });
 console.log(result);
 
-output(result.sum).forTest(281);
+output(result.sum).forTest(281).forActual(54473);

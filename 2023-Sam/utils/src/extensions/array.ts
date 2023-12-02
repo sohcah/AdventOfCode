@@ -1,12 +1,12 @@
 Object.defineProperty(Array.prototype, "sum", {
   get: function sum(this: number[]) {
-    return this.reduce((acc, item) => acc + item, 0);
+    return numericOperation(this, i => i.reduce((acc, item) => acc + item, 0));
   }
 });
 
 Object.defineProperty(Array.prototype, "product", {
   get: function product(this: number[]) {
-    return this.reduce((acc, item) => acc * item, 1);
+    return numericOperation(this, i => i.reduce((acc, item) => acc * item, 1));
   }
 });
 
@@ -15,12 +15,16 @@ export type NumericOperation<T> = T extends number ? number : T extends Record<s
 } : undefined;
 
 function numericOperation<T>(value: T[], operation: (value: number[]) => number): NumericOperation<T> {
-  if (value.length === 0) return undefined as NumericOperation<T>;
-  if (typeof value[0] === "number") return operation(value as number[]) as NumericOperation<T>;
-  if (typeof value[0] === "object") {
-    if (Array.isArray(value[0])) {
+  if (value.length === 0) {
+    console.warn(`Returned null from numeric operations`);
+    return undefined as NumericOperation<T>;
+  }
+  const firstNonNull = value.find(i => i !== null && i !== undefined);
+  if (typeof firstNonNull === "number") return operation(value.filter(i => i !== null && i !== undefined) as number[]) as NumericOperation<T>;
+  if (typeof firstNonNull === "object") {
+    if (Array.isArray(firstNonNull)) {
       return new Array(Math.max(...value.map(i => (i as any).length)))
-  .fill(0)
+        .fill(0)
         .map((_, n) => numericOperation(value.map(i => (i as any)[n]), operation)) as any as NumericOperation<T>;
     }
     const allKeys = [...new Set(value.flatMap(i => Object.keys(i as any)))];
@@ -29,6 +33,7 @@ function numericOperation<T>(value: T[], operation: (value: number[]) => number)
       return acc;
     }, {} as any) as NumericOperation<T>;
   }
+  console.warn(`Could not perform numeric operation on ${typeof value}`);
   return undefined as NumericOperation<T>;
 }
 

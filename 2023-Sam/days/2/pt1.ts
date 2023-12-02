@@ -30,5 +30,5 @@ const result = games.map((i, n) => {
 	return i[0];
 });
 
-output(result.sum).forTest(8);
+output(result.sum).forTest(8).forActual(2541);
 
