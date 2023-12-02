@@ -6,6 +6,8 @@ import * as fs from "fs";
 import { writeFileSync } from "fs";
 import type { DayInput, DayResult } from "../../runHelpers.js";
 import chalk from "chalk";
+import { p, Parser, ResultOf } from "./parser/parser";
+import type { NumericOperation } from "./extensions/array";
 
 export * from "./safe/map";
 export * from "./safe/set";
@@ -19,6 +21,7 @@ export * from "./helpers/range";
 export * from "./linked/list";
 
 export * from "./helpers/regex";
+export * from "./parser/parser";
 
 if(process.env.NO_LOG) {
 	console.log = () => {};
@@ -27,6 +30,15 @@ if(process.env.NO_LOG) {
 	console.warn = () => {};
 	console.error = () => {};
 }
+
+export function assertTypeNotAny<T>(value: NotAny<T>) {}
+
+export function assertType<T>(value: T) {}
+
+type IsAny<T> =
+  unknown extends T ? T extends {} ? T : never : never;
+type NotAny<T> =
+  T extends IsAny<T> ? never : T;
 
 declare global {
 	var load: typeof _load;
@@ -58,17 +70,17 @@ declare global {
 
 		product: T extends number ? number : never;
 
-		max(): number;
+		max(): NumericOperation<T>;
 
-		min(): number;
+		min(): NumericOperation<T>;
 
-		average(): number;
+		average(): NumericOperation<T>;
 
-		median(): number;
+		median(): NumericOperation<T>;
 
-		mode(): number;
+		mode(): NumericOperation<T>;
 
-		range(): number;
+		range(): NumericOperation<T>;
 
 		set: Set<T>;
 
@@ -145,10 +157,13 @@ function _load(): string {
 export const load = _load;
 globalThis.load = _load;
 
-export function loadLines(): string[] {
-	return loadTrimmed()
+export function loadLines<TParser extends Parser<any> | undefined = undefined>(parser: TParser = undefined as TParser): TParser extends undefined ? string[] : ResultOf<NonNullable<TParser>>[] {
+	const lines = loadTrimmed()
 		.split(/\r?\n/)
 		.filter((i) => i);
+  if (parser === undefined) return lines as any;
+  const parsed = lines.map((i) => p.parse(parser, i));
+  return parsed as any;
 }
 
 export function loadNumbers(): number[] {

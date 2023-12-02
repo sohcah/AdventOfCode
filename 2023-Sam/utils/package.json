@@ -12,7 +12,8 @@
     "build": "tsup src/index.ts --dts --sourcemap --format esm,cjs"
   },
   "dependencies": {
-    "fast-safe-stringify": "^2.1.1"
+    "fast-safe-stringify": "^2.1.1",
+    "type-fest": "^4.8.3"
   },
   "types": "dist/index.d.ts",
   "main": "dist/index.js",

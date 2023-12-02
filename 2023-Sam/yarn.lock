@@ -28,12 +28,13 @@ __metadata:
     prettier: "npm:^3.1.0"
     tsup: "npm:^8.0.1"
     tsx: "npm:^4.6.0"
+    typescript: "npm:^5.3.2"
   languageName: unknown
   linkType: soft
 
-"4@workspace:days/4":
+"2@workspace:days/2":
   version: 0.0.0-use.local
-  resolution: "4@workspace:days/4"
+  resolution: "2@workspace:days/2"
   dependencies:
     aocutils: "workspace:^"
     tsx: "npm:^4.6.0"
@@ -954,6 +955,7 @@ __metadata:
     "@types/node": "npm:^20.10.0"
     fast-safe-stringify: "npm:^2.1.1"
     tsup: "npm:^8.0.1"
+    type-fest: "npm:^4.8.3"
     typescript: "npm:^5.3.2"
     vitest: "npm:^0.34.6"
   languageName: unknown
@@ -3632,6 +3634,13 @@ __metadata:
   version: 0.20.2
   resolution: "type-fest@npm:0.20.2"
   checksum: 8907e16284b2d6cfa4f4817e93520121941baba36b39219ea36acfe64c86b9dbc10c9941af450bd60832c8f43464974d51c0957f9858bc66b952b66b6914cbb9
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^4.8.3":
+  version: 4.8.3
+  resolution: "type-fest@npm:4.8.3"
+  checksum: 90e440347c542282b0a92bb181fb30af529be6d6820dd7ec6141309f2ca143855a8fbca18969623b19bc15a3dcce6000af19f97cae81a39fbd2638c15a06d078
   languageName: node
   linkType: hard
 

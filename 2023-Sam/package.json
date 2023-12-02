@@ -22,7 +22,8 @@
     "eslint-plugin-rulesdir": "^0.2.2",
     "prettier": "^3.1.0",
     "tsup": "^8.0.1",
-    "tsx": "^4.6.0"
+    "tsx": "^4.6.0",
+    "typescript": "^5.3.2"
   },
   "dependencies": {
     "clipboardy": "^4.0.0"
