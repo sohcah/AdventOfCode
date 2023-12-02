@@ -25,4 +25,3 @@ const result = games.map((game) => {
 });
 
 output(result.sum).forTest(2286).forActual(66016);
-

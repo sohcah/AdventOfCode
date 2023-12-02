@@ -12,9 +12,9 @@ type GetParserResult<T extends ParseFn<any>> = ReturnType<T>["result"];
 
 export type ResultOf<T extends ImplicitParser> = GetParserResult<ImplicitParserType<T>["parse"]>;
 
-type NamedParser<TName extends string, TResult> = {
+interface NamedParser<TName extends string, TResult> extends Parser<TResult> {
   nameValue: TName;
-} & Parser<TResult>;
+}
 
 export interface Parser<TResult> {
   <const TName extends string>(name: TName): NamedParser<TName, TResult>;
@@ -136,6 +136,17 @@ function seq<const TParsers extends Parser<any>[]>(strings: TemplateStringsArray
   });
 }
 
+function wrap<const TParsers extends [Parser<any>]>(strings: TemplateStringsArray, ...parsers: TParsers): Parser<GetParserResult<TParsers[0]["parse"]>> {
+  const objSeq = seqObj(strings, parsers[0]("value"));
+  return custom(text => {
+    const result = objSeq.parse(text);
+    return {
+      result: result.result.value,
+      taken: result.taken
+    };
+  });
+}
+
 function sep<const TParser extends Parser<any>>(parser: TParser, sep: ImplicitParser): Parser<GetParserResult<TParser["parse"]>[]> {
   const sepParser = implicit(sep);
   return custom(text => {
@@ -157,6 +168,17 @@ function sep<const TParser extends Parser<any>>(parser: TParser, sep: ImplicitPa
       }
     }
     return finalResult;
+  });
+}
+
+function or<TParser extends ImplicitParser>(...parsers: TParser[]): Parser<ResultOf<TParser>> {
+  return custom(text => {
+    for (const parser of parsers) {
+      try {
+        return implicit(parser).parse(text);
+      } catch { }
+    }
+    throw new Error(`No parsers matched '${text}'`);
   });
 }
 
@@ -198,5 +220,7 @@ p.parse = parse;
 p.word = word;
 p.num = num;
 p.digit = digit;
+p.or = or;
+p.wrap = wrap;
 p.dict = dict;
 p.dictWithDefault = dictWithDefault;
