@@ -32,4 +32,3 @@ const result = games.map((i, n) => {
 
 output(result.sum).forTest(8);
 
-// 3010

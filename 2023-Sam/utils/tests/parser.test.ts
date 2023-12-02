@@ -1,9 +1,9 @@
 import { test, expect, assertType } from "vitest";
 import { assertTypeNotAny, p, type Parser } from "../src";
 
-const gameSeq = p.seqObj`Game ${p.digit("game")}: ${p.num("value")} / ${p.num("total")}`;
+const gameSeq = p`Game ${p.digit("game")}: ${p.num("value")} / ${p.num("total")}`;
 
-test("p.seqObj types", () => {
+test("p seq types - object", () => {
   assertType<Parser<{
     game: number;
     value: number;
@@ -11,17 +11,17 @@ test("p.seqObj types", () => {
   }>>(gameSeq);
 });
 
-test("seqObj parser works", () => {
-  expect(p.parse(gameSeq, "Game 1: 1 / 10")).toStrictEqual({
+test("seq parser works - object", () => {
+  expect(gameSeq.parse("Game 1: 1 / 10")).toStrictEqual({
     game: 1,
     value: 1,
     total: 10
   });
 });
 
-const gameSeqArray = p.seq`Game ${p.digit}: ${p.num} / ${p.num}`;
+const gameSeqArray = p`Game ${p.digit}: ${p.num} / ${p.num}`;
 
-test("p.seq types", () => {
+test("p seq types - array", () => {
   assertType<Parser<[
     number,
     number,
@@ -29,56 +29,22 @@ test("p.seq types", () => {
   ]>>(gameSeqArray);
 });
 
-test("seq parser works", () => {
-  expect(p.parse(gameSeqArray, "Game 1: 1 / 10")).toStrictEqual([1, 1, 10]);
+test("seq parser works - array", () => {
+  expect(gameSeqArray.parse("Game 1: 1 / 10")).toStrictEqual([1, 1, 10]);
 });
 
-const commaSepNums = p.sep(p.num, p.regexp(/,/));
-test("p.sep types", () => {
+const commaSepNums = p.num.list(/,/);
+test("list types", () => {
   assertType<Parser<number[]>>(commaSepNums);
 });
 
-test("sep parser works", () => {
-  expect(p.parse(commaSepNums, "1,23,4,")).toStrictEqual([1, 23, 4]);
-});
-
-test("day2 parser works", () => {
-  const parser = p.seqObj`Game ${p.num("game")}: ${p.sep(
-    p.sep(
-      p.seqObj`${p.num("value")} ${p.word("key")}`,
-      p.regexp(/,\s*/)
-    ).map(p.dictWithDefault({
-      red: 0,
-      blue: 0,
-      green: 0
-    })),
-    p.regexp(/;\s*/)
-  )("rounds")}`;
-  expect(p.parse(parser, "Game 1: 1 green, 2 blue; 13 red, 2 blue, 3 green; 4 green, 14 red")).toStrictEqual({
-    game: 1,
-    rounds: [
-      {
-        red: 0,
-        green: 1,
-        blue: 2
-      },
-      {
-        red: 13,
-        blue: 2,
-        green: 3
-      },
-      {
-        blue: 0,
-        green: 4,
-        red: 14
-      }
-    ]
-  });
+test("list parser works", () => {
+  expect(commaSepNums.parse("1,23,4,")).toStrictEqual([1, 23, 4]);
 });
 
 test("day2 clean parser works", () => {
-  const parser = p.seqObj`Game ${p.num("game")}: ${
-    p.seqObj`${p.num("value")} ${p.word("key")}`
+  const parser = p`Game ${p.num("game")}: ${
+    p`${p.num("value")} ${p.word("key")}`
       .list(", ")
       .dict({
         red: 0,
@@ -88,7 +54,7 @@ test("day2 clean parser works", () => {
       .list("; ")
       ("rounds")
   }`;
-  expect(p.parse(parser, "Game 1: 1 green, 2 blue; 13 red, 2 blue, 3 green; 4 green, 14 red")).toStrictEqual({
+  expect(parser.parse("Game 1: 1 green, 2 blue; 13 red, 2 blue, 3 green; 4 green, 14 red")).toStrictEqual({
     game: 1,
     rounds: [
       {
@@ -125,12 +91,11 @@ nearby tickets:
 38,6,12`;
 
   test("2022 day 17 fields parser works", () => {
-    const fields = p.parse(
-      p.seqObj`${p(/[^:]+/)("name")}: ${
-        p.seq`${p.num}-${p.num}`.list(" or ")("ranges")
-      }`.list("\n"),
-      input.groups[0]
-    );
+    const fields =
+      p`${p(/[^:]+/)("name")}: ${
+        p`${p.num}-${p.num}`.list(" or ")("ranges")
+      }`.list("\n").parse(
+        input.groups[0]);
 
     assertType<{
       name: string;
@@ -155,8 +120,7 @@ nearby tickets:
 
   test("2022 day 17 your ticket parser works", () => {
     const ticket = p.num.list(",");
-    const yourTicket = p.parse(
-      p.wrap`your ticket:\n${ticket}`,
+    const yourTicket = p`your ticket:\n${ticket}`.parse(
       input.groups[1]
     );
 
@@ -169,8 +133,7 @@ nearby tickets:
 
   test("2022 day 17 nearby ticket parser works", () => {
     const ticket = p.num.list(",");
-    const nearbyTickets = p.parse(
-      p.wrap`nearby tickets:\n${ticket.list("\n")}`,
+    const nearbyTickets = p`nearby tickets:\n${ticket.list("\n")}`.parse(
       input.groups[2]
     );
 
@@ -186,10 +149,9 @@ nearby tickets:
 
   test("2022 day 17 parser works", () => {
     const ticket = p.num.list(",");
-    const range = p.seq`${p.num}-${p.num}`;
-    const field = p.seqObj`${p(/[^:]+/)("name")}: ${range.list(" or ")("ranges")}`;
-    const data = p.parse(
-      p.seqObj`${field.list("\n")("fields")}\nyour ticket:\n${ticket("mine")}\n\nnearby tickets:\n${ticket.list("\n")("nearby")}`,
+    const range = p`${p.num}-${p.num}`;
+    const field = p`${p(/[^:]+/)("name")}: ${range.list(" or ")("ranges")}`;
+    const data = p`${field.list("\n")("fields")}\nyour ticket:\n${ticket("mine")}\n\nnearby tickets:\n${ticket.list("\n")("nearby")}`.parse(
       input
     );
 
@@ -204,3 +166,11 @@ nearby tickets:
     }>(data);
   });
 }
+
+test("or works", () => {
+  const parser = p([p.num, p.word]);
+
+  assertType<Parser<number | string>>(parser);
+  expect(parser.parse("123")).toBe(123);
+  expect(parser.parse("abc")).toBe("abc");
+})
