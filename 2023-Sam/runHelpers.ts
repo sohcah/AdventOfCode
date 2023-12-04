@@ -45,7 +45,7 @@ async function callDay(day: string, part: string, input: DayInput, log = true, a
     const outFile = join(tmpDir, `${Math.floor(Math.random() * 1000000)}.json`);
     const useNode = readFileSync(path, "utf8").includes("//usenode");
     const proc = child_process.spawn(
-        useNode ? `yarn tsx ${path}` : `bun run ${path}`,
+        useNode ? `bun run tsx ${path}` : `bun run ${path}`,
         {
             cwd: dir,
             shell: true,
