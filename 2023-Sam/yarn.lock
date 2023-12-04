@@ -50,6 +50,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"4@workspace:days/4":
+  version: 0.0.0-use.local
+  resolution: "4@workspace:days/4"
+  dependencies:
+    aocutils: "workspace:^"
+    tsx: "npm:^4.6.0"
+  languageName: unknown
+  linkType: soft
+
 "@aashutoshrathi/word-wrap@npm:^1.2.3":
   version: 1.2.6
   resolution: "@aashutoshrathi/word-wrap@npm:1.2.6"
