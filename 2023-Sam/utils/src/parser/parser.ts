@@ -245,17 +245,21 @@ function sep<const TParser extends ImplicitParser>(parser: TParser, sep: Implici
       result: [],
       taken: 0
     };
+    let previousSeparatorTaken = 0;
     let loops = 0;
     while (finalResult.taken < text.length) {
       if (loops++ > 1000) throw new Error("Over 1000 loops");
       try {
-        const result = mainParser[parseFnSymbol](text.slice(finalResult.taken));
-        finalResult.taken += result.taken;
+        const result = mainParser[parseFnSymbol](text.slice(finalResult.taken + previousSeparatorTaken));
+        finalResult.taken += result.taken + previousSeparatorTaken;
         finalResult.result.push(result.result);
         const separator = sepParser[parseFnSymbol](text.slice(finalResult.taken));
-        finalResult.taken += separator.taken;
-      } catch {
-        return finalResult;
+        previousSeparatorTaken = separator.taken;
+      } catch (err) {
+        if (finalResult.taken === 0) {
+          throw err;
+        }
+        break;
       }
     }
     return finalResult;

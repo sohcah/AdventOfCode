@@ -153,7 +153,7 @@ nearby tickets:
     const ticket = p.num.list(",");
     const range = p`${p.num(0)}-${p.num(1)}`;
     const field = p`${p(/[^:]+/)("name")}: ${range.list(" or ")("ranges")}`;
-    const data = p`${field.list("\n")("fields")}\nyour ticket:\n${ticket("mine")}\n\nnearby tickets:\n${ticket.list("\n")("nearby")}`.parse(
+    const data = p`${field.list("\n")("fields")}\n\nyour ticket:\n${ticket("mine")}\n\nnearby tickets:\n${ticket.list("\n")("nearby")}`.parse(
       input
     );
 

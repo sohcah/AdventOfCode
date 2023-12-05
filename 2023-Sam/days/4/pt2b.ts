@@ -1,7 +1,7 @@
 import { p, loadLines, output } from "aocutils";
 
 const input = loadLines(
-  p`Card${/\s+/}${p.num("card")}:${/\s+/}${p.num.list(/\s+/).map(i => new Set(i))("winning")}|${/\s+/}${p.num.list(/\s+/g)("numbers")}`
+  p`Card${/\s+/}${p.num("card")}:${/\s+/}${p.num.list(/\s+/).map(i => new Set(i))("winning")} |${/\s+/}${p.num.list(/\s+/g)("numbers")}`
 );
 
 const cardCounts = new Map(

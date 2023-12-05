@@ -11,12 +11,24 @@ const input = load(
 p`seeds: ${p.num.list(" ")("seeds")}
 
 seed-to-soil map:
-${map("seedToSoil")}soil-to-fertilizer map:
-${map("soilToFertilizer")}fertilizer-to-water map:
-${map("fertilizerToWater")}water-to-light map:
-${map("waterToLight")}light-to-temperature map:
-${map("lightToTemperature")}temperature-to-humidity map:
-${map("temperatureToHumidity")}humidity-to-location map:
+${map("seedToSoil")}
+
+soil-to-fertilizer map:
+${map("soilToFertilizer")}
+
+fertilizer-to-water map:
+${map("fertilizerToWater")}
+
+water-to-light map:
+${map("waterToLight")}
+
+light-to-temperature map:
+${map("lightToTemperature")}
+
+temperature-to-humidity map:
+${map("temperatureToHumidity")}
+
+humidity-to-location map:
 ${map("humidityToLocation")}`
 );
 
@@ -41,5 +53,5 @@ const results = input.seeds.map(seed => {
 
 console.log(results);
 
-output(results.min()).forTest(35);
+output(results.min()).forTest(35).forActual(265018614);
 

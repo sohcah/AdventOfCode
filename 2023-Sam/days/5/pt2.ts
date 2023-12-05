@@ -6,17 +6,29 @@ const mapEntry = p.num.list(" ")
     source: [i[1], i[1] + i[2]],
   }))
 
-const map = mapEntry.list("\n").map(i => i.filter(j => j.destination[0] !== undefined));
+const map = mapEntry.list("\n");
 const input = load(
   p`seeds: ${p`${p.num} ${p.num}`.list(" ")("seedPairs")}
 
 seed-to-soil map:
-${map("seedToSoil")}soil-to-fertilizer map:
-${map("soilToFertilizer")}fertilizer-to-water map:
-${map("fertilizerToWater")}water-to-light map:
-${map("waterToLight")}light-to-temperature map:
-${map("lightToTemperature")}temperature-to-humidity map:
-${map("temperatureToHumidity")}humidity-to-location map:
+${map("seedToSoil")}
+
+soil-to-fertilizer map:
+${map("soilToFertilizer")}
+
+fertilizer-to-water map:
+${map("fertilizerToWater")}
+
+water-to-light map:
+${map("waterToLight")}
+
+light-to-temperature map:
+${map("lightToTemperature")}
+
+temperature-to-humidity map:
+${map("temperatureToHumidity")}
+
+humidity-to-location map:
 ${map("humidityToLocation")}`
 );
 
@@ -79,5 +91,5 @@ const results = seeds.map((seed) => {
 
 // console.log(results);
 
-output(results.min()).forTest(46);
+output(results.min()).forTest(46).forActual(63179500);
 
