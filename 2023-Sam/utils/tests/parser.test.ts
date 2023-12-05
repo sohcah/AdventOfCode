@@ -1,10 +1,10 @@
 import { test, expect, assertType } from "vitest";
-import { assertTypeNotAny, p, type Parser } from "../src";
+import { assertTypeNotAny, p, type Parser, type UnnamedParser } from "../src";
 
 const gameSeq = p`Game ${p.digit("game")}: ${p.num("value")} / ${p.num("total")}`;
 
 test("p seq types - object", () => {
-  assertType<Parser<{
+  assertType<UnnamedParser<{
     game: number;
     value: number;
     total: number;
@@ -19,10 +19,10 @@ test("seq parser works - object", () => {
   });
 });
 
-const gameSeqArray = p`Game ${p.digit}: ${p.num} / ${p.num}`;
+const gameSeqArray = p`Game ${p.digit(0)}: ${p.num(1)} / ${p.num(2)}`;
 
 test("p seq types - array", () => {
-  assertType<Parser<[
+  assertType<Parser<readonly [
     number,
     number,
     number
@@ -91,9 +91,11 @@ nearby tickets:
 38,6,12`;
 
   test("2022 day 17 fields parser works", () => {
+    const range = p`${p.num}-${p.num}`;
+    assertType<Parser<[number, number]>>(range);
     const fields =
       p`${p(/[^:]+/)("name")}: ${
-        p`${p.num}-${p.num}`.list(" or ")("ranges")
+        range.list(" or ")("ranges")
       }`.list("\n").parse(
         input.groups[0]);
 
@@ -149,7 +151,7 @@ nearby tickets:
 
   test("2022 day 17 parser works", () => {
     const ticket = p.num.list(",");
-    const range = p`${p.num}-${p.num}`;
+    const range = p`${p.num(0)}-${p.num(1)}`;
     const field = p`${p(/[^:]+/)("name")}: ${range.list(" or ")("ranges")}`;
     const data = p`${field.list("\n")("fields")}\nyour ticket:\n${ticket("mine")}\n\nnearby tickets:\n${ticket.list("\n")("nearby")}`.parse(
       input
@@ -173,4 +175,4 @@ test("or works", () => {
   assertType<Parser<number | string>>(parser);
   expect(parser.parse("123")).toBe(123);
   expect(parser.parse("abc")).toBe("abc");
-})
+});

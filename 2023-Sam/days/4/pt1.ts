@@ -10,5 +10,5 @@ const result = input.map(({winning, numbers}) => {
   return 2 ** (num - 1);
 });
 
-output(result.sum).forTest(13);
+output(result.sum).forTest(13).forActual(25004);
 

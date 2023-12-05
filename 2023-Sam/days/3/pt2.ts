@@ -48,5 +48,5 @@ for (const numbers of gears.values()) {
 // console.log(matches)
 // const result = matches.map(i => Number(i[1])).sum;
 
-output(sum).forTest(467835);
+output(sum).forTest(467835).forActual(89471771);
 

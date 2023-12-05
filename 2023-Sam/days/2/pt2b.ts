@@ -1,7 +1,7 @@
 import { assertType, assertTypeNotAny, p, loadLines, output } from "aocutils";
 
 const games = loadLines(
-	p`Game ${p.num("game")}: ${p`${p.num("value")} ${p.word("key")}`
+	p`Game ${p.num("game")}: ${p`${p.num(1)} ${p.word(0)}`
 		.list(", ")
 		.dict({
 			red: 0,

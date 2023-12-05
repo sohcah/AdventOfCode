@@ -6,7 +6,7 @@ import * as fs from "fs";
 import { writeFileSync } from "fs";
 import type { DayInput, DayResult } from "../../runHelpers.js";
 import chalk from "chalk";
-import type { Parser, ResultOf } from "./parser/parser";
+import type { ResultOf, UnnamedParser } from "./parser/parser";
 import type { NumericOperation } from "./extensions/array";
 
 export * from "./safe/map";
@@ -151,7 +151,7 @@ export function loadTrimmed(): string {
 	return loadInput().trim();
 }
 
-export function _load<TParser extends Parser<any> | undefined = undefined>(parser: TParser = undefined as TParser): TParser extends undefined ? string[] : ResultOf<NonNullable<TParser>> {
+export function _load<TParser extends UnnamedParser<any> | undefined = undefined>(parser: TParser = undefined as TParser): TParser extends undefined ? string[] : ResultOf<NonNullable<TParser>> {
   const text = loadInput().replace(/\n$/, "");
   if (parser === undefined) return text as any;
   const parsed = parser.parse(text);
@@ -160,7 +160,7 @@ export function _load<TParser extends Parser<any> | undefined = undefined>(parse
 export const load = _load;
 globalThis.load = _load;
 
-export function loadLines<TParser extends Parser<any> | undefined = undefined>(parser: TParser = undefined as TParser): TParser extends undefined ? string[] : ResultOf<NonNullable<TParser>>[] {
+export function loadLines<TParser extends UnnamedParser<any> | undefined = undefined>(parser: TParser = undefined as TParser): TParser extends undefined ? string[] : ResultOf<NonNullable<TParser>>[] {
 	const lines = loadTrimmed()
 		.split(/\r?\n/)
 		.filter((i) => i);
