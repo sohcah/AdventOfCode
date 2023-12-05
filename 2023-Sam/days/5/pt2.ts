@@ -58,7 +58,6 @@ const intersectionPoints = ([
   const data = input[b];
   // console.log(data);
   return [
-    ...a,
     ...a.map(dest => {
       return lookupRev(b, dest);
     }),
