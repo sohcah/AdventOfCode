@@ -1,4 +1,5 @@
 import type { Number as TSNumber } from "ts-toolbelt";
+// import { RE2JS } from "re2js";
 
 type UnionToIntersection<U> =
   (U extends any ? (x: U) => void : never) extends ((x: infer I) => void) ? I : never
@@ -68,16 +69,37 @@ function custom<TResult>(parse: ParseFn<TResult>): UnnamedParser<TResult> {
   return createNamed;
 }
 
+// const re2jsWeakMap = new WeakMap<RegExp, RE2JS>();
 function regexp<TResult = string>(regexp: RegExp, parse: (text: string, value: RegExpMatchArray) => TResult = ((i) => i as TResult)) {
+  const source = regexp.source.startsWith("^") ? regexp.source : `^(?:${regexp.source})`;
+  const mutatedRegexp = new RegExp(source, regexp.flags);
+  // const re2js = re2jsWeakMap.get(regexp) ?? RE2JS.compile(source, (
+  //   regexp.ignoreCase ? RE2JS.CASE_INSENSITIVE : 0
+  // ) | (
+  //   regexp.multiline ? RE2JS.MULTILINE : 0
+  // ) | (
+  //   regexp.dotAll ? RE2JS.DOTALL : 0
+  // ) | (
+  //   regexp.unicode ? 0 : RE2JS.DISABLE_UNICODE_GROUPS
+  // ) | RE2JS.LONGEST_MATCH);
+  // re2jsWeakMap.set(regexp, re2js);
+
   return custom(text => {
-    const source = regexp.source.startsWith("^") ? regexp : `^(?:${regexp.source})`;
-    const mutatedRegexp = new RegExp(source, regexp.flags);
     const result = text.match(mutatedRegexp);
     if (!result) throw new Error(`Unable to match ${regexp.toString()} with '${text}'`);
     return {
       taken: result[0].length,
       result: parse(result[0], result)
     };
+    // const matcher = re2js.matcher(text);
+    // matcher.find();
+    // if (!matcher.hasMatch) throw new Error(`Unable to match ${regexp.source} with '${text}'`);
+    // const match = matcher.group();
+    // console.log(match);
+    // return {
+    //   taken: match.length,
+    //   result: parse(match)
+    // };
   });
 }
 

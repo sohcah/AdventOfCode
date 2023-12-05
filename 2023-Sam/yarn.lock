@@ -972,6 +972,7 @@ __metadata:
     "@types/core-js": "npm:^2.5.8"
     "@types/node": "npm:^20.10.0"
     fast-safe-stringify: "npm:^2.1.1"
+    re2js: "npm:^0.4.1"
     ts-toolbelt: "npm:^9.6.0"
     tsup: "npm:^8.0.1"
     type-fest: "npm:^4.8.3"
@@ -3061,6 +3062,13 @@ __metadata:
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
   checksum: 72900df0616e473e824202113c3df6abae59150dfb73ed13273503127235320e9c8ca4aaaaccfd58cf417c6ca92a6e68ee9a5c3182886ae949a768639b388a7b
+  languageName: node
+  linkType: hard
+
+"re2js@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "re2js@npm:0.4.1"
+  checksum: b2f4d8f201250b361357636e11907f38723462b02db3788f0e7bef5c1a31d7f4a32c32f8231cf8d408f864645cb20ce88f323293ac873f91179a9d204f4738e1
   languageName: node
   linkType: hard
 

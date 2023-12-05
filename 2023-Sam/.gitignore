@@ -11,3 +11,7 @@
 #.pnp.*
 
 node_modules
+
+days/*/input
+days/*/test
+days/*/test2*

@@ -1,4 +1,3 @@
-//usenode
 import { p, loadLines, output } from "aocutils";
 
 const input = loadLines(
