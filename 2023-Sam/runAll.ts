@@ -60,7 +60,7 @@ async function runAndLogDay(day: number, part: number): Promise<RunAndLogDayResu
   for (let day = 1; day <= maxDay; day++) {
     for (let part = 1; part <= 2; part++) {
       let results = [];
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 10; i++) {
         results.push(await runAndLogDay(day, part));
       }
       allResults.push({ ...results[0]!, time: results.reduce((a, b) => a + b.time, 0) / results.length });

@@ -23,6 +23,7 @@ export * from "./linked/list";
 export * from "./helpers/regex";
 export * from "./parser/parser";
 
+
 if(process.env.NO_LOG) {
 	console.log = () => {};
 	console.debug = () => {};
@@ -151,7 +152,7 @@ export function loadTrimmed(): string {
 	return loadInput().trim();
 }
 
-export function _load<TParser extends UnnamedParser<any> | undefined = undefined>(parser: TParser = undefined as TParser): TParser extends undefined ? string[] : ResultOf<NonNullable<TParser>> {
+export function _load<TParser extends UnnamedParser<any> | undefined = undefined>(parser: TParser = undefined as TParser): TParser extends undefined ? string : ResultOf<NonNullable<TParser>> {
   const text = loadInput().replace(/\n$/, "");
   if (parser === undefined) return text as any;
   const parsed = parser.parse(text);

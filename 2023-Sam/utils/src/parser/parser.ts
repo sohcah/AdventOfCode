@@ -1,5 +1,6 @@
 import type { Number as TSNumber } from "ts-toolbelt";
-// import { RE2JS } from "re2js";
+import { customAlphabet } from "nanoid";
+const nanoid = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10);
 
 type UnionToIntersection<U> =
   (U extends any ? (x: U) => void : never) extends ((x: infer I) => void) ? I : never
@@ -15,6 +16,11 @@ type GetParserResult<T extends ParseFn<any>> = ReturnType<T>["result"];
 
 export const parseFnSymbol = Symbol("parseFn");
 type ParseFnSymbol = typeof parseFnSymbol;
+
+type OptimiserHints = Partial<{
+  regexp: RegExp;
+  transform?(value: string): unknown;
+}>;
 
 export type ResultOf<T extends ImplicitParser> = GetParserResult<ImplicitParserType<T>[ParseFnSymbol]>;
 
@@ -40,11 +46,13 @@ export interface Parser<TResult> {
   list(parser?: ImplicitParser): UnnamedParser<TResult[]>;
 
   dict: TResult extends DictEntry<infer TKey, infer TValue>[] ? ((defaultValues?: Record<TKey, TValue>) => UnnamedParser<Record<TKey, TValue>>) : never;
+
+  optimiserHints: OptimiserHints;
 }
 
-function custom<TResult>(parse: ParseFn<TResult>): UnnamedParser<TResult> {
+function custom<TResult>(parse: ParseFn<TResult>, optimiserHints: OptimiserHints = {}): UnnamedParser<TResult> {
   const createNamed: any = function <const TName extends string | number>(name: TName) {
-    const named = custom(parse) as any as NamedParser<TName, TResult>;
+    const named = custom(parse, optimiserHints) as any as NamedParser<TName, TResult>;
     named.nameValue = name;
     return named;
   };
@@ -58,6 +66,7 @@ function custom<TResult>(parse: ParseFn<TResult>): UnnamedParser<TResult> {
         result: transformer(result.result),
         taken: result.taken
       };
+      // TODO: Optimiser hints for transforms
     });
   };
   createNamed.list = (separatorParser: ImplicitParser = /,\s*/) => {
@@ -66,23 +75,14 @@ function custom<TResult>(parse: ParseFn<TResult>): UnnamedParser<TResult> {
   createNamed.dict = (defaultValues: any) => {
     return createNamed.map(dictWithDefault(defaultValues));
   };
+  createNamed.optimiserHints = optimiserHints;
   return createNamed;
 }
 
-// const re2jsWeakMap = new WeakMap<RegExp, RE2JS>();
 function regexp<TResult = string>(regexp: RegExp, parse: (text: string, value: RegExpMatchArray) => TResult = ((i) => i as TResult)) {
   const source = regexp.source.startsWith("^") ? regexp.source : `^(?:${regexp.source})`;
   const mutatedRegexp = new RegExp(source, regexp.flags);
-  // const re2js = re2jsWeakMap.get(regexp) ?? RE2JS.compile(source, (
-  //   regexp.ignoreCase ? RE2JS.CASE_INSENSITIVE : 0
-  // ) | (
-  //   regexp.multiline ? RE2JS.MULTILINE : 0
-  // ) | (
-  //   regexp.dotAll ? RE2JS.DOTALL : 0
-  // ) | (
-  //   regexp.unicode ? 0 : RE2JS.DISABLE_UNICODE_GROUPS
-  // ) | RE2JS.LONGEST_MATCH);
-  // re2jsWeakMap.set(regexp, re2js);
+  const canOptimise = !regexp.flags && parse.length === 1;
 
   return custom(text => {
     const result = text.match(mutatedRegexp);
@@ -91,16 +91,7 @@ function regexp<TResult = string>(regexp: RegExp, parse: (text: string, value: R
       taken: result[0].length,
       result: parse(result[0], result)
     };
-    // const matcher = re2js.matcher(text);
-    // matcher.find();
-    // if (!matcher.hasMatch) throw new Error(`Unable to match ${regexp.source} with '${text}'`);
-    // const match = matcher.group();
-    // console.log(match);
-    // return {
-    //   taken: match.length,
-    //   result: parse(match)
-    // };
-  });
+  }, canOptimise ? { regexp: regexp.flags ? undefined : regexp, transform: parse as any } : undefined);
 }
 
 function text<TResult = string>(textMatch: string, result: TResult = text as TResult) {
@@ -118,18 +109,42 @@ type ImplicitParserType<TParser extends ImplicitParser> =
   TParser extends UnnamedParser<any> ? TParser : TParser extends NamedParser<any, any> ? TParser : TParser extends RegExp ? UnnamedParser<string> : TParser extends string ? UnnamedParser<string> : never;
 
 function implicit<TParser extends ImplicitParser>(parser: TParser): ImplicitParserType<TParser> {
+  if (typeof parser === "function") {
+    return parser as any;
+  }
   if (typeof parser === "string") {
     return text(parser) as any;
   }
-  if (parser instanceof RegExp) {
-    return regexp(parser) as any;
-  }
-  return parser as any;
+  return regexp(parser) as any;
 }
 
 const digit = regexp(/\d/, (i) => Number(i));
-const num = regexp(/\d+/, (i) => Number(i));
-const word = regexp(/[a-zA-Z0-9]+/);
+const num = custom(text => {
+  let num = 0;
+  let index;
+  for(index = 0; index < text.length; index++) {
+    const char = text.charCodeAt(index);
+    if (char < 48 || char > 57) break;
+    num = num * 10 + char - 48;
+  }
+  if (!index) throw new Error(`Unable to match number with '${text}'`);
+  return {
+    taken: index,
+    result: num,
+  };
+})
+const word = custom(text => {
+  let index;
+  for(index = 0; index < text.length; index++) {
+    const char = text.charCodeAt(index);
+    if (char < 48 || char > 57 && char < 65 || char > 90 && char < 97 || char > 122) break;
+  }
+  if (!index) throw new Error(`Unable to match word with '${text}'`);
+  return {
+    taken: index,
+    result: text.slice(0, index),
+  };
+});
 
 type FilterTuple<T extends readonly any[], E> =
   T extends readonly [infer F, ...infer R] ? readonly [F] extends readonly [E] ?
@@ -207,15 +222,31 @@ type SeqObjOutput<TParsers extends readonly ImplicitParser[]> =
 
 type ValidateSeqInput<TParsers extends ImplicitParser[]> = TParsers;
 
+function escapeRegExp(text: string) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 function seq<const TParsers extends ImplicitParser[]>(strings: TemplateStringsArray, ...implicitParsers: ValidateSeqInput<TParsers>): UnnamedParser<SeqObjOutput<TParsers>> {
+  let parsers = implicitParsers.map(implicit);
+  const shouldReturnObject = parsers.some(i => ("nameValue" in i) && typeof i.nameValue === "string");
+  let namedParsers = parsers.filter(i => ("nameValue" in i)) as NamedParser<any, any>[];
+  if (namedParsers.length === 0) {
+    if (process.env.EXPERIMENTAL_OPTIMISER === "true" && parsers.every(i => i.optimiserHints.regexp)) {
+      const optimizerId = nanoid();
+      return regexp(new RegExp(strings.map((i, n) => `${escapeRegExp(i)}${parsers[n] ? `(?<optimizer_${optimizerId}_${n}>${parsers[n].optimiserHints.regexp?.source ?? ""})` : ""}`).join("")), (i, m) => {
+        const items: any[] = [];
+        for (let i = 0; i < parsers.length; i++) {
+          const transformer = parsers[i].optimiserHints.transform;
+          const match = m.groups![`optimizer_${optimizerId}_${i}`]
+          items.push(transformer ? transformer(match) : match);
+        }
+        return items;
+      }) as any;
+    }
+    parsers = namedParsers = parsers.map((i, index) => i(index));
+  }
   return custom(text => {
     let taken = 0;
-    let parsers = implicitParsers.map(implicit);
-    const shouldReturnObject = parsers.some(i => ("nameValue" in i) && typeof i.nameValue === "string");
-    let namedParsers = parsers.filter(i => ("nameValue" in i)) as NamedParser<any, any>[];
-    if (namedParsers.length === 0) {
-      parsers = namedParsers = parsers.map((i, index) => i(index));
-    }
     const result = (shouldReturnObject ? {} : new Array((namedParsers.map(i => i.nameValue).max() as number) + 1).fill(null!)) as SeqObjOutput<TParsers>;
     for (let i = 0; i < strings.length; i++) {
       if (!text.slice(taken).startsWith(strings[i])) {
@@ -266,11 +297,12 @@ function sep<const TParser extends ImplicitParser>(parser: TParser, sep: Implici
   });
 }
 
-function or<TParser extends ImplicitParser>(...parsers: TParser[]): UnnamedParser<ResultOf<TParser>> {
+function or<TParser extends ImplicitParser>(...implicitParsers: TParser[]): UnnamedParser<ResultOf<TParser>> {
+  const parsers = implicitParsers.map(p => implicit(p));
   return custom(text => {
     for (const parser of parsers) {
       try {
-        return implicit(parser)[parseFnSymbol](text);
+        return parser[parseFnSymbol](text);
       } catch {
       }
     }
@@ -279,7 +311,7 @@ function or<TParser extends ImplicitParser>(...parsers: TParser[]): UnnamedParse
 }
 
 function parseText<TParser extends ImplicitParser>(parserBuilder: TParser, text: string): ResultOf<TParser> {
-  const { [parseFnSymbol]: parse } = implicit(parserBuilder)("");
+  const { [parseFnSymbol]: parse } = implicit(parserBuilder);
   const { result, taken } = parse(text);
   if (taken < text.length) {
     console.warn(`No parsers remaining with '${text.slice(taken)}' in '${text}' at index ${taken}`);
@@ -306,7 +338,7 @@ function dictWithDefault<TKey extends keyof any, TValue>(defaultValue: { [key in
 }
 
 function isTemplateStringsArray(value: any): value is TemplateStringsArray {
-  return typeof value === "object" && Array.isArray(value) && "raw" in value;
+  return typeof value === "object" && "raw" in value;
 }
 
 export function p<const TParsers extends ImplicitParser[]>(strings: TemplateStringsArray, ...parsers: ValidateSeqInput<TParsers>): UnnamedParser<SeqObjOutput<TParsers>>;

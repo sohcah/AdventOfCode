@@ -6,6 +6,8 @@ export function matchAllOverlapping(regex: RegExp, text: string): string[][] {
 }
 
 export function matchLast(regex: RegExp, text: string): string[] | null {
-  const all = matchAllOverlapping(regex, text);
-  return all.at(-1) ?? null;
+  const mutatedRegex = new RegExp(`^[^]*(${regex.source})`, regex.flags);
+  const match = text.match(mutatedRegex);
+  if (!match) return null;
+  return [...match].slice(1);
 }

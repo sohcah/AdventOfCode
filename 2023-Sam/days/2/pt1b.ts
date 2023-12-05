@@ -1,6 +1,6 @@
-import { load, p, output, assertType, assertTypeNotAny } from "aocutils";
+import { loadLines, p, output, assertType, assertTypeNotAny } from "aocutils";
 
-const games = load(
+const games = loadLines(
 	p`Game ${p.num("game")}: ${p`${p.num("value")} ${p.word("key")}`
 		.list(", ")
 		.dict({
@@ -9,7 +9,6 @@ const games = load(
 			green: 0,
 		})
 		.list("; ")("rounds")}`
-    .list("\n")
 );
 
 assertType<
