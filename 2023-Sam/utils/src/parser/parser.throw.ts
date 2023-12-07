@@ -1,6 +1,5 @@
 import type { Number as TSNumber } from "ts-toolbelt";
 import { customAlphabet } from "nanoid";
-
 const nanoid = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10);
 
 type UnionToIntersection<U> =
@@ -8,50 +7,12 @@ type UnionToIntersection<U> =
 
 type ParseFn<TResult> = (value: string) => ParserResult<TResult>;
 
-const ParserResultTypeSymbol = Symbol("ParserResultType");
-
 type ParserResult<TResult> = {
-  type: "success";
   taken: number;
   result: TResult;
-  [ParserResultTypeSymbol]: TResult;
-} | {
-  type: "fail";
-  message: string;
-  stack: string[];
-  [ParserResultTypeSymbol]: TResult;
 }
 
-function success<TResult>(taken: number, result: TResult): ParserResult<TResult> {
-  return {
-    type: "success",
-    taken,
-    result,
-    [ParserResultTypeSymbol]: result
-  };
-}
-
-function fail<TResult>(message: string, line: string): ParserResult<TResult> {
-  return {
-    type: "fail",
-    message,
-    stack: [line],
-    [ParserResultTypeSymbol]: null!
-  };
-}
-
-function extendFail<TResult>(result: ParserResult<unknown> & {
-  type: "fail"
-}, line: string): ParserResult<TResult> {
-  return {
-    type: "fail",
-    message: result.message,
-    stack: [...result.stack, line],
-    [ParserResultTypeSymbol]: null!
-  };
-}
-
-type GetParserResult<T extends ParseFn<any>> = ReturnType<T>[typeof ParserResultTypeSymbol];
+type GetParserResult<T extends ParseFn<any>> = ReturnType<T>["result"];
 
 export const parseFnSymbol = Symbol("parseFn");
 type ParseFnSymbol = typeof parseFnSymbol;
@@ -101,8 +62,10 @@ function custom<TResult>(parse: ParseFn<TResult>, optimiserHints: OptimiserHints
   createNamed.map = <TNewResult>(transformer: (value: TResult) => TNewResult) => {
     return custom(text => {
       const result = parse(text);
-      if (result.type === "fail") return extendFail<TNewResult>(result, `map()`);
-      return success(result.taken, transformer(result.result));
+      return {
+        result: transformer(result.result),
+        taken: result.taken
+      };
       // TODO: Optimiser hints for transforms
     });
   };
@@ -123,15 +86,21 @@ function regexp<TResult = string>(regexp: RegExp, parse: (text: string, value: R
 
   return custom(text => {
     const result = text.match(mutatedRegexp);
-    if (!result) return fail<TResult>(`Unable to match ${regexp.toString()} with '${text}'`, `regexp(${regexp.toString()})`);
-    return success(result[0].length, parse(result[0], result));
+    if (!result) throw new Error(`Unable to match ${regexp.toString()} with '${text}'`);
+    return {
+      taken: result[0].length,
+      result: parse(result[0], result)
+    };
   }, canOptimise ? { regexp: regexp.flags ? undefined : regexp, transform: parse as any } : undefined);
 }
 
 function text<TResult = string>(textMatch: string, result: TResult = text as TResult) {
   return custom(text => {
-    if (!text.startsWith(textMatch)) return fail<TResult>(`Unable to match ${textMatch} with '${text}'`, `text(${textMatch.replace("\n", "\\n")})`);
-    return success(textMatch.length, result);
+    if (!text.startsWith(textMatch)) throw new Error(`Unable to match ${textMatch} with '${text}'`);
+    return {
+      taken: textMatch.length,
+      result: result
+    };
   });
 }
 
@@ -153,22 +122,28 @@ const digit = regexp(/\d/, (i) => Number(i));
 const num = custom(text => {
   let num = 0;
   let index;
-  for (index = 0; index < text.length; index++) {
+  for(index = 0; index < text.length; index++) {
     const char = text.charCodeAt(index);
     if (char < 48 || char > 57) break;
     num = num * 10 + char - 48;
   }
-  if (!index) return fail<number>(`Unable to match number with '${text}'`, "num");
-  return success(index, num);
-});
+  if (!index) throw new Error(`Unable to match number with '${text}'`);
+  return {
+    taken: index,
+    result: num,
+  };
+})
 const word = custom(text => {
   let index;
-  for (index = 0; index < text.length; index++) {
+  for(index = 0; index < text.length; index++) {
     const char = text.charCodeAt(index);
     if (char < 48 || char > 57 && char < 65 || char > 90 && char < 97 || char > 122) break;
   }
-  if (!index) return fail<string>(`Unable to match word with '${text}'`, "word");
-  return success(index, text.slice(0, index));
+  if (!index) throw new Error(`Unable to match word with '${text}'`);
+  return {
+    taken: index,
+    result: text.slice(0, index),
+  };
 });
 
 type FilterTuple<T extends readonly any[], E> =
@@ -248,7 +223,7 @@ type SeqObjOutput<TParsers extends readonly ImplicitParser[]> =
 type ValidateSeqInput<TParsers extends ImplicitParser[]> = TParsers;
 
 function escapeRegExp(text: string) {
-  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
 function seq<const TParsers extends ImplicitParser[]>(strings: TemplateStringsArray, ...implicitParsers: ValidateSeqInput<TParsers>): UnnamedParser<SeqObjOutput<TParsers>> {
@@ -262,7 +237,7 @@ function seq<const TParsers extends ImplicitParser[]>(strings: TemplateStringsAr
         const items: any[] = [];
         for (let i = 0; i < parsers.length; i++) {
           const transformer = parsers[i].optimiserHints.transform;
-          const match = m.groups![`optimizer_${optimizerId}_${i}`];
+          const match = m.groups![`optimizer_${optimizerId}_${i}`]
           items.push(transformer ? transformer(match) : match);
         }
         return items;
@@ -275,19 +250,21 @@ function seq<const TParsers extends ImplicitParser[]>(strings: TemplateStringsAr
     const result = (shouldReturnObject ? {} : new Array((namedParsers.map(i => i.nameValue).max() as number) + 1).fill(null!)) as SeqObjOutput<TParsers>;
     for (let i = 0; i < strings.length; i++) {
       if (!text.slice(taken).startsWith(strings[i])) {
-        return fail<SeqObjOutput<TParsers>>(`Unable to match '${strings[i]}' with '${text.slice(taken)}' in '${text}' at index ${taken}`, `seq(${strings.raw.join("{}").replace("\n", "\\n")}`);
+        throw new Error(`Unable to match '${strings[i]}' with '${text.slice(taken)}' in '${text}' at index ${taken}`);
       }
       taken += strings[i].length;
       if (!parsers[i]) continue;
       const { [parseFnSymbol]: parse, ...rest } = parsers[i];
       const parserResult = parse(text.slice(taken));
-      if (parserResult.type === "fail") return extendFail<SeqObjOutput<TParsers>>(parserResult, `seq(${strings.raw.join("{}")}`);
       taken += parserResult.taken;
       if ("nameValue" in rest) {
         result[((rest as any).nameValue ?? i) as keyof typeof result] = parserResult.result as any;
       }
     }
-    return success(taken, namedParsers.length === 1 ? Object.values(result as any)[0] as any : result);
+    return {
+      result: namedParsers.length === 1 ? Object.values(result as any)[0] as any : result,
+      taken
+    };
   });
 }
 
@@ -296,27 +273,25 @@ function sep<const TParser extends ImplicitParser>(parser: TParser, sep: Implici
   const sepParser = implicit(sep);
   return custom(text => {
     const finalResult: ParserResult<ResultOf<TParser>[]> = {
-      type: "success",
       result: [],
-      taken: 0,
-      [ParserResultTypeSymbol]: null!
+      taken: 0
     };
     let previousSeparatorTaken = 0;
     let loops = 0;
     while (finalResult.taken < text.length) {
-      if (loops++ > 1000) return fail<ResultOf<TParser> []>("Over 1000 loops", `sep(${parser.toString()}, ${sep.toString()})`);
-      const result = mainParser[parseFnSymbol](text.slice(finalResult.taken + previousSeparatorTaken));
-      if (result.type === "fail") {
+      if (loops++ > 1000) throw new Error("Over 1000 loops");
+      try {
+        const result = mainParser[parseFnSymbol](text.slice(finalResult.taken + previousSeparatorTaken));
+        finalResult.taken += result.taken + previousSeparatorTaken;
+        finalResult.result.push(result.result);
+        const separator = sepParser[parseFnSymbol](text.slice(finalResult.taken));
+        previousSeparatorTaken = separator.taken;
+      } catch (err) {
         if (finalResult.taken === 0) {
-          return extendFail<ResultOf<TParser> []>(result, `sep(${parser.toString()}, ${sep.toString()})`);
+          throw err;
         }
         break;
       }
-      finalResult.taken += result.taken + previousSeparatorTaken;
-      finalResult.result.push(result.result);
-      const separator = sepParser[parseFnSymbol](text.slice(finalResult.taken));
-      if (separator.type === "fail") break;
-      previousSeparatorTaken = separator.taken;
     }
     return finalResult;
   });
@@ -326,23 +301,22 @@ function or<TParser extends ImplicitParser>(...implicitParsers: TParser[]): Unna
   const parsers = implicitParsers.map(p => implicit(p));
   return custom(text => {
     for (const parser of parsers) {
-      const result = parser[parseFnSymbol](text);
-      if (result.type === "success") return result;
+      try {
+        return parser[parseFnSymbol](text);
+      } catch {
+      }
     }
-    return fail<ResultOf<TParser>>(`Unable to match any of ${parsers.map(i => i.toString()).join(", ")} with '${text}'`, `or(${parsers.map(i => i.toString()).join(", ")})`);
+    throw new Error(`No parsers matched '${text}'`);
   });
 }
 
 function parseText<TParser extends ImplicitParser>(parserBuilder: TParser, text: string): ResultOf<TParser> {
   const { [parseFnSymbol]: parse } = implicit(parserBuilder);
-  const result = parse(text);
-  if (result.type === "fail") {
-    throw new Error(result.message + "\n" + result.stack.map(i => ` - ${i}`).join("\n"));
+  const { result, taken } = parse(text);
+  if (taken < text.length) {
+    console.warn(`No parsers remaining with '${text.slice(taken)}' in '${text}' at index ${taken}`);
   }
-  if (result.taken < text.length) {
-    console.warn(`No parsers remaining with '${text.slice(result.taken)}' in '${text}' at index ${result.taken}`);
-  }
-  return result.result;
+  return result;
 }
 
 type DictEntry<TKey extends keyof any, TValue> = ({

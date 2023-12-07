@@ -6,7 +6,10 @@ import * as fs from "fs";
 import { writeFileSync } from "fs";
 import type { DayInput, DayResult } from "../../runHelpers.js";
 import chalk from "chalk";
-import type { ResultOf, UnnamedParser } from "./parser/parser";
+// export * from "./parser/parserCompiler";
+// import { createParserFunction, ResultOf, UnnamedParser } from "./parser/parserCompiler";
+export * from "./parser/parser";
+import { ResultOf, UnnamedParser } from "./parser/parser";
 import type { NumericOperation } from "./extensions/array";
 
 export * from "./safe/map";
@@ -21,7 +24,6 @@ export * from "./helpers/range";
 export * from "./linked/list";
 
 export * from "./helpers/regex";
-export * from "./parser/parser";
 
 
 if(process.env.NO_LOG) {
@@ -162,9 +164,12 @@ export const load = _load;
 globalThis.load = _load;
 
 export function loadLines<TParser extends UnnamedParser<any> | undefined = undefined>(parser: TParser = undefined as TParser): TParser extends undefined ? string[] : ResultOf<NonNullable<TParser>>[] {
+  // const parserCompiled = parser ? createParserFunction(parser) : null;
 	const lines = loadTrimmed()
 		.split(/\r?\n/)
 		.filter((i) => i);
+  // if (parserCompiled === null) return lines as any;
+  // const parsed = lines.map((i) => parserCompiled(i));
   if (parser === undefined) return lines as any;
   const parsed = lines.map((i) => parser.parse(i));
   return parsed as any;

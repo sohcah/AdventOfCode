@@ -1,7 +1,7 @@
 import { p, loadLines, output } from "aocutils";
 
 const input = loadLines(
-  p`Card${p(/\s+/)}${p.num("card")}:${p(/\s+/)("_")}${p.num.list(/\s+/).map(i => new Set(i))("winning")}|${p(/\s+/)("_")}${p.num.list(/\s+/g)("numbers")}`
+  p`Card${p(/\s+/)}${p.num("card")}:${p(/\s+/)("_")}${p.num.list(/\s+/).map(i => new Set(i))("winning")}|${p(/\s+/)("_")}${p.num.list(/\s+/)("numbers")}`
 );
 
 const cardsByNumber = input.groupBy(i => i.card);

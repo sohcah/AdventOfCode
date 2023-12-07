@@ -1,35 +1,32 @@
-import { p, output } from "aocutils";
+// This is a version which doesn't use the `parse` but instead manually input processing, in order to speed it up.
+import { output } from "aocutils";
 
-const mapEntry = p.num.list(" ").map((i) => ({
-	destination: [i[0], i[0] + i[2]],
-	source: [i[1], i[1] + i[2]],
-}));
+const rawInput = load()
+	.split("\n\n")
+	.map((i) => i.split("\n"));
 
-const map = mapEntry.list("\n");
-const input = load(
-	p`seeds: ${p`${p.num} ${p.num}`.list(" ")("seedPairs")}
-
-seed-to-soil map:
-${map("seedToSoil")}
-
-soil-to-fertilizer map:
-${map("soilToFertilizer")}
-
-fertilizer-to-water map:
-${map("fertilizerToWater")}
-
-water-to-light map:
-${map("waterToLight")}
-
-light-to-temperature map:
-${map("lightToTemperature")}
-
-temperature-to-humidity map:
-${map("temperatureToHumidity")}
-
-humidity-to-location map:
-${map("humidityToLocation")}`
+const mappedInput = rawInput.slice(1).map((i) =>
+	i
+		.slice(1)
+		.map((j) => j.split(" ").map(Number))
+		.map((i) => {
+			return {
+				destination: [i[0], i[0] + i[2]],
+				source: [i[1], i[1] + i[2]],
+			};
+		})
 );
+
+const input = {
+	seedPairs: rawInput[0][0].split(" ").slice(1).map(Number).batch(2),
+	seedToSoil: mappedInput[0],
+	soilToFertilizer: mappedInput[1],
+	fertilizerToWater: mappedInput[2],
+	waterToLight: mappedInput[3],
+	lightToTemperature: mappedInput[4],
+	temperatureToHumidity: mappedInput[5],
+	humidityToLocation: mappedInput[6],
+};
 
 function lookup(key: Exclude<keyof typeof input, "seedPairs">, source: number) {
 	const data = input[key];
@@ -61,7 +58,6 @@ const intersectionPoints = (
 	.reverse()
 	.reduce((a, b) => {
 		const data = input[b];
-		// console.log(data);
 		return [
 			...a.map((dest) => {
 				return lookupRev(b, dest);
@@ -71,16 +67,17 @@ const intersectionPoints = (
 	}, [] as number[])
 	.sort((a, b) => a - b);
 
-// console.log(input.seedPairs);
-
-const seeds = input.seedPairs.flatMap(([start, length]) => {
-	const arr: number[] = [];
-	for (let i = start; i < start + length; i = intersectionPoints.find((p) => p > i)!) {
-		arr.push(i);
-	}
-	return arr;
-});
-// console.log(input.seedPairs, seeds, intersectionPoints);
+const seeds = [
+	...new Set(
+		input.seedPairs.flatMap(([start, length]) => {
+			const arr: number[] = [];
+			for (let i = start; i < start + length; i = intersectionPoints.find((p) => p > i)!) {
+				arr.push(i);
+			}
+			return arr;
+		})
+	),
+];
 
 const results = seeds.map((seed) => {
 	return (
@@ -95,7 +92,5 @@ const results = seeds.map((seed) => {
 		] as Exclude<keyof typeof input, "seedPairs">[]
 	).reduce((a, b) => lookup(b, a), seed);
 });
-
-// console.log(results);
 
 output(results.min()).forTest(46).forActual(63179500);

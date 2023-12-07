@@ -1,6 +1,6 @@
 import { test, expect, assertType } from "vitest";
+import { p, type UnnamedParser, type Parser, createParserFunction, list, num, or, regexp, sequence } from "../src/parser/parserCompiler";
 import { assertTypeNotAny } from "../src";
-import { p, type Parser, type UnnamedParser } from "../src/parser/parser";
 
 const gameSeq = p`Game ${p.digit("game")}: ${p.num("value")} / ${p.num("total")}`;
 
@@ -41,6 +41,17 @@ test("list types", () => {
 
 test("list parser works", () => {
   expect(commaSepNums.parse("1,23,4")).toStrictEqual([1, 23, 4]);
+});
+
+test("dict parser works", () => {
+  const parser = p`${p.word("key")}: ${p.num("value")}`.list(",").dict();
+  expect(parser.parse("abc: 123")).toStrictEqual({
+    abc: 123
+  });
+  expect(parser.parse("abc: 123,def: 456")).toStrictEqual({
+    abc: 123,
+    def: 456
+  });
 });
 
 test("day2 clean parser works", () => {
@@ -176,4 +187,61 @@ test("or works", () => {
   assertType<Parser<number | string>>(parser);
   expect(parser.parse("123")).toBe(123);
   expect(parser.parse("abc")).toBe("abc");
+});
+
+
+test("parserCompiler - num works", () => {
+  const parser = createParserFunction(num);
+  expect(parser("123")).toEqual(123);
+  expect(() => parser("abc")).toThrowError("Unable to match number");
+});
+
+test("parserCompiler - regex works", () => {
+  const parser = createParserFunction(regexp(/ab[cd]/));
+  expect(parser("abc")).toEqual("abc");
+  expect(parser("abd")).toEqual("abd");
+  expect(() => parser("123")).toThrowError("Unable to match regex");
+});
+
+test("parserCompiler - or works", () => {
+  const parser = createParserFunction(or(regexp(/ab[cd]/), regexp(/ab/), num));
+  expect(parser("abc")).toEqual("abc");
+  expect(parser("abd")).toEqual("abd");
+  expect(parser("ab")).toEqual("ab");
+  expect(parser("123")).toEqual(123);
+  expect(() => parser("xyz")).toThrowError("Unable to match or");
+});
+
+test("parserCompiler - sequence works", () => {
+  const parser = createParserFunction(sequence(regexp(/ab[cd]/), num));
+  expect(parser("abc123")).toEqual(["abc", 123]);
+  expect(parser("abd123")).toEqual(["abd", 123]);
+  expect(parser("abc134583")).toEqual(["abc", 134583]);
+  expect(() => parser("abc")).toThrowError("Unable to match sequence");
+  expect(() => parser("123")).toThrowError("Unable to match sequence");
+  expect(() => parser("xyz")).toThrowError("Unable to match sequence");
+});
+
+test("parserCompiler - list works", () => {
+  const parser = createParserFunction(list(num, regexp(/,/)));
+  expect(parser("1,2,3")).toEqual([1, 2, 3]);
+  expect(parser("12,3,4,5")).toEqual([12, 3, 4,5]);
+  expect(parser("123")).toEqual([123]);
+  expect(() => parser("abc")).toThrowError("Unable to match list");
+  expect(() => parser("1,2,3,")).toThrowError("Unable to finish matching");
+  expect(() => parser("")).toThrowError("Unable to match list");
+});
+
+test("parserCompiler - complex works", () => {
+  const parser = createParserFunction(sequence(
+    regexp(/ab[cd]/),
+    list(num, regexp(/,/)),
+    or(regexp(/ab[cd]/), regexp(/ab/), num),
+  ));
+  expect(parser("abc1,2,3abc")).toEqual(["abc", [1, 2, 3], "abc"]);
+  expect(parser("abd1,2,3ab")).toEqual(["abd", [1, 2, 3], "ab"]);
+  expect(parser("abc134583ab")).toEqual(["abc", [134583], "ab"]);
+  expect(() => parser("abc")).toThrowError("Unable to match sequence");
+  expect(() => parser("123")).toThrowError("Unable to match sequence");
+  expect(() => parser("xyz")).toThrowError("Unable to match sequence");
 });
