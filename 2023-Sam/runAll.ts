@@ -18,17 +18,10 @@ type RunAndLogDayResult = DayResult & {
 async function runAndLogDay(day: number, part: number): Promise<RunAndLogDayResult> {
   console.log("Running", day, part);
   let partString = String(part);
-  if (existsSync(resolve(__dirname, `days/${day}/pt${part}b.ts`))) {
-    partString = `${part}b`;
-  }
-  if (existsSync(resolve(__dirname, `days/${day}/pt${part}fast.ts`))) {
-    partString = `${part}fast`;
-  }
-  if (existsSync(resolve(__dirname, `days/${day}/pt${part}faster.ts`))) {
-    partString = `${part}faster`;
-  }
-  if (existsSync(resolve(__dirname, `days/${day}/pt${part}fasterer.ts`))) {
-    partString = `${part}fasterer`;
+  for (const postfix of ["b", "c", "d", "e", "f", "fast", "faster", "fasterer"]) {
+    if (existsSync(resolve(__dirname, `days/${day}/pt${part}${postfix}.ts`))) {
+      partString = `${part}${postfix}`;
+    }
   }
 
   const result = await runDay(String(day), partString, false);

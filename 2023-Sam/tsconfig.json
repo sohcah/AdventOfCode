@@ -2,7 +2,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "es2022",
+    "target": "es2023",
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
@@ -15,7 +15,7 @@
     "sourceMap": true,
     "declaration": true,
     "lib": [
-      "es2022"
+      "es2023"
     ]
   },
   "include": ["days/**/*.ts"]
