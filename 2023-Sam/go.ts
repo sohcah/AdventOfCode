@@ -3,10 +3,14 @@ import clipboardy from "clipboardy";
 import { runDay } from "./runHelpers.js";
 import { watch } from "node:fs";
 
+const languageCode = {
+    typescript: "ts",
+}[process.env.AOCLANG ?? "typescript"];
+
 const day = process.argv[2];
 const part = process.argv[3];
 if (day === undefined || part === undefined) {
-  console.log(chalk.red(`Usage: bun start <day> <part>`));
+  console.log(chalk.red(`Usage: bun ${languageCode}:${process.env.AOCTEST ? "test" : "start"} <day> <part>`));
   process.exit(1);
 }
 
@@ -41,7 +45,7 @@ async function run(abort: AbortSignal) {
 
 await run(abort.signal);
 
-watch(`./days/${day}`, async () => {
+watch(`./typescript/${day}`, async () => {
   abort.abort();
   abort = new AbortController();
   const abortSignal = abort.signal;

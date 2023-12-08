@@ -6,6 +6,11 @@ import { fileURLToPath } from "node:url";
 
 import stringify from "fast-safe-stringify";
 
+const language = process.env.AOCLANG ?? "typescript";
+const languageExt = {
+    typescript: "ts",
+}[language];
+
 export function cached<T extends (...a: P) => R, P extends any[], R extends any>(func: T) {
     const cache = new Map<string, R>();
     return (...args: P) => {
@@ -40,12 +45,14 @@ export type DayResult = {
 
 async function callDay(day: string, part: string, input: DayInput, log = true, abortSignal?: AbortSignal): Promise<DayResult> {
     const tmpDir = mkdtempSync(join(tmpdir(), "aoc-"));
-    const dir = resolve(__dirname, `./days/${day}`);
-    const path = resolve(__dirname, `./days/${day}/pt${part}.ts`);
+    const dir = resolve(__dirname, `./${language}/${day}`);
+    const path = resolve(__dirname, `./${language}/${day}/pt${part}.${languageExt}`);
     const outFile = join(tmpDir, `${Math.floor(Math.random() * 1000000)}.json`);
     const useNode = readFileSync(path, "utf8").includes("//usenode");
     const proc = child_process.spawn(
-        useNode ? `bun run tsx ${path}` : `bun run ${path}`,
+        {
+            typescript: useNode ? `bun run tsx ${path}` : `bun run ${path}`
+        }[language] ?? (() => {throw new Error("Invalid language")})(),
         {
             cwd: dir,
             shell: true,
@@ -84,9 +91,12 @@ async function callDay(day: string, part: string, input: DayInput, log = true, a
 
 
 export async function runDay(day: string, part: string, log = true, abortSignal?: AbortSignal): Promise<DayResult & { type: "result"; outerTime: number; stabilisedAt?: number }> {
-    let inputFile = resolve(__dirname, "days", day, isTest ? "test" : "input");
-    if (existsSync(inputFile + part)) {
-        inputFile += part;
+    const baseInputFile = resolve(__dirname, "inputs", day + (isTest ? "test" : ""));
+    let inputFile = baseInputFile;
+    for (let i = 1; i <= part.length; i++) {
+        if (existsSync(baseInputFile + part.slice(0, i))) {
+            inputFile = baseInputFile + part.slice(0, i);
+        }
     }
     const start = performance.now();
     const result = await callDay(day, part, {

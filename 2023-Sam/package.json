@@ -3,15 +3,15 @@
   "packageManager": "yarn@4.0.2",
   "type": "module",
   "workspaces": [
-    "days/*",
+    "typescript/*",
     "utils"
   ],
   "scripts": {
-    "test": "AOCTEST=true tsx go.ts",
-    "start": "bun go.ts",
-    "runAll": "tsx runAll.ts",
-    "runAllTest": "AOCTEST=true tsx runAll.ts",
-    "build": "yarn workspace aocutils build"
+    "ts:test": "AOCLANG=typescript AOCTEST=true bun go.ts",
+    "ts:start": "AOCLANG=typescript bun go.ts",
+    "ts:all": "AOCLANG=typescript bun runAll.ts",
+    "ts:all-test": "AOCLANG=typescript AOCTEST=true bun runAll.ts",
+    "ts:utils-build": "yarn workspace aocutils build"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.13.1",

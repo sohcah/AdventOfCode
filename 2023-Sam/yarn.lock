@@ -5,9 +5,9 @@ __metadata:
   version: 8
   cacheKey: 10
 
-"1@workspace:days/1":
+"1@workspace:typescript/1":
   version: 0.0.0-use.local
-  resolution: "1@workspace:days/1"
+  resolution: "1@workspace:typescript/1"
   dependencies:
     aocutils: "workspace:^"
     tsx: "npm:^4.6.0"
@@ -32,63 +32,63 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"2@workspace:days/2":
+"2@workspace:typescript/2":
   version: 0.0.0-use.local
-  resolution: "2@workspace:days/2"
+  resolution: "2@workspace:typescript/2"
   dependencies:
     aocutils: "workspace:^"
     tsx: "npm:^4.6.0"
   languageName: unknown
   linkType: soft
 
-"3@workspace:days/3":
+"3@workspace:typescript/3":
   version: 0.0.0-use.local
-  resolution: "3@workspace:days/3"
+  resolution: "3@workspace:typescript/3"
   dependencies:
     aocutils: "workspace:^"
     tsx: "npm:^4.6.0"
   languageName: unknown
   linkType: soft
 
-"4@workspace:days/4":
+"4@workspace:typescript/4":
   version: 0.0.0-use.local
-  resolution: "4@workspace:days/4"
+  resolution: "4@workspace:typescript/4"
   dependencies:
     aocutils: "workspace:^"
     tsx: "npm:^4.6.0"
   languageName: unknown
   linkType: soft
 
-"5@workspace:days/5":
+"5@workspace:typescript/5":
   version: 0.0.0-use.local
-  resolution: "5@workspace:days/5"
+  resolution: "5@workspace:typescript/5"
   dependencies:
     aocutils: "workspace:^"
     tsx: "npm:^4.6.0"
   languageName: unknown
   linkType: soft
 
-"6@workspace:days/6":
+"6@workspace:typescript/6":
   version: 0.0.0-use.local
-  resolution: "6@workspace:days/6"
+  resolution: "6@workspace:typescript/6"
   dependencies:
     aocutils: "workspace:^"
     tsx: "npm:^4.6.0"
   languageName: unknown
   linkType: soft
 
-"7@workspace:days/7":
+"7@workspace:typescript/7":
   version: 0.0.0-use.local
-  resolution: "7@workspace:days/7"
+  resolution: "7@workspace:typescript/7"
   dependencies:
     aocutils: "workspace:^"
     tsx: "npm:^4.6.0"
   languageName: unknown
   linkType: soft
 
-"8@workspace:days/8":
+"8@workspace:typescript/8":
   version: 0.0.0-use.local
-  resolution: "8@workspace:days/8"
+  resolution: "8@workspace:typescript/8"
   dependencies:
     aocutils: "workspace:^"
     tsx: "npm:^4.6.0"
@@ -1747,15 +1747,6 @@ __metadata:
   checksum: b23acd24791db11d8f65be5ea58fd9a6ce2df5120ae2da65c16cfc5331ff59d5ac4ef50af66cd4bde238881503ec839928a0135b99a036a9cdfa22d17fd56cdb
   languageName: node
   linkType: hard
-
-"example@workspace:days/example":
-  version: 0.0.0-use.local
-  resolution: "example@workspace:days/example"
-  dependencies:
-    aocutils: "workspace:^"
-    tsx: "npm:^4.6.0"
-  languageName: unknown
-  linkType: soft
 
 "execa@npm:^5.0.0":
   version: 5.1.1

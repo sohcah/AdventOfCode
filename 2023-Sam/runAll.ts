@@ -19,7 +19,7 @@ async function runAndLogDay(day: number, part: number): Promise<RunAndLogDayResu
   console.log("Running", day, part);
   let partString = String(part);
   for (const postfix of ["b", "c", "d", "e", "f", "fast", "faster", "fasterer"]) {
-    if (existsSync(resolve(__dirname, `days/${day}/pt${part}${postfix}.ts`))) {
+    if (existsSync(resolve(__dirname, `typescript/${day}/pt${part}${postfix}.ts`))) {
       partString = `${part}${postfix}`;
     }
   }
@@ -49,7 +49,7 @@ async function runAndLogDay(day: number, part: number): Promise<RunAndLogDayResu
 (async function() {
   const start = performance.now();
   const allResults: RunAndLogDayResult[] = [];
-  const maxDay = readdirSync(resolve(__dirname, "days")).map(Number).filter(i => !Number.isNaN(i)).sort((a, b) => b - a)[0]!;
+  const maxDay = readdirSync(resolve(__dirname, "typescript")).map(Number).filter(i => !Number.isNaN(i)).sort((a, b) => b - a)[0]!;
   for (let day = 1; day <= maxDay; day++) {
     for (let part = 1; part <= 2; part++) {
       let results = [];
