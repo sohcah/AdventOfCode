@@ -2,10 +2,10 @@ import stringify from "fast-safe-stringify";
 
 export class SMap<K, V> implements Map<K, V> {
   private readonly internalMap: Map<string, V> = new Map();
-  private readonly parse: (key: string) => K = key => {
+  private readonly parse: (key: string) => K = (key) => {
     return JSON.parse(key);
   };
-  private readonly stringify: (key: K) => string = key => {
+  private readonly stringify: (key: K) => string = (key) => {
     return stringify.stableStringify(key);
   };
 
@@ -23,6 +23,7 @@ export class SMap<K, V> implements Map<K, V> {
     return this.internalMap.delete(this.stringify(key));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void {
     return this.internalMap.forEach(
       (value, key) => callbackfn(value, this.parse(key), this),

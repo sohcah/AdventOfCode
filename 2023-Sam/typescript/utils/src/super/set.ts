@@ -17,24 +17,25 @@ export class Superset<T> implements Set<T> {
   }
 
   clear(): void {
-    this.sets.forEach(set => set.clear());
+    this.sets.forEach((set) => set.clear());
     this.sets = [this.sets[0]];
   }
 
   delete(value: T): boolean {
     let output = false;
-    this.sets.forEach(set => {
+    this.sets.forEach((set) => {
       output ||= set.delete(value);
     });
     return output;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void {
-    return this.sets.forEach(set => set.forEach((a, b) => callbackfn(a, b, this), thisArg));
+    return this.sets.forEach((set) => set.forEach((a, b) => callbackfn(a, b, this), thisArg));
   }
 
   has(value: T): boolean {
-    return this.sets.some(set => set.has(value));
+    return this.sets.some((set) => set.has(value));
   }
 
   get size(): number {
@@ -83,6 +84,6 @@ export class Superset<T> implements Set<T> {
   }
 
   intersection(other: Set<T>): Set<T> {
-    return new Set([...this].filter(x => other.has(x)));
+    return new Set([...this].filter((x) => other.has(x)));
   }
 }

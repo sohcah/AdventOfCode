@@ -8,6 +8,7 @@
     "ts:all": "AOCLANG=typescript bun scripts/runAll.ts",
     "ts:all-test": "AOCLANG=typescript AOCTEST=true bun scripts/runAll.ts",
     "ts:utils-build": "cd typescript && yarn workspace aocutils build && cd ..",
+    "ts:lint": "cd typescript && yarn lint && cd ..",
     "rs:test": "AOCLANG=rust AOCTEST=true bun scripts/go.ts",
     "rs:start": "AOCLANG=rust bun scripts/go.ts",
     "rs:all": "AOCLANG=rust bun scripts/runAll.ts",

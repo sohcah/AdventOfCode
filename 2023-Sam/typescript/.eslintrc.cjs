@@ -20,5 +20,5 @@ module.exports = {
 		"@typescript-eslint/no-non-null-assertion": 0,
 		"rulesdir/probably_not_in": "warn",
 	},
-	ignorePatterns: ["eslint", "node_modules", ".yarn", "days/2/d2p2b*"],
+	ignorePatterns: ["eslint", "node_modules", ".yarn", "days/2/d2p2b*", "utils/dist"],
 };

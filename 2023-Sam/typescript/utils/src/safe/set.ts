@@ -1,12 +1,12 @@
 import stringify from "fast-safe-stringify";
-import {Superset} from "../super/set";
+import { Superset } from "../super/set";
 
 export class SSet<T> implements Set<T> {
   private internalSet: Superset<string> = new Superset();
-  private readonly parse: (value: string) => T = value => {
+  private readonly parse: (value: string) => T = (value) => {
     return JSON.parse(value);
   };
-  private readonly stringify: (value: T) => string = value => {
+  private readonly stringify: (value: T) => string = (value) => {
     return stringify.stableStringify(value);
   };
 
@@ -24,6 +24,7 @@ export class SSet<T> implements Set<T> {
     return this.internalSet.delete(this.stringify(value));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void {
     return this.internalSet.forEach(
       (value) => callbackfn(this.parse(value), this.parse(value), this),
@@ -44,7 +45,7 @@ export class SSet<T> implements Set<T> {
     return this.internalSet.size;
   }
 
-  private valuesIterator = function*<W> (
+  private valuesIterator = function* <W>(
     internalSet: Superset<string>,
     parse: (value: string) => W
   ): IterableIterator<W> {
@@ -71,7 +72,7 @@ export class SSet<T> implements Set<T> {
   }
 
   entries(): IterableIterator<[T, T]> {
-    return this.valuesIterator(this.internalSet, i => {
+    return this.valuesIterator(this.internalSet, (i) => {
       const p = this.parse(i);
       return [p, p] as [T, T];
     });
@@ -91,8 +92,11 @@ export class SSet<T> implements Set<T> {
     return SSet.fromInternalSet(un as Superset<string>, this.parse, this.stringify);
   }
 
-
-  private static fromInternalSet<T>(int: Superset<string>, parse: (value: string) => T, stringify: (value: T) => string) {
+  private static fromInternalSet<T>(
+    int: Superset<string>,
+    parse: (value: string) => T,
+    stringify: (value: T) => string
+  ) {
     const set = new SSet<T>(parse, stringify);
     set.internalSet = int;
     return set;

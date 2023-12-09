@@ -11,15 +11,15 @@
 
 |Day|TypeScript|Rust|
 |-|-|-|
-|1|<span style="color: #faffaa">6.125ms</span> / <span style="color: #f0ffaa">4.895ms</span>|<span style="color: #aaffb8">0.924ms</span> / <span style="color: #ffaaaa">2.583ms</span>|
-|2|<span style="color: #fff8aa">8.088ms</span> / <span style="color: #ffefaa">9.931ms</span>|- / -|
-|3|<span style="color: #e7ffaa">3.977ms</span> / <span style="color: #fff8aa">8.210ms</span>|- / -|
-|4|<span style="color: #fff4aa">8.920ms</span> / <span style="color: #fff0aa">9.752ms</span>|- / -|
-|5|<span style="color: #deffaa">3.294ms</span> / <span style="color: #fffeaa">7.090ms</span>|- / -|
-|6|<span style="color: #aaffbb">0.683ms</span> / <span style="color: #aaffc1">0.586ms</span>|- / -|
-|7|<span style="color: #fff6aa">8.422ms</span> / <span style="color: #ffffaa">6.931ms</span>|- / -|
-|8|<span style="color: #faffaa">6.127ms</span> / <span style="color: #ffaaaa">47.923ms</span>|- / -|
-|9|<span style="color: #fffdaa">7.225ms</span> / <span style="color: #fffbaa">7.543ms</span>|- / -|
+|1|<span style="color: #d0ffaa">2.249ms</span> / <span style="color: #cdffaa">2.109ms</span>|<span style="color: #aaffcd">0.880ms</span> / <span style="color: #ffaaaa">1.865ms</span>|
+|2|<span style="color: #eeffaa">4.322ms</span> / <span style="color: #f2ffaa">4.699ms</span>|- / -|
+|3|<span style="color: #cbffaa">2.055ms</span> / <span style="color: #f3ffaa">4.817ms</span>|- / -|
+|4|<span style="color: #efffaa">4.447ms</span> / <span style="color: #efffaa">4.419ms</span>|- / -|
+|5|<span style="color: #bdffaa">1.495ms</span> / <span style="color: #e7ffaa">3.711ms</span>|- / -|
+|6|<span style="color: #aaffce">0.460ms</span> / <span style="color: #aaffd5">0.399ms</span>|- / -|
+|7|<span style="color: #efffaa">4.428ms</span> / <span style="color: #eaffaa">4.005ms</span>|- / -|
+|8|<span style="color: #eeffaa">4.301ms</span> / <span style="color: #ffaaaa">39.064ms</span>|- / -|
+|9|<span style="color: #eeffaa">4.357ms</span> / <span style="color: #eaffaa">3.953ms</span>|- / -|
 |10|- / -|- / -|
 |11|- / -|- / -|
 |12|- / -|- / -|
@@ -36,7 +36,7 @@
 |23|- / -|- / -|
 |24|- / -|- / -|
 |25|- / -|- / -|
-|Total|155.722ms|3.507ms|<!--BENCHMARKEND-->
+|Total|95.290ms|2.745ms|<!--BENCHMARKEND-->
 
 ## Commands
 

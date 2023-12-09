@@ -4,16 +4,16 @@ Map.prototype.toObject = function () {
     obj[key] = value;
   }
   return obj;
-}
+};
 
 Map.prototype.array = function () {
   return [...this];
-}
+};
 
 Map.prototype.valuesArray = function () {
   return [...this.values()];
-}
+};
 
 Map.prototype.keysArray = function () {
   return [...this.keys()];
-}
+};

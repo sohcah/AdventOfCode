@@ -10,17 +10,17 @@ console.log(input);
 let answer = 0;
 let position = "AAA";
 for (let i = 0; i < 1000000; i++) {
-	const lr = input.lr[i % input.lr.length];
-	const mapping = input.mappings[position];
-	if (lr === "R") {
-		position = mapping.right;
-	} else {
-		position = mapping.left;
-	}
-	if (position === "ZZZ") {
-		answer = i + 1;
-		break;
-	}
+  const lr = input.lr[i % input.lr.length];
+  const mapping = input.mappings[position];
+  if (lr === "R") {
+    position = mapping.right;
+  } else {
+    position = mapping.left;
+  }
+  if (position === "ZZZ") {
+    answer = i + 1;
+    break;
+  }
 }
 
 output(answer).forTest(2).forActual(22199);
