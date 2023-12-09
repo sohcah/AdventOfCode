@@ -56,7 +56,8 @@ const languagesToUse = process.env.BENCHMARK ? Object.values(languages) : [curre
           return [1,2].map(part => {
             const result = l.find(i => i.day === day && i.part === part);
             if (!result) return "-";
-            return `<span style="color: ${chroma("#aaffaa").set("hsl.h", 120 * (1 - (Math.log10(result.time) / languageSlowest[n]))).hex()}">${result.time.toFixed(3)}ms</span>`;
+            const brightColour = chroma("#00ff00").set("hsl.h", 120 * (1 - (Math.log10(result.time) / languageSlowest[n]))).hex();
+            return `![${brightColour}](https://placehold.co/10x10/${brightColour.slice(1)}/${brightColour.slice(1)}.png) <span style="color: ${chroma("#aaffaa").set("hsl.h", 120 * (1 - (Math.log10(result.time) / languageSlowest[n]))).hex()}">${result.time.toFixed(3)}ms</span>`;
           }).join(" / ");
         }).join("|")}|`);
     }
