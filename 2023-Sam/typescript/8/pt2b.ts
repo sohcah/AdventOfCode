@@ -1,5 +1,4 @@
 import { p, load, output } from "aocutils";
-import { sequence } from "aocutils/src/parser/parserCompiler";
 
 // NBN = (BKF, NNH)
 const code = p(/[A-Z0-9]{3}/);
