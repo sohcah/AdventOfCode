@@ -1,31 +1,28 @@
 {
-  "name": "2023-Sam",
+  "name": "@sohcah/aoc2023",
   "packageManager": "yarn@4.0.2",
   "type": "module",
-  "workspaces": [
-    "typescript/*",
-    "utils"
-  ],
   "scripts": {
-    "ts:test": "AOCLANG=typescript AOCTEST=true bun go.ts",
-    "ts:start": "AOCLANG=typescript bun go.ts",
-    "ts:all": "AOCLANG=typescript bun runAll.ts",
-    "ts:all-test": "AOCLANG=typescript AOCTEST=true bun runAll.ts",
-    "ts:utils-build": "yarn workspace aocutils build"
+    "ts:test": "AOCLANG=typescript AOCTEST=true bun scripts/go.ts",
+    "ts:start": "AOCLANG=typescript bun scripts/go.ts",
+    "ts:all": "AOCLANG=typescript bun scripts/runAll.ts",
+    "ts:all-test": "AOCLANG=typescript AOCTEST=true bun scripts/runAll.ts",
+    "ts:utils-build": "cd typescript && yarn workspace aocutils build && cd ..",
+    "rs:test": "AOCLANG=rust AOCTEST=true bun scripts/go.ts",
+    "rs:start": "AOCLANG=rust bun scripts/go.ts",
+    "rs:all": "AOCLANG=rust bun scripts/runAll.ts",
+    "rs:all-test": "AOCLANG=rust AOCTEST=true bun scripts/runAll.ts",
+    "bench": "BENCHMARK=true bun scripts/runAll.ts"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.13.2",
-    "@typescript-eslint/parser": "^6.13.2",
-    "eslint": "^8.54.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "eslint-plugin-rulesdir": "^0.2.2",
-    "prettier": "^3.1.0",
-    "tsup": "^8.0.1",
-    "tsx": "^4.6.0",
+    "@types/chroma-js": "^2",
+    "@types/node": "^20.10.4",
     "typescript": "^5.3.2"
   },
   "dependencies": {
-    "clipboardy": "^4.0.0"
+    "chalk": "^5.3.0",
+    "chroma-js": "^2.4.2",
+    "clipboardy": "^4.0.0",
+    "fast-safe-stringify": "^2.1.1"
   }
 }

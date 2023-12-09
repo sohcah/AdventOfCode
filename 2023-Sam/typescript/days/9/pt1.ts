@@ -6,7 +6,7 @@ const input = loadLines(
 
 let sum = 0;
 for(const line of input) {
-    let diffLines = [line];
+    let diffLines = [line.slice()];
     while (!diffLines.at(-1)!.every(i => i === 0)) {
         const prevLine = diffLines.at(-1)!;
         diffLines.push(

@@ -4,7 +4,7 @@ import "./extensions/set";
 import "./extensions/string";
 import * as fs from "fs";
 import { writeFileSync } from "fs";
-import type { DayInput, DayResult } from "../../runHelpers.js";
+import type { DayInput, DayResult } from "../../../runHelpers.js";
 import chalk from "chalk";
 // export * from "./parser/parserCompiler";
 // import { createParserFunction, ResultOf, UnnamedParser } from "./parser/parserCompiler";

@@ -3,13 +3,11 @@ import * as child_process from "child_process";
 import {mkdtempSync, readFileSync, existsSync, rmSync} from "node:fs";
 import {tmpdir} from "os";
 import { fileURLToPath } from "node:url";
+import chalk from "chalk";
+import clipboardy from "clipboardy";
 
 import stringify from "fast-safe-stringify";
-
-const language = process.env.AOCLANG ?? "typescript";
-const languageExt = {
-    typescript: "ts",
-}[language];
+import type { Language } from "./languages.js";
 
 export function cached<T extends (...a: P) => R, P extends any[], R extends any>(func: T) {
     const cache = new Map<string, R>();
@@ -22,7 +20,7 @@ export function cached<T extends (...a: P) => R, P extends any[], R extends any>
     };
 }
 
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const __dirname = fileURLToPath(new URL("..", import.meta.url));
 
 const isTest = !!process.env.AOCTEST;
 
@@ -43,18 +41,16 @@ export type DayResult = {
     time: number;
 }
 
-async function callDay(day: string, part: string, input: DayInput, log = true, abortSignal?: AbortSignal): Promise<DayResult> {
+async function callDay(language: Language, day: string, part: string, input: DayInput, log = true, abortSignal?: AbortSignal): Promise<DayResult> {
     const tmpDir = mkdtempSync(join(tmpdir(), "aoc-"));
-    const dir = resolve(__dirname, `./${language}/${day}`);
-    const path = resolve(__dirname, `./${language}/${day}/pt${part}.${languageExt}`);
+    const dir = resolve(__dirname, `./${language.folder}/${day}`);
+    const path = `pt${part}${language.fileExt}`;
     const outFile = join(tmpDir, `${Math.floor(Math.random() * 1000000)}.json`);
-    const useNode = readFileSync(path, "utf8").includes("//usenode");
+    const { cwd, command } = language.runCommand(dir, path);
     const proc = child_process.spawn(
+        command,
         {
-            typescript: useNode ? `bun run tsx ${path}` : `bun run ${path}`
-        }[language] ?? (() => {throw new Error("Invalid language")})(),
-        {
-            cwd: dir,
+            cwd,
             shell: true,
             env: {
                 ...process.env,
@@ -62,7 +58,7 @@ async function callDay(day: string, part: string, input: DayInput, log = true, a
                 AOC_OUTPUT: outFile,
                 NO_LOG: log ? undefined : "1",
             },
-            stdio: log ? "inherit" : undefined,
+            stdio: "inherit",
         },
     );
     for(let i = 0;i < 10000;i++) {
@@ -90,7 +86,7 @@ async function callDay(day: string, part: string, input: DayInput, log = true, a
 }
 
 
-export async function runDay(day: string, part: string, log = true, abortSignal?: AbortSignal): Promise<DayResult & { type: "result"; outerTime: number; stabilisedAt?: number }> {
+export async function runDay(language: Language, day: string, part: string, log = true, abortSignal?: AbortSignal): Promise<DayResult & { type: "result"; outerTime: number; stabilisedAt?: number }> {
     const baseInputFile = resolve(__dirname, "inputs", day + (isTest ? "test" : ""));
     let inputFile = baseInputFile;
     for (let i = 1; i <= part.length; i++) {
@@ -99,7 +95,7 @@ export async function runDay(day: string, part: string, log = true, abortSignal?
         }
     }
     const start = performance.now();
-    const result = await callDay(day, part, {
+    const result = await callDay(language, day, part, {
         inputFile,
     }, log, abortSignal);
 
@@ -128,4 +124,56 @@ export async function runDay(day: string, part: string, log = true, abortSignal?
     } else {
         return {...result, outerTime: performance.now() - start};
     }
+}
+
+export type RunAndLogDayResult = DayResult & {
+    type: "result";
+    outerTime: number;
+    stabilisedAt?: number;
+    day: number;
+    part: number;
+};
+
+export async function runAndLogDay(language: Language, day: string | number, part: string | number, options: {
+    log?: boolean;
+    abort?: AbortSignal;
+    postfix?: boolean;
+    throwOnIncorrect?:  boolean;
+}): Promise<RunAndLogDayResult> {
+    console.log("Running", day, part);
+    let partString = String(part);
+    if (options.postfix) {
+        for (const postfix of ["b", "c", "d", "e", "f", "fast", "faster", "fasterer"]) {
+            if (existsSync(resolve(__dirname, `${language.folder}/${day}/pt${part}${postfix}${language.fileExt}`))) {
+                partString = `${part}${postfix}`;
+            }
+        }
+    }
+
+    const result = await runDay(language, String(day), partString, !!options.log, options.abort);
+
+    const resultValue = result.result;
+    console.log(chalk.blue(`Finished Day ${day} Part ${partString}`));
+    if (result.stabilisedAt !== undefined)
+        console.log(chalk.blue(`Stabilised at ${result.stabilisedAt}`));
+    if (result.expected !== undefined) {
+        if (result.expected === resultValue) {
+            console.log(chalk.green(`Result is correct!`));
+        } else {
+            console.log(chalk.red(`Result is incorrect, expected ${result.expected}!`));
+            if (options.throwOnIncorrect) {
+                throw new Error(`Result is incorrect, expected ${result.expected}!`);
+            }
+        }
+    } else {
+        if (options.throwOnIncorrect) {
+            throw new Error(`No expected value has been specified for Day ${day} Part ${part}`);
+        }
+        clipboardy.writeSync(String(resultValue));
+        console.log(chalk.yellow(`Copied result to clipboard!`));
+    }
+    console.log(chalk.blue(`Result is ${String(result.result)}`));
+    console.log(chalk.gray(`Result run took ${result.time.toFixed(4)}ms`));
+    console.log(chalk.gray(`Took ${result.outerTime.toFixed(4)}ms`));
+    return { ...result, day: parseInt(String(day)), part: parseInt(String(part)) };
 }
