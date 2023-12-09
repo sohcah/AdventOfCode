@@ -50,14 +50,14 @@ const languagesToUse = process.env.BENCHMARK ? Object.values(languages) : [curre
     lines.push(`*Disclaimer: These timings are measured from when the input has been loaded (but not parsed) to when the output has been returned. It does not include compile, file system or startup times.*\n`)
     lines.push(`|Day|${languagesToUse.map(i => i.name).join("|")}|`);
     lines.push(`|-|${languagesToUse.map(() => "-").join("|")}|`);
-    const languageSlowest = languageResults.map(i => Math.log10(Math.max(...i.map(j => j.time))));
+    const languageSlowest = languageResults.map(i => Math.log10(Math.max(...i.map(j => j.time + 1))));
     for (let day = 1; day <= 25; day++) {
         lines.push(`|${day}|${languageResults.map((l, n) => {
           return [1,2].map(part => {
             const result = l.find(i => i.day === day && i.part === part);
             if (!result) return "-";
-            const brightColour = chroma("#00ff00").set("hsl.h", 120 * (1 - (Math.log10(result.time) / languageSlowest[n]))).hex();
-            return `![${brightColour}](https://placehold.co/10x10/${brightColour.slice(1)}/${brightColour.slice(1)}.png) <span style="color: ${chroma("#aaffaa").set("hsl.h", 120 * (1 - (Math.log10(result.time) / languageSlowest[n]))).hex()}">${result.time.toFixed(3)}ms</span>`;
+            const brightColour = chroma("#00ff00").set("hsl.h", 120 * (1 - (Math.log10(result.time + 1) / languageSlowest[n]))).hex();
+            return `![${brightColour}](https://placehold.co/10x10/${brightColour.slice(1)}/${brightColour.slice(1)}.png) <span style="color: ${chroma("#aaffaa").set("hsl.h", 120 * (1 - (Math.log10(result.time + 1) / languageSlowest[n]))).hex()}">${result.time.toFixed(3)}ms</span>`;
           }).join(" / ");
         }).join("|")}|`);
     }
