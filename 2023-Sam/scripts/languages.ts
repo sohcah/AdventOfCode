@@ -35,7 +35,7 @@ export const languages: Record<string, {
         runCommand(directory, path) {
             return {
                 cwd: directory,
-                command: `cargo run --quiet --bin ${path.replace(".rs", "")}`
+                command: `cargo run${process.env.RELEASE_MODE ? " -r" : ""} --quiet --bin ${path.replace(".rs", "")}`
             }
         }
     },

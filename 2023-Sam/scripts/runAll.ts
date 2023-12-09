@@ -7,6 +7,8 @@ import { languages, currentLanguage } from "./languages.js";
 import { writeFileSync } from "fs";
 import chroma from "chroma-js";
 
+process.env.RELEASE_MODE = "true";
+
 const __dirname = fileURLToPath(new URL("..", import.meta.url));
 
 const languagesToUse = process.env.BENCHMARK ? Object.values(languages) : [currentLanguage];
@@ -64,6 +66,6 @@ const languagesToUse = process.env.BENCHMARK ? Object.values(languages) : [curre
     lines.push(`|Total|${languageResults.map(i => {
       return `${i.reduce((a, b) => a + b.time, 0).toFixed(3)}ms`;
     }).join("|")}|`)
-    writeFileSync("README.md", readFileSync("README.md", "utf8").replace(/<!--BENCHMARKSTART-->[^]+<!--BENCHMARKEND-->/, `<!--BENCHMARKSTART-->${lines.join("\n")}<!--BENCHMARKEND-->`))
+    writeFileSync("README.md", readFileSync("README.md", "utf8").replace(/<!--BENCHMARKSTART-->[^]+<!--BENCHMARKEND-->/, `<!--BENCHMARKSTART-->\n${lines.join("\n")}\n<!--BENCHMARKEND-->`))
   }
 })();
