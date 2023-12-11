@@ -89,9 +89,11 @@ async function callDay(language: Language, day: string, part: string, input: Day
 export async function runDay(language: Language, day: string, part: string, log = true, abortSignal?: AbortSignal): Promise<DayResult & { type: "result"; outerTime: number; stabilisedAt?: number }> {
     const baseInputFile = resolve(__dirname, "inputs", day + (isTest ? "test" : ""));
     let inputFile = baseInputFile;
-    for (let i = 1; i <= part.length; i++) {
-        if (existsSync(baseInputFile + part.slice(0, i))) {
-            inputFile = baseInputFile + part.slice(0, i);
+    if (process.env.AOCTEST) {
+        for (let i = 1; i <= part.length; i++) {
+            if (existsSync(baseInputFile + part.slice(0, i))) {
+                inputFile = baseInputFile + part.slice(0, i);
+            }
         }
     }
     const start = performance.now();
@@ -162,6 +164,7 @@ export async function runAndLogDay(language: Language, day: string | number, par
         } else {
             console.log(chalk.red(`Result is incorrect, expected ${result.expected}!`));
             if (options.throwOnIncorrect) {
+                console.log(chalk.blue(`Result is ${String(result.result)}`));
                 throw new Error(`Result is incorrect, expected ${result.expected}!`);
             }
         }
