@@ -115,7 +115,7 @@ pub fn with_aoc_stabilise<T: serde::Serialize + Clone>(func: fn(&str, usize) -> 
     write_output(result);
 }
 
-pub fn with_aoc<F: FnOnce( & str) -> T, T: serde::Serialize + Clone>(func: F, expected: Expected<T>) {
+pub fn with_aoc<F: FnOnce(&str) -> T, T: serde::Serialize + Clone>(func: F, expected: Expected<T>) {
     let input = get_input();
     let file_contents = std::fs::read_to_string(&input.input_file).expect("input file not found");
     let start_time = std::time::Instant::now();
