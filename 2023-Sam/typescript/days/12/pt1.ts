@@ -25,4 +25,4 @@ const result = input.map(({ seq, pattern }) => {
 });
 console.log(JSON.stringify(result));
 
-output(result.sum).forTest(21);
+output(result.sum).forTest(21).forActual(7110);

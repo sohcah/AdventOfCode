@@ -105,4 +105,4 @@ const result = input.slice(SLICE[0], SLICE[1]).map(({ seq, pattern }, n) => {
   return opts;
 });
 
-output(result.sum).forTest(21).forActual(1566786613613);
+output(result.sum).forTest(525152).forActual(1566786613613);

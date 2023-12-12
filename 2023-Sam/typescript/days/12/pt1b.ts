@@ -1,18 +1,18 @@
 import { p, loadLines, output } from "aocutils";
 
-const input = loadLines(p`${p(/[?.#]+/)("seq")} ${p.num.list(",")("pattern")}`)
-  .map((i) => ({
-    seq: `${i.seq}?${i.seq}?${i.seq}?${i.seq}?${i.seq}`,
-    pattern: [...i.pattern, ...i.pattern, ...i.pattern, ...i.pattern, ...i.pattern],
-  }))
-  .map((i) => ({
-    seq: i.seq.replace(/\.\./g, "."),
-    pattern: i.pattern,
-  }));
+const input = loadLines(p`${p(/[?.#]+/)("seq")} ${p.num.list(",")("pattern")}`).map((i) => ({
+  seq: i.seq.replace(/\.\./g, "."),
+  pattern: i.pattern,
+}));
 
 const DEBUG = false;
 
-function internal_getOptions(seqFull: string, patternFull: number[], seqN: number, patternN: number): number {
+function internal_getOptions(
+  seqFull: string,
+  patternFull: number[],
+  seqN: number,
+  patternN: number
+): number {
   if (seqFull.length - seqN === 0 && patternFull.length - patternN > 0) return 0;
 
   const minLength = patternFull.reduce((a, b, n) => a + (n < patternN ? 0 : b + 1), 0);
@@ -23,12 +23,26 @@ function internal_getOptions(seqFull: string, patternFull: number[], seqN: numbe
     return 0;
   }
 
-  if (DEBUG) console.log(seqN, patternN, "SEQ", seqFull.slice(seqN), "PATTERN", patternFull.slice(patternN), "MINLENGTH", minLength);
+  if (DEBUG)
+    console.log(
+      seqN,
+      patternN,
+      "SEQ",
+      seqFull.slice(seqN),
+      "PATTERN",
+      patternFull.slice(patternN),
+      "MINLENGTH",
+      minLength
+    );
   for (let start = seqN; start <= seqFull.length - minLength; start++) {
     if (seqFull.slice(seqN, start).includes("#")) break;
     if (seqFull.slice(start, start + patternFull[patternN]).includes(".")) continue;
     if (seqFull[start + patternFull[patternN]] === "#") continue;
-    if (patternFull.length - patternN === 1 && seqFull.slice(start + patternFull[patternN]).includes("#")) continue;
+    if (
+      patternFull.length - patternN === 1 &&
+      seqFull.slice(start + patternFull[patternN]).includes("#")
+    )
+      continue;
     output.push(start + patternFull[patternN] + 1 - seqN);
   }
 
@@ -71,4 +85,4 @@ const result = input.slice(SLICE[0], SLICE[1]).map(({ seq, pattern }) => {
   return opts;
 });
 
-output(result.sum).forTest(525152).forActual(1566786613613);
+output(result.sum).forTest(21).forActual(7110);
