@@ -145,7 +145,7 @@ export async function runAndLogDay(language: Language, day: string | number, par
     console.log("Running", day, part);
     let partString = String(part);
     if (options.postfix) {
-        for (const postfix of ["b", "c", "d", "e", "f", "fast", "faster", "fasterer"]) {
+        for (const postfix of ["b", "c", "d", "e", "f", "g", "fast", "faster", "fasterer"]) {
             if (existsSync(resolve(__dirname, `${language.folder}/${day}/pt${part}${postfix}${language.fileExt}`))) {
                 partString = `${part}${postfix}`;
             }
