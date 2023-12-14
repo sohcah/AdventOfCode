@@ -41,6 +41,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"14@workspace:days/14":
+  version: 0.0.0-use.local
+  resolution: "14@workspace:days/14"
+  dependencies:
+    aocutils: "workspace:^"
+    tsx: "npm:^4.6.0"
+  languageName: unknown
+  linkType: soft
+
 "1@workspace:days/1":
   version: 0.0.0-use.local
   resolution: "1@workspace:days/1"
