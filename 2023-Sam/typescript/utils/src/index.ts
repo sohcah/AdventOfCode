@@ -26,6 +26,7 @@ export * from "./helpers/range";
 export * from "./linked/list";
 
 export * from "./helpers/regex";
+export * from "./helpers/arraySet";
 
 if (process.env.NO_LOG) {
   console.log = () => {};
