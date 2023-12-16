@@ -1,5 +1,7 @@
 import { loadLines, output } from "aocutils";
 
+const hashFn = typeof Bun === "undefined" ? (i: Uint8Array) => i.join("|") : Bun.hash;
+
 const rawInput = loadLines();
 
 const width = rawInput[0].length;
@@ -137,7 +139,7 @@ for (let cycle = 1; cycle < 1000; cycle++) {
   east(input, width);
   // cycleTime += performance.now() - start;
   // const checkStart = performance.now();
-  const pattern = Bun.hash(input);
+  const pattern = hashFn(input);
   const pastIndex = pastPatternsMap.get(pattern);
   // checkTime += performance.now() - checkStart;
   if (pastIndex !== undefined) {

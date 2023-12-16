@@ -26,9 +26,12 @@ export class ArraySet implements Set<number> {
   }
   forEach(
     callbackfn: (value: number, value2: number, set: Set<number>) => void,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     thisArg?: any
   ): void {
-    throw new Error("Method not implemented.");
+    for (const value of this.values()) {
+      callbackfn.bind(thisArg ?? this)(value, value, this);
+    }
   }
   has(value: number): boolean {
     return !!this._arr[value];
@@ -36,28 +39,44 @@ export class ArraySet implements Set<number> {
   get size(): number {
     return this._size;
   }
-  entries(): IterableIterator<[number, number]> {
-    throw new Error("Method not implemented.");
+
+  *entries(): IterableIterator<[number, number]> {
+    const values = this.values();
+    let next = values.next().value;
+    while (next) {
+      yield [next, next];
+      next = values.next().value;
+    }
   }
   keys(): IterableIterator<number> {
-    throw new Error("Method not implemented.");
+    return this.values();
   }
-  values(): IterableIterator<number> {
-    throw new Error("Method not implemented.");
+
+  *values(): IterableIterator<number> {
+    const values = this._arr.entries();
+    let next = values.next().value;
+    while (next) {
+      if (next[1]) yield next[0];
+      next = values.next().value;
+    }
   }
+
   get array(): number[] {
     return Reflect.get(Set.prototype, "array", this);
   }
-  union(other: Set<number>): Set<number> {
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  union(_other: Set<number>): Set<number> {
     throw new Error("Method not implemented.");
   }
-  intersection(other: Set<number>): Set<number> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  intersection(_other: Set<number>): Set<number> {
     throw new Error("Method not implemented.");
   }
   [Symbol.iterator](): IterableIterator<number> {
-    throw new Error("Method not implemented.");
+    return this.values();
   }
   get [Symbol.toStringTag](): string {
-    throw new Error("Method not implemented.");
+    return "ArraySet";
   }
 }

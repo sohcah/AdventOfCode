@@ -66,23 +66,22 @@ async function callDay(language: Language, day: string, part: string, input: Day
           proc.kill(0);
           abortSignal.throwIfAborted();
         }
-        if(existsSync(outFile)) {
-            proc.kill(0);
-            break;
+        if (proc.exitCode !== null) {
+          break;
         }
         await new Promise(r => setTimeout(r, 10));
     }
 
     let output;
     try {
-        output = readFileSync(outFile, "utf8");
-    } catch(e) {
+        output = JSON.parse(readFileSync(outFile, "utf8"));
+    } catch (e) {
         console.error(`Failed running day ${day} part ${part}`);
         throw e;
     }
     rmSync(tmpDir, {recursive: true});
 
-    return JSON.parse(output);
+    return output;
 }
 
 

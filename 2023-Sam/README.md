@@ -10,34 +10,34 @@
 <!--BENCHMARKSTART-->
 *Disclaimer: These timings are measured from when the input has been loaded (but not parsed) to when the output has been returned. It does not include compile, file system or startup times.*
 
-|Day|TypeScript|Rust|
-|-|-|-|
-|1|![#a0ff00](https://placehold.co/10x10/a0ff00/a0ff00.png) <span style="color: #dfffaa">2.218ms</span> / ![#97ff00](https://placehold.co/10x10/97ff00/97ff00.png) <span style="color: #dcffaa">2.022ms</span>|![#ff5800](https://placehold.co/10x10/ff5800/ff5800.png) <span style="color: #ffc7aa">0.159ms</span> / ![#ff6a00](https://placehold.co/10x10/ff6a00/ff6a00.png) <span style="color: #ffcdaa">0.152ms</span>|
-|2|![#ddff00](https://placehold.co/10x10/ddff00/ddff00.png) <span style="color: #f4ffaa">4.045ms</span> / ![#ecff00](https://placehold.co/10x10/ecff00/ecff00.png) <span style="color: #f9ffaa">4.620ms</span>|![#ff0000](https://placehold.co/10x10/ff0000/ff0000.png) <span style="color: #ffaaaa">0.195ms</span> / ![#ff0d00](https://placehold.co/10x10/ff0d00/ff0d00.png) <span style="color: #ffaeaa">0.190ms</span>|
-|3|![#94ff00](https://placehold.co/10x10/94ff00/94ff00.png) <span style="color: #dbffaa">1.960ms</span> / ![#efff00](https://placehold.co/10x10/efff00/efff00.png) <span style="color: #faffaa">4.768ms</span>|- / -|
-|4|![#e6ff00](https://placehold.co/10x10/e6ff00/e6ff00.png) <span style="color: #f7ffaa">4.371ms</span> / ![#e7ff00](https://placehold.co/10x10/e7ff00/e7ff00.png) <span style="color: #f7ffaa">4.426ms</span>|- / -|
-|5|![#77ff00](https://placehold.co/10x10/77ff00/77ff00.png) <span style="color: #d2ffaa">1.393ms</span> / ![#d0ff00](https://placehold.co/10x10/d0ff00/d0ff00.png) <span style="color: #efffaa">3.573ms</span>|- / -|
-|6|![#2cff00](https://placehold.co/10x10/2cff00/2cff00.png) <span style="color: #b9ffaa">0.382ms</span> / ![#28ff00](https://placehold.co/10x10/28ff00/28ff00.png) <span style="color: #b7ffaa">0.342ms</span>|- / -|
-|7|![#e2ff00](https://placehold.co/10x10/e2ff00/e2ff00.png) <span style="color: #f5ffaa">4.228ms</span> / ![#c8ff00](https://placehold.co/10x10/c8ff00/c8ff00.png) <span style="color: #edffaa">3.320ms</span>|- / -|
-|8|![#d9ff00](https://placehold.co/10x10/d9ff00/d9ff00.png) <span style="color: #f2ffaa">3.888ms</span> / ![#ff9000](https://placehold.co/10x10/ff9000/ff9000.png) <span style="color: #ffdaaa">13.585ms</span>|- / -|
-|9|![#d1ff00](https://placehold.co/10x10/d1ff00/d1ff00.png) <span style="color: #f0ffaa">3.628ms</span> / ![#ceff00](https://placehold.co/10x10/ceff00/ceff00.png) <span style="color: #efffaa">3.531ms</span>|- / -|
-|10|![#e0ff00](https://placehold.co/10x10/e0ff00/e0ff00.png) <span style="color: #f5ffaa">4.162ms</span> / ![#ffa300](https://placehold.co/10x10/ffa300/ffa300.png) <span style="color: #ffe0aa">11.691ms</span>|- / -|
-|11|![#d8ff00](https://placehold.co/10x10/d8ff00/d8ff00.png) <span style="color: #f2ffaa">3.873ms</span> / ![#d7ff00](https://placehold.co/10x10/d7ff00/d7ff00.png) <span style="color: #f2ffaa">3.813ms</span>|- / -|
-|12|![#ffee00](https://placehold.co/10x10/ffee00/ffee00.png) <span style="color: #fff9aa">6.343ms</span> / ![#ff6300](https://placehold.co/10x10/ff6300/ff6300.png) <span style="color: #ffcbaa">19.349ms</span>|- / -|
-|13|![#77ff00](https://placehold.co/10x10/77ff00/77ff00.png) <span style="color: #d2ffaa">1.387ms</span> / ![#82ff00](https://placehold.co/10x10/82ff00/82ff00.png) <span style="color: #d5ffaa">1.598ms</span>|- / -|
-|14|![#94ff00](https://placehold.co/10x10/94ff00/94ff00.png) <span style="color: #dbffaa">1.967ms</span> / ![#ff3000](https://placehold.co/10x10/ff3000/ff3000.png) <span style="color: #ffbaaa">28.455ms</span>|- / -|
-|15|![#85ff00](https://placehold.co/10x10/85ff00/85ff00.png) <span style="color: #d6ffaa">1.656ms</span> / ![#bcff00](https://placehold.co/10x10/bcff00/bcff00.png) <span style="color: #e9ffaa">2.965ms</span>|- / -|
-|16|![#dcff00](https://placehold.co/10x10/dcff00/dcff00.png) <span style="color: #f3ffaa">4.018ms</span> / ![#ff0000](https://placehold.co/10x10/ff0000/ff0000.png) <span style="color: #ffaaaa">40.884ms</span>|- / -|
-|17|- / -|- / -|
-|18|- / -|- / -|
-|19|- / -|- / -|
-|20|- / -|- / -|
-|21|- / -|- / -|
-|22|- / -|- / -|
-|23|- / -|- / -|
-|24|- / -|- / -|
-|25|- / -|- / -|
-|Total|198.462ms|0.696ms|
+|Day|TypeScript (Bun)|TypeScript (Node.js)|Rust|
+|-|-|-|-|
+|1|![#a4ff00](https://placehold.co/10x10/a4ff00/a4ff00.png) <span style="color: #e1ffaa">2.338ms</span> / ![#9bff00](https://placehold.co/10x10/9bff00/9bff00.png) <span style="color: #deffaa">2.118ms</span>|![#93ff00](https://placehold.co/10x10/93ff00/93ff00.png) <span style="color: #dbffaa">2.228ms</span> / ![#6aff00](https://placehold.co/10x10/6aff00/6aff00.png) <span style="color: #cdffaa">1.329ms</span>|![#ff8100](https://placehold.co/10x10/ff8100/ff8100.png) <span style="color: #ffd5aa">0.146ms</span> / ![#ff0000](https://placehold.co/10x10/ff0000/ff0000.png) <span style="color: #ffaaaa">0.200ms</span>|
+|2|![#e1ff00](https://placehold.co/10x10/e1ff00/e1ff00.png) <span style="color: #f5ffaa">4.222ms</span> / ![#f4ff00](https://placehold.co/10x10/f4ff00/f4ff00.png) <span style="color: #fbffaa">5.000ms</span>|![#b8ff00](https://placehold.co/10x10/b8ff00/b8ff00.png) <span style="color: #e7ffaa">3.336ms</span> / ![#c6ff00](https://placehold.co/10x10/c6ff00/c6ff00.png) <span style="color: #ecffaa">3.822ms</span>|![#ff2600](https://placehold.co/10x10/ff2600/ff2600.png) <span style="color: #ffb7aa">0.184ms</span> / ![#ff4e00](https://placehold.co/10x10/ff4e00/ff4e00.png) <span style="color: #ffc4aa">0.167ms</span>|
+|3|![#96ff00](https://placehold.co/10x10/96ff00/96ff00.png) <span style="color: #dcffaa">2.008ms</span> / ![#f1ff00](https://placehold.co/10x10/f1ff00/f1ff00.png) <span style="color: #faffaa">4.847ms</span>|![#6aff00](https://placehold.co/10x10/6aff00/6aff00.png) <span style="color: #cdffaa">1.316ms</span> / ![#a9ff00](https://placehold.co/10x10/a9ff00/a9ff00.png) <span style="color: #e2ffaa">2.847ms</span>|- / -|
+|4|![#e6ff00](https://placehold.co/10x10/e6ff00/e6ff00.png) <span style="color: #f7ffaa">4.395ms</span> / ![#e8ff00](https://placehold.co/10x10/e8ff00/e8ff00.png) <span style="color: #f7ffaa">4.483ms</span>|![#d5ff00](https://placehold.co/10x10/d5ff00/d5ff00.png) <span style="color: #f1ffaa">4.437ms</span> / ![#d5ff00](https://placehold.co/10x10/d5ff00/d5ff00.png) <span style="color: #f1ffaa">4.444ms</span>|- / -|
+|5|![#7bff00](https://placehold.co/10x10/7bff00/7bff00.png) <span style="color: #d3ffaa">1.466ms</span> / ![#d2ff00](https://placehold.co/10x10/d2ff00/d2ff00.png) <span style="color: #f0ffaa">3.656ms</span>|![#79ff00](https://placehold.co/10x10/79ff00/79ff00.png) <span style="color: #d2ffaa">1.610ms</span> / ![#b7ff00](https://placehold.co/10x10/b7ff00/b7ff00.png) <span style="color: #e7ffaa">3.284ms</span>|- / -|
+|6|![#2fff00](https://placehold.co/10x10/2fff00/2fff00.png) <span style="color: #baffaa">0.413ms</span> / ![#2cff00](https://placehold.co/10x10/2cff00/2cff00.png) <span style="color: #b9ffaa">0.380ms</span>|![#25ff00](https://placehold.co/10x10/25ff00/25ff00.png) <span style="color: #b6ffaa">0.348ms</span> / ![#21ff00](https://placehold.co/10x10/21ff00/21ff00.png) <span style="color: #b5ffaa">0.296ms</span>|- / -|
+|7|![#e4ff00](https://placehold.co/10x10/e4ff00/e4ff00.png) <span style="color: #f6ffaa">4.335ms</span> / ![#ccff00](https://placehold.co/10x10/ccff00/ccff00.png) <span style="color: #eeffaa">3.460ms</span>|![#b7ff00](https://placehold.co/10x10/b7ff00/b7ff00.png) <span style="color: #e7ffaa">3.276ms</span> / ![#afff00](https://placehold.co/10x10/afff00/afff00.png) <span style="color: #e4ffaa">3.032ms</span>|- / -|
+|8|![#dcff00](https://placehold.co/10x10/dcff00/dcff00.png) <span style="color: #f3ffaa">4.032ms</span> / ![#ff8a00](https://placehold.co/10x10/ff8a00/ff8a00.png) <span style="color: #ffd8aa">14.272ms</span>|![#efff00](https://placehold.co/10x10/efff00/efff00.png) <span style="color: #faffaa">5.688ms</span> / ![#ffa600](https://placehold.co/10x10/ffa600/ffa600.png) <span style="color: #ffe1aa">14.396ms</span>|- / -|
+|9|![#d6ff00](https://placehold.co/10x10/d6ff00/d6ff00.png) <span style="color: #f1ffaa">3.793ms</span> / ![#d2ff00](https://placehold.co/10x10/d2ff00/d2ff00.png) <span style="color: #f0ffaa">3.666ms</span>|![#c1ff00](https://placehold.co/10x10/c1ff00/c1ff00.png) <span style="color: #eaffaa">3.656ms</span> / ![#bdff00](https://placehold.co/10x10/bdff00/bdff00.png) <span style="color: #e9ffaa">3.517ms</span>|- / -|
+|10|![#e7ff00](https://placehold.co/10x10/e7ff00/e7ff00.png) <span style="color: #f7ffaa">4.428ms</span> / ![#ff9f00](https://placehold.co/10x10/ff9f00/ff9f00.png) <span style="color: #ffdfaa">12.152ms</span>|![#fbff00](https://placehold.co/10x10/fbff00/fbff00.png) <span style="color: #feffaa">6.400ms</span> / ![#ff9d00](https://placehold.co/10x10/ff9d00/ff9d00.png) <span style="color: #ffdeaa">15.660ms</span>|- / -|
+|11|![#dcff00](https://placehold.co/10x10/dcff00/dcff00.png) <span style="color: #f3ffaa">4.018ms</span> / ![#daff00](https://placehold.co/10x10/daff00/daff00.png) <span style="color: #f3ffaa">3.939ms</span>|![#c2ff00](https://placehold.co/10x10/c2ff00/c2ff00.png) <span style="color: #ebffaa">3.680ms</span> / ![#c3ff00](https://placehold.co/10x10/c3ff00/c3ff00.png) <span style="color: #ebffaa">3.720ms</span>|- / -|
+|12|![#ffef00](https://placehold.co/10x10/ffef00/ffef00.png) <span style="color: #fffaaa">6.323ms</span> / ![#ff6100](https://placehold.co/10x10/ff6100/ff6100.png) <span style="color: #ffcaaa">19.667ms</span>|![#fdff00](https://placehold.co/10x10/fdff00/fdff00.png) <span style="color: #feffaa">6.476ms</span> / ![#ff6700](https://placehold.co/10x10/ff6700/ff6700.png) <span style="color: #ffccaa">24.574ms</span>|- / -|
+|13|![#77ff00](https://placehold.co/10x10/77ff00/77ff00.png) <span style="color: #d2ffaa">1.395ms</span> / ![#83ff00](https://placehold.co/10x10/83ff00/83ff00.png) <span style="color: #d6ffaa">1.621ms</span>|![#6eff00](https://placehold.co/10x10/6eff00/6eff00.png) <span style="color: #cfffaa">1.409ms</span> / ![#88ff00](https://placehold.co/10x10/88ff00/88ff00.png) <span style="color: #d7ffaa">1.958ms</span>|- / -|
+|14|![#97ff00](https://placehold.co/10x10/97ff00/97ff00.png) <span style="color: #dcffaa">2.027ms</span> / ![#ff2d00](https://placehold.co/10x10/ff2d00/ff2d00.png) <span style="color: #ffb9aa">29.199ms</span>|![#92ff00](https://placehold.co/10x10/92ff00/92ff00.png) <span style="color: #dbffaa">2.184ms</span> / ![#ff0000](https://placehold.co/10x10/ff0000/ff0000.png) <span style="color: #ffaaaa">56.937ms</span>|- / -|
+|15|![#8aff00](https://placehold.co/10x10/8aff00/8aff00.png) <span style="color: #d8ffaa">1.749ms</span> / ![#bfff00](https://placehold.co/10x10/bfff00/bfff00.png) <span style="color: #eaffaa">3.072ms</span>|![#7bff00](https://placehold.co/10x10/7bff00/7bff00.png) <span style="color: #d3ffaa">1.658ms</span> / ![#9fff00](https://placehold.co/10x10/9fff00/9fff00.png) <span style="color: #dfffaa">2.546ms</span>|- / -|
+|16|![#dfff00](https://placehold.co/10x10/dfff00/dfff00.png) <span style="color: #f4ffaa">4.147ms</span> / ![#ff0000](https://placehold.co/10x10/ff0000/ff0000.png) <span style="color: #ffaaaa">41.143ms</span>|![#e5ff00](https://placehold.co/10x10/e5ff00/e5ff00.png) <span style="color: #f6ffaa">5.198ms</span> / ![#ff0900](https://placehold.co/10x10/ff0900/ff0900.png) <span style="color: #ffadaa">52.962ms</span>|- / -|
+|17|- / -|- / -|- / -|
+|18|- / -|- / -|- / -|
+|19|- / -|- / -|- / -|
+|20|- / -|- / -|- / -|
+|21|- / -|- / -|- / -|
+|22|- / -|- / -|- / -|
+|23|- / -|- / -|- / -|
+|24|- / -|- / -|- / -|
+|25|- / -|- / -|- / -|
+|Total|203.762ms|248.228ms|0.696ms|
 <!--BENCHMARKEND-->
 
 ## Commands
