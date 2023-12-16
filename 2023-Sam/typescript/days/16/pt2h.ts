@@ -117,11 +117,8 @@ for (const startPos of startPositions) {
   // const start = performance.now();
   const visited = new Set<number>();
   const visitedPositions = new Set<number>();
-  const positions = [startPos];
-
-  for (let p = 0; p < positions.length; p++) {
-    const q = positions[p];
-    if (visited.has(q)) continue;
+  const traverse = (q: number) => {
+    if (visited.has(q)) return [];
     visited.add(q);
     const c = q & a2;
     const rot = q >> s2;
@@ -130,18 +127,20 @@ for (const startPos of startPositions) {
 
     const r = data[c] * 16 + rot * 4;
     if (cellMapping[r] && x < width - 1) {
-      positions.push(c + 1);
+      traverse(c + 1);
     }
     if (cellMapping[r + 1] && c < r1M) {
-      positions.push(c + r1O);
+      traverse(c + r1O);
     }
     if (cellMapping[r + 2] && x > 0) {
-      positions.push(c + r2O);
+      traverse(c + r2O);
     }
     if (cellMapping[r + 3] && c >= d1) {
-      positions.push(c + r3O);
+      traverse(c + r3O);
     }
-  }
+    return visitedPositions;
+  };
+  traverse(startPos);
 
   // console.log([...visitedPositions].sort());
   if (visitedPositions.size > maxVisitedPositions) maxVisitedPositions = visitedPositions.size;

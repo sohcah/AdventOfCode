@@ -113,6 +113,33 @@ const r2O = -1 + 2 * d2;
 const r3O = -d1 + 3 * d2;
 
 let maxVisitedPositions = 0;
+
+function internal_runPos(q: number) {
+  const c = q & a2;
+  const rot = q >> s2;
+  const x = c & a1;
+
+  const positions = [];
+  const r = data[c] * 16 + rot * 4;
+  if (cellMapping[r] && x < width - 1) {
+    positions.push(c + 1);
+  }
+  if (cellMapping[r + 1] && c < r1M) {
+    positions.push(c + r1O);
+  }
+  if (cellMapping[r + 2] && x > 0) {
+    positions.push(c + r2O);
+  }
+  if (cellMapping[r + 3] && c >= d1) {
+    positions.push(c + r3O);
+  }
+  return { c, positions };
+}
+const cache: Record<number, ReturnType<typeof internal_runPos>> = {};
+function runPos(q: number) {
+  return (cache[q] ??= internal_runPos(q));
+}
+
 for (const startPos of startPositions) {
   // const start = performance.now();
   const visited = new Set<number>();
@@ -123,24 +150,9 @@ for (const startPos of startPositions) {
     const q = positions[p];
     if (visited.has(q)) continue;
     visited.add(q);
-    const c = q & a2;
-    const rot = q >> s2;
-    const x = c & a1;
-    visitedPositions.add(c);
-
-    const r = data[c] * 16 + rot * 4;
-    if (cellMapping[r] && x < width - 1) {
-      positions.push(c + 1);
-    }
-    if (cellMapping[r + 1] && c < r1M) {
-      positions.push(c + r1O);
-    }
-    if (cellMapping[r + 2] && x > 0) {
-      positions.push(c + r2O);
-    }
-    if (cellMapping[r + 3] && c >= d1) {
-      positions.push(c + r3O);
-    }
+    const result = runPos(q);
+    visitedPositions.add(result.c);
+    positions.push(...result.positions);
   }
 
   // console.log([...visitedPositions].sort());
