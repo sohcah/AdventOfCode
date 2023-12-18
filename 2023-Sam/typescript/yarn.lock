@@ -68,6 +68,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"17@workspace:days/17":
+  version: 0.0.0-use.local
+  resolution: "17@workspace:days/17"
+  dependencies:
+    "@datastructures-js/priority-queue": "npm:^6.3.0"
+    aocutils: "workspace:^"
+    tsx: "npm:^4.6.0"
+  languageName: unknown
+  linkType: soft
+
 "1@workspace:days/1":
   version: 0.0.0-use.local
   resolution: "1@workspace:days/1"
@@ -153,6 +163,22 @@ __metadata:
   version: 1.2.6
   resolution: "@aashutoshrathi/word-wrap@npm:1.2.6"
   checksum: 6eebd12a5cd03cee38fcb915ef9f4ea557df6a06f642dfc7fe8eb4839eb5c9ca55a382f3604d52c14200b0c214c12af5e1f23d2a6d8e23ef2d016b105a9d6c0a
+  languageName: node
+  linkType: hard
+
+"@datastructures-js/heap@npm:^4.3.1":
+  version: 4.3.2
+  resolution: "@datastructures-js/heap@npm:4.3.2"
+  checksum: 4204b5444d394517ddfe4f4f7f857ec7b173a85cc03c53b66511be5b6b289aee9213d3855b85ba259002c73ac623925ebd5feefb9bfe5732688b83dce55d2284
+  languageName: node
+  linkType: hard
+
+"@datastructures-js/priority-queue@npm:^6.3.0":
+  version: 6.3.0
+  resolution: "@datastructures-js/priority-queue@npm:6.3.0"
+  dependencies:
+    "@datastructures-js/heap": "npm:^4.3.1"
+  checksum: 79381a7fbc26652d68238c4971d2ff89a2f92e8c579a1b42eae3b74d7dec4af0f26d935c4b08431b35e11a21a6de369061df05d157233ba51eed1545ce32816e
   languageName: node
   linkType: hard
 
