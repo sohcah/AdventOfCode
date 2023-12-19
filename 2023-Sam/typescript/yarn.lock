@@ -74,6 +74,27 @@ __metadata:
   dependencies:
     "@datastructures-js/priority-queue": "npm:^6.3.0"
     aocutils: "workspace:^"
+    fastpriorityqueue: "npm:^0.7.4"
+    flatqueue: "npm:^2.0.3"
+    heapify: "npm:^0.6.0"
+    tsx: "npm:^4.6.0"
+  languageName: unknown
+  linkType: soft
+
+"18@workspace:days/18":
+  version: 0.0.0-use.local
+  resolution: "18@workspace:days/18"
+  dependencies:
+    aocutils: "workspace:^"
+    tsx: "npm:^4.6.0"
+  languageName: unknown
+  linkType: soft
+
+"19@workspace:days/19":
+  version: 0.0.0-use.local
+  resolution: "19@workspace:days/19"
+  dependencies:
+    aocutils: "workspace:^"
     tsx: "npm:^4.6.0"
   languageName: unknown
   linkType: soft
@@ -1973,6 +1994,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fastpriorityqueue@npm:^0.7.4":
+  version: 0.7.4
+  resolution: "fastpriorityqueue@npm:0.7.4"
+  checksum: 066bcfbc7d0043430e53a24fe5d0007286796cf00054eff06c2b79ad798b78e0f49d243ae67a4ad6e9ad22264a6a06578627d5f6930b1b5b7ab9608ec197df0c
+  languageName: node
+  linkType: hard
+
 "fastq@npm:^1.6.0":
   version: 1.13.0
   resolution: "fastq@npm:1.13.0"
@@ -2017,6 +2045,13 @@ __metadata:
     flatted: "npm:^3.1.0"
     rimraf: "npm:^3.0.2"
   checksum: 9fe5d0cb97c988e3b25242e71346965fae22757674db3fca14206850af2efa3ca3b04a3ba0eba8d5e20fd8a3be80a2e14b1c2917e70ffe1acb98a8c3327e4c9f
+  languageName: node
+  linkType: hard
+
+"flatqueue@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "flatqueue@npm:2.0.3"
+  checksum: 8b56dee4211cf295459f67ceb84dd68b97ab5c91ea427cca5624a3e6dab4f1222d28843a0738d79ba7e2a10e918bb3d570fd221acc5dbd2c66d89e8eddde899d
   languageName: node
   linkType: hard
 
@@ -2234,6 +2269,13 @@ __metadata:
   version: 2.0.1
   resolution: "has-unicode@npm:2.0.1"
   checksum: 041b4293ad6bf391e21c5d85ed03f412506d6623786b801c4ab39e4e6ca54993f13201bceb544d92963f9e0024e6e7fbf0cb1d84c9d6b31cb9c79c8c990d13d8
+  languageName: node
+  linkType: hard
+
+"heapify@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "heapify@npm:0.6.0"
+  checksum: 410bec2c977da42d754773e039ab27e11eb842e075b4e72899dbdb4160031ba5aef8bc38159a5377297d9d6c4f60e0ad3c9a292b9f33ffdf2f1b3201618d3a7b
   languageName: node
   linkType: hard
 
