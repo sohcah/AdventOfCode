@@ -1,0 +1,38 @@
+[package]
+name = "day1"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+aocutils = { path = "../../utils" }
+regex-automata = { version = "0.4.3", features = [] }
+onig = { version = "6.4.0", default-features = false }
+
+[dependencies.regex]
+version = "1.10.2"
+default-features = false
+features = ["std"]
+
+[[bin]]
+name = "pt1"
+path = "pt1.rs"
+
+[[bin]]
+name = "pt1b"
+path = "pt1b.rs"
+
+[[bin]]
+name = "pt2"
+path = "pt2.rs"
+
+[[bin]]
+name = "pt2b"
+path = "pt2b.rs"
+
+[[bin]]
+name = "pt2c"
+path = "pt2c.rs"
+
+[[bin]]
+name = "pt2d"
+path = "pt2d.rs"
