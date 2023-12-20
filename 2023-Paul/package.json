@@ -1,0 +1,30 @@
+{
+  "name": "2023-Paul",
+  "packageManager": "yarn@4.0.2",
+  "type": "module",
+  "workspaces": [
+    "days/*",
+    "utils"
+  ],
+  "scripts": {
+    "test": "AOCTEST=true bun go.ts",
+    "start": "bun go.ts",
+    "runAll": "tsx runAll.ts",
+    "runAllTest": "AOCTEST=true tsx runAll.ts",
+    "build": "yarn workspace aocutils build"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.13.1",
+    "@typescript-eslint/parser": "^6.13.1",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-rulesdir": "^0.2.2",
+    "prettier": "^3.1.0",
+    "tsup": "^8.0.1",
+    "tsx": "^4.6.0"
+  },
+  "dependencies": {
+    "clipboardy": "^4.0.0"
+  }
+}
