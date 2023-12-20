@@ -4,9 +4,11 @@ export const languages: Record<string, {
   prefix: string;
   fileExt: string;
   watch?: string[];
-  runCommand: (directory: string, file: string) => {
+  runCommand: (directory: string, file: string, compile: boolean) => {
     cwd: string;
+    buildCommand?: string;
     command: string;
+    cleanupCommand?: string;
   },
 }> = {
   typescript: {
@@ -15,6 +17,14 @@ export const languages: Record<string, {
     prefix: "ts",
     fileExt: ".ts",
     runCommand(directory, path) {
+      // if (compile) {
+      //   return {
+      //     cwd: directory,
+      //     buildCommand: `bun build ${path} --target bun --outfile ${path}.compiled.cjs`,
+      //     command: `bun ${path}.compiled.cjs`,
+      //     cleanupCommand: `rm ${path}.compiled.cjs`
+      //   }
+      // }
       return {
         cwd: directory,
         command: `bun run ${path}`
@@ -27,6 +37,14 @@ export const languages: Record<string, {
     prefix: "ts",
     fileExt: ".ts",
     runCommand(directory, path) {
+      // if (compile) {
+      //   return {
+      //     cwd: directory,
+      //     buildCommand: `bun build ${path} --outfile ${path}.compiled.mjs`,
+      //     command: `node ${path}.compiled.mjs`,
+      //     cleanupCommand: `rm ${path}.compiled.mjs`
+      //   }
+      // }
       return {
         cwd: directory,
         command: `bun run tsx ${path}`

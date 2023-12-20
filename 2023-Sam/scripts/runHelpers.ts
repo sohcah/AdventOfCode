@@ -46,7 +46,10 @@ async function callDay(language: Language, day: string, part: string, input: Day
     const dir = resolve(__dirname, `./${language.folder}/${day}`);
     const path = `pt${part}${language.fileExt}`;
     const outFile = join(tmpDir, `${Math.floor(Math.random() * 1000000)}.json`);
-    const { cwd, command } = language.runCommand(dir, path);
+    const { cwd, command, buildCommand, cleanupCommand } = language.runCommand(dir, path, true);
+    if (buildCommand) {
+      child_process.execSync(buildCommand, { cwd, stdio: "inherit", shell: "/bin/bash" });
+    }
     const proc = child_process.spawn(
         command,
         {
@@ -70,6 +73,10 @@ async function callDay(language: Language, day: string, part: string, input: Day
           break;
         }
         await new Promise(r => setTimeout(r, 10));
+    }
+
+    if (cleanupCommand) {
+      child_process.execSync(cleanupCommand, {cwd, stdio: "inherit", shell: "/bin/bash"});
     }
 
     let output;

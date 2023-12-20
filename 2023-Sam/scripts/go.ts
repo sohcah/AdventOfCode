@@ -26,7 +26,8 @@ run(abort.signal);
 
 for (const watchPath of [`${currentLanguage.folder}/${day}`, ...(currentLanguage.watch ?? [])]) {
   console.log("Watching", watchPath);
-  watch(watchPath, async () => {
+  watch(watchPath, async (_, filename) => {
+    if (filename?.includes(".compiled.")) return;
     console.log("Change in", watchPath);
     abort.abort();
     abort = new AbortController();
