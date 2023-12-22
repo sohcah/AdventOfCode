@@ -27,7 +27,7 @@ export const languages: Record<string, {
       // }
       return {
         cwd: directory,
-        command: `bun run ${path}`
+        command: `${process.env.BENCHMARK ? "nice -n -20 " : ""}bun run ${path}`
       }
     }
   },
@@ -47,7 +47,7 @@ export const languages: Record<string, {
       // }
       return {
         cwd: directory,
-        command: `bun run tsx ${path}`
+        command: `${process.env.BENCHMARK ? "nice -n -20 " : ""}bun run tsx ${path}`
       }
     }
   },
@@ -60,7 +60,7 @@ export const languages: Record<string, {
     runCommand(directory, path) {
       return {
         cwd: directory,
-        command: `cargo run${process.env.RELEASE_MODE ? " -r" : ""} --quiet --bin ${path.replace(".rs", "")}`
+        command: `${process.env.BENCHMARK ? "nice -n -20 " : ""}cargo run${process.env.RELEASE_MODE ? " -r" : ""} --quiet --bin ${path.replace(".rs", "")}`
       }
     }
   },
