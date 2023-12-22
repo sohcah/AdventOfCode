@@ -27,6 +27,7 @@ export * from "./linked/list";
 
 export * from "./helpers/regex";
 export * from "./helpers/arraySet";
+export * from "./helpers/throwOnOutOfBounds";
 
 if (process.env.NO_LOG) {
   console.log = () => {};
