@@ -10,7 +10,7 @@ function getCoord(x: number, y: number) {
   return x + y * width;
 }
 
-const data = new Uint8Array(grid.flat().map((i) => (i === "#" ? 0 : 1)));
+const data = grid.flat();
 
 const startPos = getCoord(grid[0].indexOf("."), 0);
 const endPos = getCoord(grid[height - 1].indexOf("."), height - 1);
@@ -20,7 +20,6 @@ const graph: Record<string, [number, number][]> = {
 };
 
 {
-  const start = performance.now();
   const positions = new FlatQueue<[Set<number>, number, number, number]>();
   positions.push([new Set([startPos]), startPos, startPos, -1], -1);
 
@@ -31,12 +30,17 @@ const graph: Record<string, [number, number][]> = {
     positions.push([newSet, path[1], path[2], path[3]], -newSet.size);
   };
 
+  let p = 0;
   while (positions.length) {
     const [pathSet, pos, lastNode, sinceLastNode] = positions.pop()!;
 
-    const aroundCount = data[pos - 1] + data[pos + 1] + data[pos - width] + data[pos + width];
-
-    const isNode = pos === startPos || pos === endPos || aroundCount > 2;
+    const isNode =
+      pos === startPos ||
+      pos === endPos ||
+      (data[pos - 1] !== "." &&
+        data[pos + 1] !== "." &&
+        data[pos - width] !== "." &&
+        data[pos + width] !== ".");
     if (isNode) {
       if (!graph[lastNode]) {
         graph[lastNode] = [];
@@ -45,30 +49,33 @@ const graph: Record<string, [number, number][]> = {
       graph[lastNode].push([pos, sinceLastNode]);
     }
 
-    if (pos === endPos) continue;
+    if (p % 10000 === 0) console.log(p, positions.length, pathSet.size);
+
+    if (pos === endPos) {
+      continue;
+    }
 
     // up
-    if (pos !== startPos && data[pos - width] === 1) {
+    if (pos !== startPos && (data[pos - width] === "." || data[pos - width] === "^")) {
       addPath([pathSet, pos - width, isNode ? pos : lastNode, isNode ? 1 : sinceLastNode + 1]);
     }
 
     // down
-    if (data[pos + width] === 1) {
+    if (data[pos + width] === "." || data[pos + width] === "v") {
       addPath([pathSet, pos + width, isNode ? pos : lastNode, isNode ? 1 : sinceLastNode + 1]);
     }
 
     // left
-    if (data[pos - 1] === 1) {
+    if (data[pos - 1] === "." || data[pos - 1] === "<") {
       addPath([pathSet, pos - 1, isNode ? pos : lastNode, isNode ? 1 : sinceLastNode + 1]);
     }
 
     // right
-    if (data[pos + 1] === 1) {
+    if (data[pos + 1] === "." || data[pos + 1] === ">") {
       addPath([pathSet, pos + 1, isNode ? pos : lastNode, isNode ? 1 : sinceLastNode + 1]);
     }
+    p++;
   }
-
-  console.log(performance.now() - start);
 }
 
 const nodeMapping = Object.fromEntries(Object.keys(graph).map((i, n) => [i, n]));
@@ -90,32 +97,18 @@ const mappedGraph = Object.fromEntries(
   })
 );
 
-console.log(mappedGraph);
+console.log(`strict graph Q {
+${Object.entries(mappedGraph)
+  .map(([key, values]) => {
+    return values
+      .map(([v, l]) => {
+        return `  ${Number(key) || "START"} -- ${
+          (v ?? "END") || "START"
+        }[label="${l}",weight="${l}"]`;
+      })
+      .join("\n");
+  })
+  .join("\n")}
+}`);
 
-let bestEndPath = 0;
-
-{
-  const start = performance.now();
-  const positions = new Array<[bigint, number, number]>();
-  const mappedEnd = nodeMapping[endPos];
-  const startArray = 1n << BigInt(nodeMapping[startPos]);
-  positions.push([startArray, 0, nodeMapping[startPos]]);
-
-  while (positions.length) {
-    const [pathSet, length, pos] = positions.pop()!;
-
-    for (const p of mappedGraph[pos]) {
-      if (p[0] === mappedEnd) {
-        if (length + p[1] > bestEndPath) {
-          bestEndPath = length + p[1];
-        }
-      } else if (!(pathSet & p[2])) {
-        positions.push([pathSet | p[2], length + p[1], p[0]]);
-      }
-    }
-  }
-
-  console.log(performance.now() - start);
-}
-
-output(bestEndPath).forTest(154).forActual(6734);
+output(0).forTest(94).forActual(2278);

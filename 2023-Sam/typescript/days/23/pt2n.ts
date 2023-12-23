@@ -22,7 +22,8 @@ const graph: Record<string, [number, number][]> = {
 {
   const start = performance.now();
   const positions = new FlatQueue<[Set<number>, number, number, number]>();
-  positions.push([new Set([startPos]), startPos, startPos, -1], -1);
+  positions.push([new Set([startPos]), startPos, -1, 0], -1);
+  const visited = new Uint8Array(width * height).fill(0);
 
   const addPath = (path: [Set<number>, number, number, number]) => {
     if (path[0].has(path[1])) return;
@@ -38,32 +39,33 @@ const graph: Record<string, [number, number][]> = {
 
     const isNode = pos === startPos || pos === endPos || aroundCount > 2;
     if (isNode) {
-      if (!graph[lastNode]) {
-        graph[lastNode] = [];
-      }
-      if (graph[lastNode].some((i) => i[0] === pos)) continue;
+      graph[lastNode] ??= [];
+      graph[pos] ??= [];
       graph[lastNode].push([pos, sinceLastNode]);
+      graph[pos].push([lastNode, sinceLastNode]);
+      if (visited[pos]) continue;
+      visited[pos] = 1;
     }
 
     if (pos === endPos) continue;
 
     // up
-    if (pos !== startPos && data[pos - width] === 1) {
+    if (pos !== startPos && data[pos - width]) {
       addPath([pathSet, pos - width, isNode ? pos : lastNode, isNode ? 1 : sinceLastNode + 1]);
     }
 
     // down
-    if (data[pos + width] === 1) {
+    if (data[pos + width]) {
       addPath([pathSet, pos + width, isNode ? pos : lastNode, isNode ? 1 : sinceLastNode + 1]);
     }
 
     // left
-    if (data[pos - 1] === 1) {
+    if (data[pos - 1]) {
       addPath([pathSet, pos - 1, isNode ? pos : lastNode, isNode ? 1 : sinceLastNode + 1]);
     }
 
     // right
-    if (data[pos + 1] === 1) {
+    if (data[pos + 1]) {
       addPath([pathSet, pos + 1, isNode ? pos : lastNode, isNode ? 1 : sinceLastNode + 1]);
     }
   }
@@ -78,42 +80,38 @@ const mappedGraph = Object.fromEntries(
     return [
       nodeMapping[key],
       value
-        .filter((i) => i[0] !== Number(key))
+        .filter((i) => i[0] !== Number(key) && i[0] !== -1)
         .map((i) => {
-          return [nodeMapping[i[0]], i[1], 1n << BigInt(nodeMapping[i[0]] ?? -1)] as [
-            number,
-            number,
-            bigint,
-          ];
+          return [nodeMapping[i[0]], i[1]] as [number, number];
         }),
     ];
   })
 );
 
-console.log(mappedGraph);
-
 let bestEndPath = 0;
 
 {
   const start = performance.now();
-  const positions = new Array<[bigint, number, number]>();
   const mappedEnd = nodeMapping[endPos];
-  const startArray = 1n << BigInt(nodeMapping[startPos]);
-  positions.push([startArray, 0, nodeMapping[startPos]]);
 
-  while (positions.length) {
-    const [pathSet, length, pos] = positions.pop()!;
-
+  const pathSet = new Uint8Array(Object.keys(nodeMapping).length).fill(0);
+  const traverse = (length: number, pos: number) => {
     for (const p of mappedGraph[pos]) {
       if (p[0] === mappedEnd) {
         if (length + p[1] > bestEndPath) {
           bestEndPath = length + p[1];
         }
-      } else if (!(pathSet & p[2])) {
-        positions.push([pathSet | p[2], length + p[1], p[0]]);
+      } else if (pathSet[p[0]] === 0) {
+        pathSet[p[0]] = 1;
+        traverse(length + p[1], p[0]);
+        pathSet[p[0]] = 0;
       }
     }
-  }
+  };
+
+  pathSet[nodeMapping[startPos]] = 1;
+  traverse(0, nodeMapping[startPos]);
+  pathSet[nodeMapping[startPos]] = 0;
 
   console.log(performance.now() - start);
 }

@@ -90,32 +90,18 @@ const mappedGraph = Object.fromEntries(
   })
 );
 
-console.log(mappedGraph);
+console.log(`strict graph Q {
+${Object.entries(mappedGraph)
+  .map(([key, values]) => {
+    return values
+      .map(([v, l]) => {
+        return `  ${Number(key) || "START"} -- ${
+          (v ?? "END") || "START"
+        }[label="${l}",weight="${l}"]`;
+      })
+      .join("\n");
+  })
+  .join("\n")}
+}`);
 
-let bestEndPath = 0;
-
-{
-  const start = performance.now();
-  const positions = new Array<[bigint, number, number]>();
-  const mappedEnd = nodeMapping[endPos];
-  const startArray = 1n << BigInt(nodeMapping[startPos]);
-  positions.push([startArray, 0, nodeMapping[startPos]]);
-
-  while (positions.length) {
-    const [pathSet, length, pos] = positions.pop()!;
-
-    for (const p of mappedGraph[pos]) {
-      if (p[0] === mappedEnd) {
-        if (length + p[1] > bestEndPath) {
-          bestEndPath = length + p[1];
-        }
-      } else if (!(pathSet & p[2])) {
-        positions.push([pathSet | p[2], length + p[1], p[0]]);
-      }
-    }
-  }
-
-  console.log(performance.now() - start);
-}
-
-output(bestEndPath).forTest(154).forActual(6734);
+output(0).forTest(154).forActual(6734);

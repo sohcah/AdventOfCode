@@ -23,6 +23,7 @@ const graph: Record<string, [number, number][]> = {
   const start = performance.now();
   const positions = new FlatQueue<[Set<number>, number, number, number]>();
   positions.push([new Set([startPos]), startPos, startPos, -1], -1);
+  const visited = new Uint8Array(width * height).fill(0);
 
   const addPath = (path: [Set<number>, number, number, number]) => {
     if (path[0].has(path[1])) return;
@@ -38,32 +39,33 @@ const graph: Record<string, [number, number][]> = {
 
     const isNode = pos === startPos || pos === endPos || aroundCount > 2;
     if (isNode) {
-      if (!graph[lastNode]) {
-        graph[lastNode] = [];
-      }
-      if (graph[lastNode].some((i) => i[0] === pos)) continue;
+      graph[lastNode] ??= [];
+      graph[pos] ??= [];
       graph[lastNode].push([pos, sinceLastNode]);
+      graph[pos].push([lastNode, sinceLastNode]);
+      if (visited[pos]) continue;
+      visited[pos] = 1;
     }
 
     if (pos === endPos) continue;
 
     // up
-    if (pos !== startPos && data[pos - width] === 1) {
+    if (pos !== startPos && data[pos - width]) {
       addPath([pathSet, pos - width, isNode ? pos : lastNode, isNode ? 1 : sinceLastNode + 1]);
     }
 
     // down
-    if (data[pos + width] === 1) {
+    if (data[pos + width]) {
       addPath([pathSet, pos + width, isNode ? pos : lastNode, isNode ? 1 : sinceLastNode + 1]);
     }
 
     // left
-    if (data[pos - 1] === 1) {
+    if (data[pos - 1]) {
       addPath([pathSet, pos - 1, isNode ? pos : lastNode, isNode ? 1 : sinceLastNode + 1]);
     }
 
     // right
-    if (data[pos + 1] === 1) {
+    if (data[pos + 1]) {
       addPath([pathSet, pos + 1, isNode ? pos : lastNode, isNode ? 1 : sinceLastNode + 1]);
     }
   }
@@ -90,7 +92,7 @@ const mappedGraph = Object.fromEntries(
   })
 );
 
-console.log(mappedGraph);
+// console.log(mappedGraph);
 
 let bestEndPath = 0;
 
