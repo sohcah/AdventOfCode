@@ -56,16 +56,13 @@ function addPosition(position: Position) {
   positions.push(position, position.heatLoss);
 }
 
-let n = 0;
 while (positions.length) {
-  n++;
   const position = positions.pop()!;
   const p = position.p;
   if (visited[p]) continue;
   visited[p] = 1;
   if (position.coord === wh - 1) {
     if (position.noSteps > 3) {
-      console.log("C:" + position.heatLoss.toString());
       answer = position.heatLoss;
       break;
     }
@@ -117,5 +114,4 @@ while (positions.length) {
     );
   }
 }
-console.log(n);
 output(answer).forTest(94).forActual(1157);

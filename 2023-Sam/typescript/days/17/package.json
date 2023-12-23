@@ -1,6 +1,7 @@
 {
   "name": "17",
   "version": "1.0.0",
+  "type": "module",
   "dependencies": {
     "@datastructures-js/priority-queue": "^6.3.0",
     "aocutils": "workspace:^",

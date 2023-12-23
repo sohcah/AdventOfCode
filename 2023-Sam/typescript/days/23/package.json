@@ -1,0 +1,12 @@
+{
+  "name": "23",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "aocutils": "workspace:^"
+  },
+  "devDependencies": {
+    "flatqueue": "^2.0.3",
+    "tsx": "^4.6.0"
+  }
+}

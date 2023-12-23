@@ -126,6 +126,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"22@workspace:days/22":
+  version: 0.0.0-use.local
+  resolution: "22@workspace:days/22"
+  dependencies:
+    aocutils: "workspace:^"
+    tsx: "npm:^4.6.0"
+  languageName: unknown
+  linkType: soft
+
+"23@workspace:days/23":
+  version: 0.0.0-use.local
+  resolution: "23@workspace:days/23"
+  dependencies:
+    aocutils: "workspace:^"
+    flatqueue: "npm:^2.0.3"
+    tsx: "npm:^4.6.0"
+  languageName: unknown
+  linkType: soft
+
 "2@workspace:days/2":
   version: 0.0.0-use.local
   resolution: "2@workspace:days/2"
