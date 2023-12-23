@@ -1,3 +1,5 @@
+import { resolve } from "node:path";
+
 export const languages: Record<string, {
   name: string;
   folder: string;
@@ -9,6 +11,7 @@ export const languages: Record<string, {
     buildCommand?: string;
     command: string;
     cleanupCommand?: string;
+    env?: Record<string, string>;
   },
 }> = {
   typescript: {
@@ -61,6 +64,22 @@ export const languages: Record<string, {
       return {
         cwd: directory,
         command: `${process.env.BENCHMARK ? "nice -n '-20' " : ""}cargo run${process.env.RELEASE_MODE ? " -r" : ""} --quiet --bin ${path.replace(".rs", "")}`
+      }
+    }
+  },
+  python: {
+    name: "Python",
+    folder: "python/days",
+    prefix: "py",
+    fileExt: ".py",
+    watch: ["python/utils"],
+    runCommand(directory, path) {
+      return {
+        cwd: directory,
+        command: `${process.env.BENCHMARK ? "nice -n '-20' " : ""}python ${path}`,
+        env: {
+          PYTHONPATH: `${process.env.PYTHONPATH}:${resolve(directory, "../../utils")}`
+        }
       }
     }
   },

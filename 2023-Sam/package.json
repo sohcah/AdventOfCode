@@ -17,6 +17,10 @@
     "rs:start": "AOCLANG=rust bun scripts/go.ts",
     "rs:all": "AOCLANG=rust bun scripts/runAll.ts",
     "rs:all-test": "AOCLANG=rust AOCTEST=true bun scripts/runAll.ts",
+    "py:test": "AOCLANG=python AOCTEST=true bun scripts/go.ts",
+    "py:start": "AOCLANG=python bun scripts/go.ts",
+    "py:all": "AOCLANG=python bun scripts/runAll.ts",
+    "py:all-test": "AOCLANG=python AOCTEST=true bun scripts/runAll.ts",
     "bench": "BENCHMARK=true bun scripts/runAll.ts"
   },
   "devDependencies": {
