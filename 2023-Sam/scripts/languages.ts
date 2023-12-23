@@ -47,7 +47,7 @@ export const languages: Record<string, {
       // }
       return {
         cwd: directory,
-        command: `${process.env.BENCHMARK ? "nice -n '-20' " : ""}bun run tsx ${path}`
+        command: `${process.env.BENCHMARK ? "nice -n '-20' " : ""}bun run tsx --stack-size=2048 ${path}`
       }
     }
   },
