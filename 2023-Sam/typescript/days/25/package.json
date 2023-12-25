@@ -1,0 +1,11 @@
+{
+  "name": "25",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "aocutils": "workspace:^"
+  },
+  "devDependencies": {
+    "tsx": "^4.6.0"
+  }
+}

@@ -1,4 +1,5 @@
 import { resolve } from "node:path";
+import {readFileSync} from "node:fs";
 
 export const languages: Record<string, {
   name: string;
