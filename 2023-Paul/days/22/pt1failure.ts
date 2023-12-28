@@ -4,8 +4,8 @@ let input = loadTrimmed().split("\n").map(i=>i.split("~").map(i=>i.split(",").ma
 
 let bricks = input.sort((a,b)=> Math.min(a[0][2],a[1][2]) - Math.min(b[0][2],b[1][2]));
 
-// bricks = bricks.slice(0,25);
-// console.log(bricks);
+//bricks = bricks.slice(0,15);
+//console.log(bricks);
 
 let zMax = 0;
 for (let i=0;i<bricks.length;i++) {
@@ -17,7 +17,11 @@ for (let i=0;i<bricks.length;i++) {
 	}
 }
 
+//console.log(bricks);
+
+
 const size = 10;
+//console.log(bricks);
 
 let height = 1;
 let i = 0;
@@ -47,7 +51,8 @@ while (i<bricks.length) {
 			}
 			bricks[i][0][2] = below+1;
 			bricks[i][1][2] = below+1;
-		} else if (bricks[i][0][0] != bricks[i][1][0]) {
+		}
+		if (bricks[i][0][0] != bricks[i][1][0]) {
 			let below = height - 1;
 			let landed = false;
 			loop: while (landed == false) {
@@ -64,7 +69,8 @@ while (i<bricks.length) {
 			}
 			bricks[i][0][2] = below+1;
 			bricks[i][1][2] = below+1;
-		} else {	//if (bricks[i][0][2] != bricks[i][1][2]) {
+		}
+		if (bricks[i][0][2] != bricks[i][1][2]) {
 			let subtract = 0;
 			while (map[height-subtract-1][bricks[i][0][0]][bricks[i][0][1]] == 0) {
 				subtract++;
@@ -96,66 +102,54 @@ while (i<bricks.length) {
 //
 // console.log(bricks);
 
-
-let bricksList = new Array(bricks.length).fill(0).map((i,n)=>[n]);
-let fallsCount = {};
-let count = 0;
-console.log(bricksList);
-for (let i=0;i<bricksList.length;i++) {
-	let height = bricks[bricksList[i][0]][1][2];
-	let falls: number[] = [];
-	loop: for (let j=0;j<bricks.length;j++) {
-		if (!bricksList[i].includes(j) && bricks[j][0][2]==height+1) {
-
-			if (bricks[j][0][1] != bricks[j][1][1]) {
-				for (let y = Math.min(bricks[j][0][1], bricks[j][1][1]); y <= Math.max(bricks[j][0][1], bricks[j][1][1]); y++) {
-					if (map[height][bricks[j][0][0]][y] != 0 && bricksList[i].indexOf(map[height][bricks[j][0][0]][y] -1) == -1) {} else {
-						falls.push(j);
-						break;
-					}
-				}
-			} else if (bricks[j][0][0] != bricks[j][1][0]) {
-				for (let x = Math.min(bricks[j][0][0], bricks[j][1][0]); x <= Math.max(bricks[j][0][0], bricks[j][1][0]); x++) {
-					if (map[height][x][bricks[j][0][1]] != 0 && bricksList[i].indexOf(map[height][x][bricks[j][0][1]]-1) == - 1) {} else {
-						falls.push(j);
-						break;
-					}
-				}
-			} else { //if (bricks[j][0][2] != bricks[j][1][2])
-				if (map[height][bricks[j][0][0]][bricks[j][0][1]] != 0 && bricksList[i].indexOf(map[height][bricks[j][0][0]][bricks[j][0][1]]-1) == - 1) {} else {
-					falls.push(j);
+let disCount = 0;
+for (let i=0;i<bricks.length;i++) {
+	let height = bricks[i][0][2];
+	let j = i+1;
+	while (j<bricks.length && bricks[j][0][2]==height){
+		j++;
+	}
+	let noneFall = true;
+	while (j<bricks.length && bricks[j][0][2]==height+1 && noneFall) {
+		let falls = true;
+		if (bricks[j][0][1] != bricks[j][1][1]) {
+			for (let y = Math.min(bricks[j][0][1], bricks[j][1][1]); y <= Math.max(bricks[j][0][1], bricks[j][1][1]); y++) {
+				if (map[height][bricks[j][0][0]][y] != 0 &&  map[height][bricks[j][0][0]][y] != i+1) {
+					falls = false;
+					break;
 				}
 			}
-			//console.log(bricksList[i],falls);
+		}
+		if (bricks[j][0][0] != bricks[j][1][0]) {
+			for (let x = Math.min(bricks[j][0][0], bricks[j][1][0]); x <= Math.max(bricks[j][0][0], bricks[j][1][0]); x++) {
+				if (map[height][x][bricks[j][0][1]] != 0 && map[height][x][bricks[j][0][1]] != i+1) {
+					falls = false;
+					break;
+				}
+			}
+		}
+		if (bricks[j][0][2] != bricks[j][1][2]) {
+			if (map[height][bricks[j][0][0]][bricks[j][0][1]] != 0 && map[height][bricks[j][0][0]][bricks[j][0][1]] != i+1) {
+				falls = false;
+			}
+		}
+		//console.log(j,falls);
+		if (falls == true) {
+			noneFall = false;
+			while (j<bricks.length && bricks[j][0][2]==height+1) {
+				j++
+			}
+		} else {
+			j++;
 		}
 	}
-	console.log(bricksList[i],falls);
-	count+=falls.length;
-	if (falls.length != 0) {
-		if (!bricksList.some(item => item.join(",") === falls.join(","))) {
-			console.log("Pushing " + falls);
-			bricksList.push(falls);
-		}
+	if (noneFall) {
+		disCount++;
 	}
-	//console.log((i+1).toString(36),noneFall);
-	// if (noneFall) {
-	// 	disCount++;
-	// }
 	//console.log(i,j,noneFall);
 }
-console.log("BRICKSLIST!")
-console.log(bricksList);
 
-output(count).forTest(7);
 
-// should get:
-//
-// [ 0 ] [ 1, 2 ]
-// [ 1 ] []
-// [ 2 ] []
-// [ 3 ] [5]
-// [ 4 ] [5]
-// [ 5 ] [6]
-// [ 6 ] []
-// [ 1, 2 ] [ 3, 4 ]
-// [ 3, 4 ] [ 5 ]
+output(disCount).forTest(5);
+
+//1277 is too high

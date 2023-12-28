@@ -106,25 +106,30 @@ for (let i=0;i<bricksList.length;i++) {
 	let falls: number[] = [];
 	loop: for (let j=0;j<bricks.length;j++) {
 		if (!bricksList[i].includes(j) && bricks[j][0][2]==height+1) {
-
+			let jFalls = true;
 			if (bricks[j][0][1] != bricks[j][1][1]) {
 				for (let y = Math.min(bricks[j][0][1], bricks[j][1][1]); y <= Math.max(bricks[j][0][1], bricks[j][1][1]); y++) {
-					if (map[height][bricks[j][0][0]][y] != 0 && bricksList[i].indexOf(map[height][bricks[j][0][0]][y] -1) == -1) {} else {
-						falls.push(j);
+					if (map[height][bricks[j][0][0]][y] != 0 && bricksList[i].indexOf(map[height][bricks[j][0][0]][y] -1) == -1) {
+						jFalls = false;
 						break;
 					}
 				}
 			} else if (bricks[j][0][0] != bricks[j][1][0]) {
 				for (let x = Math.min(bricks[j][0][0], bricks[j][1][0]); x <= Math.max(bricks[j][0][0], bricks[j][1][0]); x++) {
-					if (map[height][x][bricks[j][0][1]] != 0 && bricksList[i].indexOf(map[height][x][bricks[j][0][1]]-1) == - 1) {} else {
-						falls.push(j);
+					if (map[height][x][bricks[j][0][1]] != 0 && bricksList[i].indexOf(map[height][x][bricks[j][0][1]]-1) == - 1) {
+						jFalls = false;
+						// falls.push(j);
 						break;
 					}
 				}
 			} else { //if (bricks[j][0][2] != bricks[j][1][2])
-				if (map[height][bricks[j][0][0]][bricks[j][0][1]] != 0 && bricksList[i].indexOf(map[height][bricks[j][0][0]][bricks[j][0][1]]-1) == - 1) {} else {
-					falls.push(j);
+				if (map[height][bricks[j][0][0]][bricks[j][0][1]] != 0 && bricksList[i].indexOf(map[height][bricks[j][0][0]][bricks[j][0][1]]-1) == - 1) {
+					// falls.push(j);
+					jFalls = false;
 				}
+			}
+			if (jFalls) {
+				falls.push(j);
 			}
 			//console.log(bricksList[i],falls);
 		}

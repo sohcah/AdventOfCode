@@ -104,9 +104,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"2023-Sam@workspace:.":
+"2023-Paul@workspace:.":
   version: 0.0.0-use.local
-  resolution: "2023-Sam@workspace:."
+  resolution: "2023-Paul@workspace:."
   dependencies:
     "@typescript-eslint/eslint-plugin": "npm:^6.13.1"
     "@typescript-eslint/parser": "npm:^6.13.1"
@@ -142,6 +142,33 @@ __metadata:
 "22@workspace:days/22":
   version: 0.0.0-use.local
   resolution: "22@workspace:days/22"
+  dependencies:
+    aocutils: "workspace:^"
+    tsx: "npm:^4.6.0"
+  languageName: unknown
+  linkType: soft
+
+"23@workspace:days/23":
+  version: 0.0.0-use.local
+  resolution: "23@workspace:days/23"
+  dependencies:
+    aocutils: "workspace:^"
+    tsx: "npm:^4.6.0"
+  languageName: unknown
+  linkType: soft
+
+"24@workspace:days/24":
+  version: 0.0.0-use.local
+  resolution: "24@workspace:days/24"
+  dependencies:
+    aocutils: "workspace:^"
+    tsx: "npm:^4.6.0"
+  languageName: unknown
+  linkType: soft
+
+"25@workspace:days/25":
+  version: 0.0.0-use.local
+  resolution: "25@workspace:days/25"
   dependencies:
     aocutils: "workspace:^"
     tsx: "npm:^4.6.0"
